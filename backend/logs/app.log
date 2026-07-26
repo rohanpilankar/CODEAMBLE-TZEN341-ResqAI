@@ -1,0 +1,17 @@
+2026-07-26 16:14:48,443 INFO app: Database tables created.
+2026-07-26 16:14:48,483 ERROR app: Seed data error: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+2026-07-26 16:15:55,737 INFO app: Database tables created.
+2026-07-26 16:15:55,860 INFO app: Demo seed data inserted successfully.
+2026-07-26 16:16:28,891 INFO app: Database tables created.
+2026-07-26 16:16:28,918 INFO app: Seed data already exists, skipping.
+2026-07-26 16:18:26,043 INFO app: Database tables created.
+2026-07-26 16:18:26,169 INFO app: Demo seed data inserted successfully.
+2026-07-26 16:19:41,999 INFO app: Database tables created.
+2026-07-26 16:19:42,124 INFO app: Demo seed data inserted successfully.
+2026-07-26 16:20:29,751 INFO app: Database tables created.
+2026-07-26 16:20:29,776 INFO app: Seed data already exists, skipping.
+2026-07-26 16:21:34,417 INFO app: Database tables created.
+2026-07-26 16:21:34,541 INFO app: Demo seed data inserted successfully.
+2026-07-26 16:21:50,014 INFO app: Starting ResQAI...
+2026-07-26 16:21:50,018 INFO app: Database tables created.
+2026-07-26 16:21:50,041 INFO app: Seed data already exists, skipping.

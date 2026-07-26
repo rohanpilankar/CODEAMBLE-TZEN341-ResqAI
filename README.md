@@ -1,59 +1,136 @@
-# ResqAI
+# ResQAI – Smart Disaster Response & Emergency Coordination Platform
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.4.
+ResQAI is a production-quality, modular, real-time emergency management and disaster response platform. It allows citizens, rescue teams, government authorities, and administrators to coordinate emergency response efficiently.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🌟 Key Architectural Features
 
-```bash
-ng serve
+1. **Modular Layered Architecture**:
+   - **Frontend**: Pure HTML5, CSS3, Modern JavaScript (ES6 Modules), Bootstrap 5, Axios, Leaflet.js, Chart.js, Font Awesome.
+   - **Backend**: FastAPI, SQLAlchemy ORM, Pydantic v2, JWT Access/Refresh Tokens, WebSockets.
+   - **Database**: SQLite (Zero-config out-of-the-box local running) / PostgreSQL ready.
+
+2. **20 Architectural & Code Quality Improvements**:
+   - Single dynamic `dashboard.html` rendering role-based views (`Citizen`, `Rescue Team`, `Government Authority`, `Admin`).
+   - Clean 3-tier layering: `Controllers (Routers) -> Services -> Repositories -> Database`.
+   - Pluggable AI Service interface (`backend/services/ai_service.py`) composing `SeverityPredictor`, `DuplicateDetector`, `ResourceRecommender`, and `RouteOptimizer`.
+   - Event-driven WebSockets with typed event models.
+   - Dual-token JWT authentication (Access & Refresh tokens) with automatic token refresh in Axios client.
+
+---
+
+## 📁 Directory Structure
+
+```
+ResQAI/
+├── .env.example
+├── .env
+├── requirements.txt
+├── README.md
+│
+├── frontend/
+│   ├── index.html                   # Public landing page & live map
+│   ├── login.html                   # Unified authentication & citizen registration
+│   ├── dashboard.html               # Single dynamic role-based dashboard
+│   ├── 404.html                     # Custom 404 error page
+│   ├── 500.html                     # Custom 500 server error page
+│   ├── css/                         # Modular CSS design system
+│   │   ├── variables.css
+│   │   ├── base.css
+│   │   ├── buttons.css
+│   │   ├── cards.css
+│   │   ├── tables.css
+│   │   ├── forms.css
+│   │   ├── map.css
+│   │   ├── dashboard.css
+│   │   ├── components.css
+│   │   ├── animations.css
+│   │   └── responsive.css
+│   └── js/
+│       ├── app.js                   # Application entry point & router guard
+│       ├── config.js                # Centralized config (API & WS URLs, Map defaults)
+│       ├── websocket.js             # Event-driven WebSocket client
+│       ├── dashboard.js             # Role-based dashboard view router
+│       ├── api/                     # Centralized Axios API services
+│       ├── services/                # Geolocation, storage, toast, validation
+│       ├── components/              # Reusable dynamic HTML generators
+│       └── utils/                   # Helpers, formatters, distance calculators
+│
+└── backend/
+    ├── main.py                      # FastAPI application entry point
+    ├── config.py                    # Environment settings (Pydantic BaseSettings)
+    ├── database/
+    │   ├── session.py               # SQLAlchemy engine (SQLite & PostgreSQL)
+    │   └── init_db.py               # Database auto-creation & demo seed data
+    ├── models/                      # Database Entities (SQLAlchemy)
+    ├── schemas/                     # Data Contracts (Pydantic v2)
+    ├── repositories/                # Repository Pattern DB Access Layer
+    ├── services/                    # Business Logic & Pluggable AI Interfaces
+    ├── auth/                        # JWT & Passlib Password Hashing
+    ├── websocket/                   # Real-time WebSockets Manager
+    ├── routers/                     # REST API Endpoints
+    ├── logs/                        # Application & Audit log files
+    └── tests/                       # Pytest Test Suite
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🔑 Pre-Seeded Demo Accounts
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Upon initial startup, `backend/database/init_db.py` automatically initializes default roles and demo accounts:
 
+| Role | Email | Password | Access / Features |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin@resqai.com` | `password123` | User management, system audit logs, full system control |
+| **Government** | `gov@resqai.com` | `password123` | Heatmap analytics, shelter capacity, resource allocation |
+| **Rescue Team** | `rescue@resqai.com` | `password123` | Assigned incident missions, live map, navigation support |
+| **Citizen** | `citizen@resqai.com` | `password123` | Emergency report submission, GPS auto-detect, shelter finder |
+
+---
+
+## ⚡ Quick Start Guide (Local Execution)
+
+### 1. Backend Setup
 ```bash
-ng generate component component-name
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Run FastAPI server with uvicorn (Port 8000)
+python -m uvicorn backend.main:app --port 8000 --reload
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Interactive API documentation will be available at:
+- **Swagger UI**: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
+- **ReDoc**: [http://localhost:8000/api/redoc](http://localhost:8000/api/redoc)
+
+### 2. Frontend Execution
+You can serve the `frontend/` directory using Python's built-in HTTP server or any static file server:
 
 ```bash
-ng generate --help
+# Serve frontend on Port 3000
+python -m http.server 3000 --directory frontend
 ```
 
-## Building
+Open your browser at:
+- Landing Page: [http://localhost:3000/index.html](http://localhost:3000/index.html)
+- Login Page: [http://localhost:3000/login.html](http://localhost:3000/login.html)
+- Dashboard: [http://localhost:3000/dashboard.html](http://localhost:3000/dashboard.html)
 
-To build the project run:
+---
 
+## 🧪 Running Automated Tests
+
+Run the test suite using `pytest`:
 ```bash
-ng build
+pytest backend/tests/
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## 🤖 Pluggable AI Model Integration
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+All AI predictions (severity assessment, duplicate detection, resource recommendations, route optimization) are abstracted inside:
+`backend/services/ai_service.py`
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+When real ML models or deep learning pipelines are ready, simply update the internal implementation inside `SeverityPredictor`, `DuplicateDetector`, `ResourceRecommender`, or `RouteOptimizer` inside `ai_service.py`. No changes to REST routers, database models, or frontend modules are needed!
