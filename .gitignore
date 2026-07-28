@@ -45,10 +45,10 @@ backend/static/uploads/
 # Node (Angular scaffolding was removed)
 node_modules/
 
-# Datasets and ML Models (prevents exceeding GitHub 100MB limit)
+# Large Datasets (prevents exceeding GitHub 100MB limit)
 data/*.csv
 data/**/*.csv
-models/*.joblib
-models/*.pkl
-models/*.h5
-models/*.model
+
+# ML Model artifacts are NOT ignored — FastAPI loads them at runtime
+# Add specific large model files here only if they exceed 100MB:
+# models/*.joblib
