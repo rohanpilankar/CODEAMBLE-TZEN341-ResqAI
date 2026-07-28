@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - ResQAI Platform</title>
-  
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -17,6 +18,7 @@
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
+
 <body>
 
   <div class="auth-page">
@@ -29,10 +31,18 @@
         <h1>ResQAI</h1>
         <p>Smart Disaster Response & Rapid Coordination Platform</p>
         <ul class="auth-features">
-          <li><div class="icon"><i class="fa fa-map-marked-alt"></i></div> Real-time Emergency Incident Mapping</li>
-          <li><div class="icon"><i class="fa fa-robot"></i></div> AI-Assisted Severity & Duplicate Detection</li>
-          <li><div class="icon"><i class="fa fa-campground"></i></div> Live Shelter Occupancy Tracking</li>
-          <li><div class="icon"><i class="fa fa-truck-monster"></i></div> Emergency Resource Allocation</li>
+          <li>
+            <div class="icon"><i class="fa fa-map-marked-alt"></i></div> Real-time Emergency Incident Mapping
+          </li>
+          <li>
+            <div class="icon"><i class="fa fa-robot"></i></div> AI-Assisted Severity & Duplicate Detection
+          </li>
+          <li>
+            <div class="icon"><i class="fa fa-campground"></i></div> Live Shelter Occupancy Tracking
+          </li>
+          <li>
+            <div class="icon"><i class="fa fa-truck-monster"></i></div> Emergency Resource Allocation
+          </li>
         </ul>
       </div>
     </div>
@@ -57,7 +67,8 @@
             <label class="form-label">Email Address</label>
             <div class="input-group-icon">
               <i class="fa fa-envelope input-icon"></i>
-              <input type="email" name="email" id="login-email" class="form-control" value="citizen@resqai.com" placeholder="name@domain.com" required />
+              <input type="email" name="email" id="login-email" class="form-control" value="citizen@resqai.com"
+                placeholder="name@domain.com" required />
             </div>
           </div>
 
@@ -65,7 +76,8 @@
             <label class="form-label">Password</label>
             <div class="input-group-icon">
               <i class="fa fa-lock input-icon"></i>
-              <input type="password" name="password" id="login-password" class="form-control" value="password123" placeholder="••••••••" required />
+              <input type="password" name="password" id="login-password" class="form-control" value="password123"
+                placeholder="••••••••" required />
             </div>
           </div>
 
@@ -77,14 +89,19 @@
         <div class="auth-divider">Quick Demo Credentials</div>
 
         <div class="d-flex flex-wrap gap-2 mb-4">
-          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="admin@resqai.com" data-role="Admin">Admin</button>
-          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="gov@resqai.com" data-role="Government Authority">Gov Officer</button>
-          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="rescue@resqai.com" data-role="Rescue Team">Rescue Team</button>
-          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="citizen@resqai.com" data-role="Citizen">Citizen</button>
+          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="admin@resqai.com"
+            data-role="Admin">Admin</button>
+          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="gov@resqai.com"
+            data-role="Government Authority">Gov Officer</button>
+          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="rescue@resqai.com"
+            data-role="Rescue Team">Rescue Team</button>
+          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="citizen@resqai.com"
+            data-role="Citizen">Citizen</button>
         </div>
 
         <div class="text-center font-size-sm color-muted">
-          New citizen? <a href="#" id="toggle-register-link" style="color: var(--primary-light);">Register Citizen Account</a>
+          New citizen? <a href="#" id="toggle-register-link" style="color: var(--primary-light);">Register Citizen
+            Account</a>
         </div>
 
         <!-- Registration Form (Hidden by default) -->
@@ -124,4 +141,5 @@
     });
   </script>
 </body>
+
 </html>

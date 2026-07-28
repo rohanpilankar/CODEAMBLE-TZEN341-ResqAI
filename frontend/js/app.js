@@ -1,8 +1,12 @@
 import { storageService } from './services/storageService.js';
 import { authHandler } from './auth.js';
 import { dashboardManager } from './dashboard.js';
+import { firebaseService } from './services/firebaseService.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Firebase Firestore & Realtime Database
+  firebaseService.init();
+
   const path = window.location.pathname;
 
   if (path.endsWith('login.html')) {

@@ -7,7 +7,10 @@
 
 /* Left decorative panel */
 .auth-left {
-  background: linear-gradient(135deg, #0a0f1e 0%, #1d3557 100%);
+  background: rgba(10, 15, 30, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -87,7 +90,9 @@
   align-items: center;
   justify-content: center;
   padding: 60px 48px;
-  background: var(--bg-dark);
+  background: rgba(10, 15, 30, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 .auth-form-container {
   width: 100%;

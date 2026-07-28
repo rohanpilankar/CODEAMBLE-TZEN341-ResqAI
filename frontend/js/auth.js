@@ -66,10 +66,11 @@ export const authHandler = {
         }
 
         const res = await authApi.login(email, password);
-        storageService.setSession(res.access_token, res.refresh_token, res.user);
+        const data = res.data || res;
+        storageService.setSession(data.access_token, data.refresh_token, data.user);
 
-        notificationService.success('Welcome Back!', `Logged in as ${res.user.full_name} (${res.user.role})`);
-        
+        notificationService.success('Welcome Back!', `Logged in as ${data.user?.full_name || 'User'} (${data.user?.role || 'Citizen'})`);
+
         setTimeout(() => {
           window.location.href = 'dashboard.html';
         }, 500);
@@ -101,7 +102,8 @@ export const authHandler = {
         if (submitBtn) submitBtn.disabled = true;
 
         const res = await authApi.register(email, password, full_name, phone_number, 'Citizen');
-        storageService.setSession(res.access_token, res.refresh_token, res.user);
+        const data = res.data || res;
+        storageService.setSession(data.access_token, data.refresh_token, data.user);
 
         notificationService.success('Registration Complete!', 'Citizen account created successfully.');
         setTimeout(() => {

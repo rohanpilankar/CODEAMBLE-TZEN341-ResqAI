@@ -1,136 +1,248 @@
-# ResQAI – Smart Disaster Response & Emergency Coordination Platform
+# 🚨 ResQAI — Smart Disaster Response & Emergency Coordination Platform
 
-ResQAI is a production-quality, modular, real-time emergency management and disaster response platform. It allows citizens, rescue teams, government authorities, and administrators to coordinate emergency response efficiently.
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi)](https://fastapi.tiangolo.com)
+[![Firebase](https://img.shields.io/badge/Firebase-Firestore-FFCA28?logo=firebase)](https://firebase.google.com)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
----
-
-## 🌟 Key Architectural Features
-
-1. **Modular Layered Architecture**:
-   - **Frontend**: Pure HTML5, CSS3, Modern JavaScript (ES6 Modules), Bootstrap 5, Axios, Leaflet.js, Chart.js, Font Awesome.
-   - **Backend**: FastAPI, SQLAlchemy ORM, Pydantic v2, JWT Access/Refresh Tokens, WebSockets.
-   - **Database**: SQLite (Zero-config out-of-the-box local running) / PostgreSQL ready.
-
-2. **20 Architectural & Code Quality Improvements**:
-   - Single dynamic `dashboard.html` rendering role-based views (`Citizen`, `Rescue Team`, `Government Authority`, `Admin`).
-   - Clean 3-tier layering: `Controllers (Routers) -> Services -> Repositories -> Database`.
-   - Pluggable AI Service interface (`backend/services/ai_service.py`) composing `SeverityPredictor`, `DuplicateDetector`, `ResourceRecommender`, and `RouteOptimizer`.
-   - Event-driven WebSockets with typed event models.
-   - Dual-token JWT authentication (Access & Refresh tokens) with automatic token refresh in Axios client.
+ResQAI is a production-ready disaster response platform featuring **AI-powered incident triage**, **real-time WebSocket coordination**, **Firebase Firestore persistence**, and a **Vanilla JS + Bootstrap 5** frontend — built for Government Authorities, Rescue Teams, and Volunteers.
 
 ---
 
-## 📁 Directory Structure
+## 📐 Architecture
 
 ```
 ResQAI/
-├── .env.example
-├── .env
-├── requirements.txt
-├── README.md
-│
+├── backend/
+│   ├── auth/              # JWT auth, role-based dependencies
+│   ├── database/          # Firebase manager, Firestore client, mock fallback
+│   ├── middleware/        # Rate limiting (slowapi)
+│   ├── models/            # Pydantic-like entity classes (Firestore documents)
+│   ├── repositories/      # Firestore CRUD abstraction per entity
+│   ├── routers/           # FastAPI routers (auth, incidents, shelters, resources, …)
+│   ├── schemas/           # Pydantic request/response schemas
+│   ├── services/          # Business logic (Auth, Incident, Shelter, Resource, …)
+│   ├── utils/             # Logger, API response helpers
+│   ├── websocket/         # WebSocket manager (JWT auth, role broadcasting)
+│   └── main.py            # Application entry point
 ├── frontend/
-│   ├── index.html                   # Public landing page & live map
-│   ├── login.html                   # Unified authentication & citizen registration
-│   ├── dashboard.html               # Single dynamic role-based dashboard
-│   ├── 404.html                     # Custom 404 error page
-│   ├── 500.html                     # Custom 500 server error page
-│   ├── css/                         # Modular CSS design system
-│   │   ├── variables.css
-│   │   ├── base.css
-│   │   ├── buttons.css
-│   │   ├── cards.css
-│   │   ├── tables.css
-│   │   ├── forms.css
-│   │   ├── map.css
-│   │   ├── dashboard.css
-│   │   ├── components.css
-│   │   ├── animations.css
-│   │   └── responsive.css
-│   └── js/
-│       ├── app.js                   # Application entry point & router guard
-│       ├── config.js                # Centralized config (API & WS URLs, Map defaults)
-│       ├── websocket.js             # Event-driven WebSocket client
-│       ├── dashboard.js             # Role-based dashboard view router
-│       ├── api/                     # Centralized Axios API services
-│       ├── services/                # Geolocation, storage, toast, validation
-│       ├── components/              # Reusable dynamic HTML generators
-│       └── utils/                   # Helpers, formatters, distance calculators
-│
-└── backend/
-    ├── main.py                      # FastAPI application entry point
-    ├── config.py                    # Environment settings (Pydantic BaseSettings)
-    ├── database/
-    │   ├── session.py               # SQLAlchemy engine (SQLite & PostgreSQL)
-    │   └── init_db.py               # Database auto-creation & demo seed data
-    ├── models/                      # Database Entities (SQLAlchemy)
-    ├── schemas/                     # Data Contracts (Pydantic v2)
-    ├── repositories/                # Repository Pattern DB Access Layer
-    ├── services/                    # Business Logic & Pluggable AI Interfaces
-    ├── auth/                        # JWT & Passlib Password Hashing
-    ├── websocket/                   # Real-time WebSockets Manager
-    ├── routers/                     # REST API Endpoints
-    ├── logs/                        # Application & Audit log files
-    └── tests/                       # Pytest Test Suite
+│   ├── css/               # Variables (Light/Dark themes), base, components
+│   ├── js/
+│   │   ├── services/      # apiService, storageService, themeService, …
+│   │   ├── websocket.js   # JWT-authenticated WebSocket client
+│   │   └── app.js         # Main application bootstrap
+│   └── index.html
+├── .env.example           # Environment variable template
+└── requirements.txt
 ```
 
 ---
 
-## 🔑 Pre-Seeded Demo Accounts
+## 🚀 Quick Start
 
-Upon initial startup, `backend/database/init_db.py` automatically initializes default roles and demo accounts:
+### 1. Clone the Repository
 
-| Role | Email | Password | Access / Features |
-| :--- | :--- | :--- | :--- |
-| **Admin** | `admin@resqai.com` | `password123` | User management, system audit logs, full system control |
-| **Government** | `gov@resqai.com` | `password123` | Heatmap analytics, shelter capacity, resource allocation |
-| **Rescue Team** | `rescue@resqai.com` | `password123` | Assigned incident missions, live map, navigation support |
-| **Citizen** | `citizen@resqai.com` | `password123` | Emergency report submission, GPS auto-detect, shelter finder |
-
----
-
-## ⚡ Quick Start Guide (Local Execution)
-
-### 1. Backend Setup
 ```bash
-# Install Python dependencies
+git clone https://github.com/rohanpilankar/ResQAI.git
+cd ResQAI
+```
+
+### 2. Set Up Python Environment
+
+```bash
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# macOS / Linux
+source .venv/bin/activate
+
 pip install -r requirements.txt
-
-# Run FastAPI server with uvicorn (Port 8000)
-python -m uvicorn backend.main:app --port 8000 --reload
 ```
 
-Interactive API documentation will be available at:
-- **Swagger UI**: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
-- **ReDoc**: [http://localhost:8000/api/redoc](http://localhost:8000/api/redoc)
-
-### 2. Frontend Execution
-You can serve the `frontend/` directory using Python's built-in HTTP server or any static file server:
+### 3. Configure Environment Variables
 
 ```bash
-# Serve frontend on Port 3000
-python -m http.server 3000 --directory frontend
+cp .env.example .env
 ```
 
-Open your browser at:
-- Landing Page: [http://localhost:3000/index.html](http://localhost:3000/index.html)
-- Login Page: [http://localhost:3000/login.html](http://localhost:3000/login.html)
-- Dashboard: [http://localhost:3000/dashboard.html](http://localhost:3000/dashboard.html)
+Edit `.env` and fill in the required values:
+
+| Variable | Description |
+|---|---|
+| `SECRET_KEY` | Long random string for JWT signing (min 32 chars) |
+| `FIREBASE_CREDENTIALS` | Absolute path to Firebase service account JSON |
+| `FIREBASE_STORAGE_BUCKET` | Firebase Storage bucket name |
+| `ENVIRONMENT` | `development` / `production` |
+| `CORS_ORIGINS` | Comma-separated allowed origins |
+
+### 4. Firebase Setup
+
+1. Go to [Firebase Console](https://console.firebase.google.com) → Create Project
+2. Enable **Firestore Database** (Production or Test mode)
+3. Enable **Firebase Storage**
+4. Go to **Project Settings → Service Accounts → Generate new private key**
+5. Save the downloaded JSON and set `FIREBASE_CREDENTIALS=/path/to/key.json`
+
+> **Note:** Without a credentials file, the app auto-starts with an **in-memory mock** — perfect for local development and testing.
+
+### 5. Run the Backend
+
+```bash
+uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+API Docs: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)  
+Health Check: [http://localhost:8000/api/health](http://localhost:8000/api/health)
+
+### 6. Run the Frontend
+
+```bash
+npm install
+npm start           # Starts a static file server
+# or
+npm run dev         # With file watching
+```
 
 ---
 
-## 🧪 Running Automated Tests
+## 🔐 Authentication
 
-Run the test suite using `pytest`:
-```bash
-pytest backend/tests/
+All protected endpoints require a `Bearer` token in the `Authorization` header.
+
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+  "full_name": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "SecurePass!123",
+  "phone_number": "9876543210",
+  "role_id": 1
+}
+```
+
+**Roles:**
+
+| role_id | Role Name |
+|---|---|
+| 1 | Volunteer |
+| 2 | Rescue Team |
+| 3 | Admin |
+| 4 | Government Authority |
+
+---
+
+## 🌐 WebSocket
+
+Connect to the real-time event stream with a valid JWT token:
+
+```javascript
+const token = localStorage.getItem('access_token');
+const ws = new WebSocket(`ws://localhost:8000/ws/my_client?token=${token}`);
+```
+
+**Event Types:**
+- `INCIDENT_CREATED` — New emergency reported
+- `INCIDENT_UPDATED` — Status/severity change
+- `RESOURCE_ASSIGNED` — Resources dispatched
+- `SHELTER_UPDATED` — Occupancy change
+- `NOTIFICATION_CREATED` — New alert broadcast
+- `MISSION_COMPLETED` — Incident resolved
+
+---
+
+## 📡 API Response Format
+
+Every API response follows a consistent envelope:
+
+```json
+{
+  "success": true,
+  "message": "Operation completed successfully",
+  "data": { ... }
+}
+```
+
+On error:
+```json
+{
+  "success": false,
+  "message": "Detailed error description",
+  "data": {}
+}
 ```
 
 ---
 
-## 🤖 Pluggable AI Model Integration
+## 🎨 Theme System
 
-All AI predictions (severity assessment, duplicate detection, resource recommendations, route optimization) are abstracted inside:
-`backend/services/ai_service.py`
+The frontend supports **Light and Dark themes** via CSS custom properties.
 
-When real ML models or deep learning pipelines are ready, simply update the internal implementation inside `SeverityPredictor`, `DuplicateDetector`, `ResourceRecommender`, or `RouteOptimizer` inside `ai_service.py`. No changes to REST routers, database models, or frontend modules are needed!
+Toggle programmatically:
+```javascript
+import { themeService } from './js/services/themeService.js';
+themeService.init();    // Call on page load
+themeService.toggle();  // Switch theme
+```
+
+Add a toggle button in HTML:
+```html
+<button data-theme-toggle aria-pressed="true">
+  <span class="theme-icon">☀️</span>
+  <span class="theme-label">Light Mode</span>
+</button>
+```
+
+---
+
+## 🧪 Running Tests
+
+```bash
+# Run all tests
+pytest backend/tests/ -v
+
+# With coverage report
+pytest backend/tests/ -v --cov=backend --cov-report=term-missing
+
+# Run specific test file
+pytest backend/tests/test_auth.py -v
+```
+
+> Tests use an **in-memory mock Firestore** automatically — no Firebase credentials required.
+
+---
+
+## 📋 Key API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | Obtain JWT access token |
+| GET | `/api/incidents` | List all incidents (paginated) |
+| POST | `/api/incidents` | Report a new incident |
+| GET | `/api/incidents/{id}` | Get incident details |
+| PUT | `/api/incidents/{id}` | Update incident |
+| GET | `/api/shelters` | List active shelters |
+| POST | `/api/shelters` | Register a shelter |
+| GET | `/api/resources` | List available resources |
+| POST | `/api/resources` | Add a resource |
+| GET | `/api/notifications` | Get user notifications |
+| GET | `/api/analytics/overview` | Platform analytics |
+| POST | `/api/ai/analyze` | AI triage & classification |
+| GET | `/api/health` | Health check |
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Run tests before committing: `pytest backend/tests/ -v`
+4. Open a Pull Request
+
+---
+
+## 📄 License
+
+MIT License — see [LICENSE](LICENSE) for details.

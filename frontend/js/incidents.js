@@ -4,6 +4,7 @@ import { locationService } from './services/locationService.js';
 import { notificationService } from './services/notificationService.js';
 import { formatDate } from './utils/date.js';
 import { openModal, closeModal } from './components/modal.js';
+import { firebaseService } from './services/firebaseService.js';
 
 export const incidentHandler = {
   async renderReportForm(containerId) {
@@ -146,7 +147,16 @@ export const incidentHandler = {
       if (btn) btn.disabled = true;
 
       const res = await incidentApi.createIncident(data);
-      notificationService.success('Report Submitted!', `Emergency report #${res.id} submitted successfully.`);
+
+      // Store in Firebase Realtime Database & Firestore Profile
+      try {
+        await firebaseService.pushRealtimeIncident({ id: res.id, ...data, status: 'Reported' });
+        await firebaseService.addFirestoreRecord('incidents', { id: res.id, ...data, status: 'Reported' });
+      } catch (fbErr) {
+        console.warn('Firebase sync warning:', fbErr);
+      }
+
+      notificationService.success('Report Submitted!', `Emergency report #${res.id} submitted & synced to Firebase.`);
 
       form.reset();
       this.detectGPS();

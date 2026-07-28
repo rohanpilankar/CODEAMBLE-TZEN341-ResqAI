@@ -15,3 +15,199 @@
 2026-07-26 16:21:50,014 INFO app: Starting ResQAI...
 2026-07-26 16:21:50,018 INFO app: Database tables created.
 2026-07-26 16:21:50,041 INFO app: Seed data already exists, skipping.
+2026-07-26 17:41:31,613 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 17:41:31,654 INFO app: Database tables created.
+2026-07-26 17:41:31,779 INFO app: Seed data already exists, skipping.
+2026-07-26 18:03:25,778 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:03:25,858 INFO app: Database tables created.
+2026-07-26 18:03:26,480 INFO app: Seed data already exists, skipping.
+2026-07-26 18:36:12,195 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:36:12,215 INFO app: Database tables created.
+2026-07-26 18:36:12,480 INFO app: Seed data already exists, skipping.
+2026-07-26 18:36:13,907 INFO app: Shutting down ResQAI.
+2026-07-26 18:38:45,415 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:38:45,426 INFO app: Database tables created.
+2026-07-26 18:38:45,482 INFO app: Seed data already exists, skipping.
+2026-07-26 18:38:46,449 INFO app: Shutting down ResQAI.
+2026-07-26 18:42:13,882 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:42:13,896 INFO app: Database tables created.
+2026-07-26 18:42:13,956 INFO app: Seed data already exists, skipping.
+2026-07-26 18:42:14,929 INFO app: Shutting down ResQAI.
+2026-07-26 18:43:52,983 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:43:52,998 INFO app: Database tables created.
+2026-07-26 18:43:53,058 INFO app: Seed data already exists, skipping.
+2026-07-26 18:43:54,000 INFO app: Shutting down ResQAI.
+2026-07-26 18:46:22,129 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:46:22,140 INFO app: Database tables created.
+2026-07-26 18:46:22,199 INFO app: Seed data already exists, skipping.
+2026-07-26 18:46:23,134 INFO app: Shutting down ResQAI.
+2026-07-26 18:48:19,323 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:48:19,333 INFO app: Database tables created.
+2026-07-26 18:48:19,387 INFO app: Seed data already exists, skipping.
+2026-07-26 18:48:20,457 INFO app: Shutting down ResQAI.
+2026-07-26 18:49:31,563 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:49:31,581 INFO app: Database tables created.
+2026-07-26 18:49:31,653 INFO app: Seed data already exists, skipping.
+2026-07-26 18:49:32,714 INFO app: Shutting down ResQAI.
+2026-07-26 18:50:28,185 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:50:28,195 INFO app: Database tables created.
+2026-07-26 18:50:28,257 INFO app: Seed data already exists, skipping.
+2026-07-26 18:50:29,306 INFO app: Shutting down ResQAI.
+2026-07-26 18:52:08,820 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:52:08,836 INFO app: Database tables created.
+2026-07-26 18:52:08,903 INFO app: Seed data already exists, skipping.
+2026-07-26 18:52:10,083 INFO app: Shutting down ResQAI.
+2026-07-26 18:54:07,363 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:54:07,380 INFO app: Database tables created.
+2026-07-26 18:54:07,465 INFO app: Seed data already exists, skipping.
+2026-07-26 18:54:08,884 INFO app: Shutting down ResQAI.
+2026-07-26 18:55:29,795 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:55:29,808 INFO app: Database tables created.
+2026-07-26 18:55:29,874 INFO app: Seed data already exists, skipping.
+2026-07-26 18:55:30,530 INFO app: Shutting down ResQAI.
+2026-07-26 18:57:46,429 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-26 18:57:46,448 INFO app: Database tables created.
+2026-07-26 18:57:46,527 INFO app: Seed data already exists, skipping.
+2026-07-26 19:19:50,457 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-26 19:19:53,888 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-26 19:19:57,230 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-26 19:20:00,636 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-26 19:20:04,054 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-26 19:20:07,429 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-26 19:20:10,833 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-26 19:20:14,238 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-26 19:20:17,640 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-26 19:20:21,071 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-26 19:24:46,932 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:24:50,276 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:24:53,608 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:24:56,963 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:25:00,287 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:25:01,617 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:25:04,986 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:25:08,343 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:25:11,709 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:25:15,102 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:25:18,699 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:25:22,382 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:25:26,039 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:25:30,015 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-26 19:25:34,143 WARNING app: Rejected unauthenticated WebSocket from: user_3
+2026-07-27 00:10:39,981 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-27 00:10:40,019 INFO app: Database tables created.
+2026-07-27 00:10:40,130 INFO app: Seed data already exists, skipping.
+2026-07-27 00:10:42,173 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:10:49,114 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:10:56,829 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:11:04,732 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:11:15,252 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:11:23,072 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:11:32,254 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:11:41,090 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:11:47,052 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:11:56,052 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:12:05,062 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:12:10,352 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:12:17,968 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:12:29,269 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:05,332 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:08,879 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:12,202 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:15,537 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:18,906 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:22,248 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:25,587 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:28,940 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:32,302 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:35,647 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:39,040 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:42,469 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:46,131 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:49,905 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:54,203 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:13:59,355 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:05,975 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:13,612 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:21,396 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:26,197 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:29,520 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:32,852 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:36,170 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:39,492 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:42,819 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:46,154 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:49,489 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:52,838 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:56,173 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:14:59,528 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:15:02,881 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:15:06,335 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:15:09,913 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:15:13,514 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:15:17,830 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:30:27,118 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-27 00:30:27,304 INFO app: Database tables created.
+2026-07-27 00:30:27,815 INFO app: Seed data already exists, skipping.
+2026-07-27 00:30:43,604 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:30:48,019 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:30:52,030 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:30:56,311 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:31:02,487 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:31:06,064 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:31:10,031 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:31:14,404 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:41:44,424 INFO app: Starting ResQAI v1.0.0 ...
+2026-07-27 00:41:44,513 INFO app: Database tables created.
+2026-07-27 00:41:44,759 INFO app: Seed data already exists, skipping.
+2026-07-27 00:46:22,115 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:46:26,020 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:46:30,018 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:58:07,287 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 00:58:35,960 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 00:59:06,216 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 00:59:18,482 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:59:23,233 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:59:28,018 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:59:32,021 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:59:33,249 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 00:59:35,946 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:59:39,796 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:59:43,193 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:59:46,557 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:59:49,997 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:59:53,416 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 00:59:56,889 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 01:00:00,538 WARNING app: Rejected unauthenticated WebSocket from: user_1785089533975
+2026-07-27 01:00:09,244 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:00:39,564 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:01:09,255 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:01:39,579 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:02:09,254 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:02:40,455 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:03:10,022 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:03:39,674 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:04:10,005 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:04:40,339 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:05:31,074 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:06:31,327 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:07:31,030 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:08:31,843 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:08:53,614 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:09:08,122 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:09:15,611 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:09:19,048 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:09:22,396 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:09:25,737 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:09:29,079 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:09:31,323 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:09:32,421 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:09:35,765 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:09:39,122 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:09:42,480 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:13:11,271 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:13:41,010 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client
+2026-07-27 01:13:58,372 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:14:01,816 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:14:05,152 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:14:08,478 WARNING app: Rejected unauthenticated WebSocket from: user_4
+2026-07-27 01:14:10,409 WARNING app: Rejected unauthenticated WebSocket from: health_ping_client

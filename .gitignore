@@ -44,3 +44,11 @@ backend/static/uploads/
 
 # Node (Angular scaffolding was removed)
 node_modules/
+
+# Datasets and ML Models (prevents exceeding GitHub 100MB limit)
+data/*.csv
+data/**/*.csv
+models/*.joblib
+models/*.pkl
+models/*.h5
+models/*.model

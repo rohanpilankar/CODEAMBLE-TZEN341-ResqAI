@@ -16,6 +16,7 @@ import { incidentApi } from './api/incidentApi.js';
 import { shelterApi } from './api/shelterApi.js';
 import { resourceApi } from './api/resourceApi.js';
 import { wsClient } from './websocket.js';
+import { commandCenter } from './commandCenter.js';
 
 export const dashboardManager = {
   user: null,
@@ -91,13 +92,16 @@ export const dashboardManager = {
       });
     }
 
-    // Logout button
-    document.getElementById('nav-logout-btn')?.addEventListener('click', (e) => {
+    // Logout buttons (Sidebar & Topbar)
+    const handleLogout = (e) => {
       e.preventDefault();
       storageService.clearSession();
       notificationService.info('Logged Out', 'You have been safely logged out.');
       setTimeout(() => (window.location.href = 'login.html'), 300);
-    });
+    };
+
+    document.getElementById('nav-logout-btn')?.addEventListener('click', handleLogout);
+    document.getElementById('nav-topbar-logout-btn')?.addEventListener('click', handleLogout);
 
     // Notifications button
     document.getElementById('btn-notifications')?.addEventListener('click', () => {
@@ -128,14 +132,18 @@ export const dashboardManager = {
       case 'overview':
         await this.renderOverviewTab(area);
         break;
+      case 'live-map':
+      case 'incident-map':
+        await this.renderLiveMapTab(area);
+        break;
       case 'report':
         await incidentHandler.renderReportForm('page-content-area');
         break;
       case 'shelters':
       case 'shelter-mgmt':
         area.innerHTML = `
-          <div class="section-header">
-            <h2>Shelter Management & Occupancy</h2>
+          <div class="section-header mb-4">
+            <h2><i class="fa fa-warehouse text-success me-2"></i> Shelter Management & Occupancy</h2>
           </div>
           <div id="shelters-container-list"></div>
         `;
@@ -144,8 +152,8 @@ export const dashboardManager = {
       case 'missions':
       case 'all-incidents':
         area.innerHTML = `
-          <div class="section-header">
-            <h2>Emergency Incident Control Center</h2>
+          <div class="section-header mb-4">
+            <h2><i class="fa fa-clipboard-list text-danger me-2"></i> Emergency Incident Control Center</h2>
           </div>
           <div id="incidents-container-table"></div>
         `;
@@ -154,17 +162,23 @@ export const dashboardManager = {
       case 'equipment':
       case 'resource-alloc':
         area.innerHTML = `
-          <div class="section-header">
-            <h2>Emergency Equipment & Resource Allocation</h2>
+          <div class="section-header mb-4">
+            <h2><i class="fa fa-boxes text-info me-2"></i> Emergency Equipment & Resource Allocation</h2>
           </div>
           <div id="resources-container-list"></div>
         `;
         await resourceHandler.renderResourceOverview('resources-container-list');
         break;
+      case 'users':
+        this.renderUsersTab(area);
+        break;
+      case 'system-logs':
+        this.renderAuditLogsTab(area);
+        break;
       case 'analytics':
         area.innerHTML = `
-          <div class="section-header">
-            <h2>Disaster Response Analytics & Situation Reports</h2>
+          <div class="section-header mb-4">
+            <h2><i class="fa fa-chart-pie text-warning me-2"></i> Disaster Response Analytics & Situation Reports</h2>
           </div>
           <div id="analytics-container-main"></div>
         `;
@@ -172,8 +186,8 @@ export const dashboardManager = {
         break;
       case 'notifications':
         area.innerHTML = `
-          <div class="section-header">
-            <h2>Notifications & Emergency Alerts</h2>
+          <div class="section-header mb-4">
+            <h2><i class="fa fa-bell text-primary me-2"></i> Notifications & Emergency Alerts</h2>
           </div>
           <div id="notifications-container-list"></div>
         `;
@@ -188,92 +202,148 @@ export const dashboardManager = {
     }
   },
 
-  async renderOverviewTab(area) {
+  async renderLiveMapTab(area) {
     area.innerHTML = `
-      <div class="page-header">
-        <h1>Dashboard Overview</h1>
-        <div class="page-subtitle">Real-time situational awareness and active emergency metrics</div>
-      </div>
-
-      <!-- Stats Grid -->
-      <div class="stats-grid" id="stats-grid-container">
-        ${renderStatCard('Total Incidents', '...', 'fa-exclamation-circle', 'red')}
-        ${renderStatCard('Active Rescue', '...', 'fa-tasks', 'orange')}
-        ${renderStatCard('Available Shelters', '...', 'fa-campground', 'green')}
-        ${renderStatCard('Equipment Ready', '...', 'fa-truck-monster', 'blue')}
-      </div>
-
-      <!-- Live Map Section -->
-      <div class="card mb-4 p-0">
-        <div class="p-3 border-bottom border-glass d-flex justify-content-between align-items-center">
-          <h3 class="font-size-md m-0"><i class="fa fa-map-marked-alt text-primary me-2"></i> Live Emergency Command Map</h3>
-          <span class="badge badge-verified"><i class="fa fa-sync-alt fa-spin"></i> Live Updates</span>
+      <div class="page-header mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <h1 class="m-0"><i class="fa fa-map-marked-alt text-primary me-2"></i> Live Emergency Command Map</h1>
+          <div class="page-subtitle">Real-time GPS plotting for all emergency incidents and response centers</div>
         </div>
-        <div id="map-container" style="height: 420px; width: 100%;"></div>
+        <div class="d-flex gap-2">
+          <span class="badge badge-resolved py-2 px-3 fs-6"><i class="fa fa-sync-alt fa-spin me-1"></i> Live Stream</span>
+        </div>
       </div>
-
-      <!-- Recent Incidents Table -->
-      <div class="section-header mt-4">
-        <h2>Recent Emergency Reports</h2>
+      <div class="card p-0 mb-4 overflow-hidden">
+        <div id="map-container-fullscreen" style="height: 560px; width: 100%;"></div>
       </div>
-      <div id="recent-incidents-table"></div>
     `;
 
-    // Fetch metrics & populate map
+    const mapCtrl = new MapController('map-container-fullscreen');
+    mapCtrl.init();
     try {
-      const stats = await analyticsApi.getOverview();
-      const statsGrid = document.getElementById('stats-grid-container');
-      if (statsGrid) {
-        statsGrid.innerHTML = `
-          ${renderStatCard('Total Incidents', stats.total_incidents, 'fa-exclamation-circle', 'red', `${stats.active_incidents} Active`)}
-          ${renderStatCard('Rescue Teams', stats.active_rescue_teams, 'fa-users', 'orange', `${stats.total_rescue_teams} Total Teams`)}
-          ${renderStatCard('Shelter Capacity', `${stats.shelter_occupancy_rate}%`, 'fa-campground', 'green', `${stats.total_shelters} Centers`)}
-          ${renderStatCard('Resources Ready', stats.available_resources, 'fa-cubes', 'blue', `${stats.assigned_resources} Dispatched`)}
-        `;
-      }
-
-      // Initialize map & plot markers
-      this.mapController.init();
       const incidents = await incidentApi.getIncidents();
       const shelters = await shelterApi.getShelters();
-      this.mapController.renderIncidents(incidents);
-      this.mapController.renderShelters(shelters);
-
-      // Render recent incidents
-      await incidentHandler.renderIncidentTable('recent-incidents-table');
+      mapCtrl.renderIncidents(incidents);
+      mapCtrl.renderShelters(shelters);
     } catch (err) {
-      console.error('Overview render error:', err);
+      console.error('Live map render error:', err);
     }
+  },
+
+  async renderOverviewTab(area) {
+    // Destroy previous command center timers if any
+    commandCenter.destroy();
+    // Delegate to the full AI Command Center module
+    await commandCenter.renderAll(area);
+  },
+
+  renderUsersTab(area) {
+    area.innerHTML = `
+      <div class="section-header mb-4">
+        <h2><i class="fa fa-users-cog text-info me-2"></i> User Administration & Role Management</h2>
+      </div>
+      <div class="card p-0">
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>User ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#1</td>
+                <td><strong>System Admin</strong></td>
+                <td>admin@resqai.com</td>
+                <td><span class="badge badge-critical">Admin</span></td>
+                <td><span class="badge badge-resolved">Active</span></td>
+                <td><button class="btn btn-secondary btn-sm" disabled>Manage</button></td>
+              </tr>
+              <tr>
+                <td>#2</td>
+                <td><strong>Disaster Officer</strong></td>
+                <td>gov@resqai.com</td>
+                <td><span class="badge badge-warning">Government Authority</span></td>
+                <td><span class="badge badge-resolved">Active</span></td>
+                <td><button class="btn btn-secondary btn-sm">Edit Role</button></td>
+              </tr>
+              <tr>
+                <td>#3</td>
+                <td><strong>Alpha Squad Lead</strong></td>
+                <td>rescue@resqai.com</td>
+                <td><span class="badge badge-info">Rescue Team</span></td>
+                <td><span class="badge badge-resolved">Active</span></td>
+                <td><button class="btn btn-secondary btn-sm">Edit Role</button></td>
+              </tr>
+              <tr>
+                <td>#4</td>
+                <td><strong>Ravi Kumar</strong></td>
+                <td>citizen@resqai.com</td>
+                <td><span class="badge badge-reported">Citizen</span></td>
+                <td><span class="badge badge-resolved">Active</span></td>
+                <td><button class="btn btn-secondary btn-sm">Edit Role</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  },
+
+  renderAuditLogsTab(area) {
+    area.innerHTML = `
+      <div class="section-header mb-4">
+        <h2><i class="fa fa-terminal text-secondary me-2"></i> System Audit Logs</h2>
+      </div>
+      <div class="card p-3">
+        <div style="font-family: monospace; font-size: 0.85rem; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 8px; max-height: 400px; overflow-y: auto;">
+          <div class="color-muted mb-2">[2026-07-26 18:10:02] INFO: System initialized successfully. DB connection verified.</div>
+          <div class="text-success mb-2">[2026-07-26 18:11:15] AUTH: Admin user admin@resqai.com logged in from 127.0.0.1.</div>
+          <div class="text-warning mb-2">[2026-07-26 18:12:40] INCIDENT: New incident #104 (Flood Trapped Residents) registered. Severity: HIGH.</div>
+          <div class="text-info mb-2">[2026-07-26 18:14:05] RESOURCE: Resource #12 (Boat-04) dispatched to Incident #104.</div>
+          <div class="text-success mb-2">[2026-07-26 18:15:20] SHELTER: Shelter #2 capacity updated (Occupancy 120/200).</div>
+        </div>
+      </div>
+    `;
   },
 
   renderContactsTab(area) {
     area.innerHTML = `
-      <div class="section-header">
-        <h2>Emergency Contacts & Hotlines</h2>
+      <div class="section-header mb-4">
+        <h2><i class="fa fa-phone-alt text-danger me-2"></i> Emergency Contacts & Hotlines</h2>
       </div>
       <div class="row">
         <div class="col-md-6 col-lg-4 mb-3">
-          <div class="card">
+          <div class="card text-center py-4">
             <h4><i class="fa fa-phone-volume text-danger me-2"></i> National Emergency</h4>
-            <div class="display-6 font-weight-bold my-2">112</div>
-            <p class="font-size-sm">24/7 Universal emergency assistance hotline.</p>
+            <div class="display-5 font-weight-bold my-2 text-danger">112</div>
+            <p class="font-size-sm color-muted">24/7 Universal emergency assistance hotline.</p>
+            <a href="tel:112" class="btn btn-danger btn-sm mt-2"><i class="fa fa-phone me-1"></i> Call 112</a>
           </div>
         </div>
         <div class="col-md-6 col-lg-4 mb-3">
-          <div class="card">
-            <h4><i class="fa fa-fire text-warning me-2"></i> Fire Department</h4>
-            <div class="display-6 font-weight-bold my-2">101</div>
-            <p class="font-size-sm">Immediate fire suppression & hazardous containment.</p>
+          <div class="card text-center py-4">
+            <h4><i class="fa fa-fire text-warning me-2"></i> Fire Rescue</h4>
+            <div class="display-5 font-weight-bold my-2 text-warning">101</div>
+            <p class="font-size-sm color-muted">Immediate fire suppression & hazardous containment.</p>
+            <a href="tel:101" class="btn btn-warning btn-sm mt-2"><i class="fa fa-phone me-1"></i> Call 101</a>
           </div>
         </div>
         <div class="col-md-6 col-lg-4 mb-3">
-          <div class="card">
-            <h4><i class="fa fa-ambulance text-success me-2"></i> Medical Ambulance</h4>
-            <div class="display-6 font-weight-bold my-2">108</div>
-            <p class="font-size-sm">Emergency medical transport & paramedic response.</p>
+          <div class="card text-center py-4">
+            <h4><i class="fa fa-ambulance text-success me-2"></i> Ambulance Service</h4>
+            <div class="display-5 font-weight-bold my-2 text-success">108</div>
+            <p class="font-size-sm color-muted">Emergency medical transport & paramedic response.</p>
+            <a href="tel:108" class="btn btn-success btn-sm mt-2"><i class="fa fa-phone me-1"></i> Call 108</a>
           </div>
         </div>
       </div>
     `;
   }
 };
+
