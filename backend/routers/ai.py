@@ -298,5 +298,24 @@ def auto_allocate_resources(
     )
 
 
+# ─── Sightengine AI Image Authenticity Endpoint ────────────────────────────────
+from backend.services.sightengine_service import sightengine_service
+
+class VerifyAuthenticityRequest(BaseModel):
+    image_url: str
+    incident_id: Optional[int] = None
+
+@router.post("/verify-authenticity")
+def verify_image_authenticity(req: VerifyAuthenticityRequest):
+    """Classifies an evidence image using Sightengine AI to detect AI-Generated/Deepfake images vs Authentic Real Photos."""
+    res = sightengine_service.classify_image(req.image_url)
+    return api_response(
+        success=res.get("success", False),
+        message=res.get("verdict", "Image authenticity evaluated."),
+        data=res
+    )
+
+
+
 
 
