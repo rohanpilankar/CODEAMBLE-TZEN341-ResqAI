@@ -735,27 +735,45 @@ export const rescueHandler = {
 
 
     const modalHTML = `
-
       <div class="modal fade" id="modal-problem-solver" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-dialog-centered" style="max-width: 1150px;">
           <div class="modal-content bg-dark text-white border border-info shadow-lg">
-            <div class="modal-header border-secondary bg-dark bg-opacity-75">
+            <div class="modal-header border-secondary bg-dark bg-opacity-75 py-3">
               <h5 class="modal-title d-flex align-items-center gap-2">
-                <span class="badge bg-danger"><i class="fa fa-bolt"></i> SOLVER ROOM</span>
-                <span>Mission #${incident.id}: ${incident.title}</span>
+                <span class="badge bg-danger p-2"><i class="fa fa-bolt"></i> SOLVER ROOM</span>
+                <span class="fw-bold">Mission #${incident.id}: ${incident.title}</span>
               </h5>
               <button type="button" class="btn-close btn-close-white" onclick="rescueHandler.closeProblemSolverModal()"></button>
             </div>
-            <div class="modal-body p-4">
-              <!-- Info Cards -->
+            <div class="modal-body p-4" style="max-height: 82vh; overflow-y: auto;">
+              <!-- Info Cards Row -->
               <div class="row g-3 mb-4">
                 <div class="col-md-6">
-                  <div class="p-3 rounded bg-secondary bg-opacity-15 border border-secondary">
+                  <div class="p-3 rounded bg-secondary bg-opacity-15 border border-secondary h-100">
                     <div class="small text-secondary fw-semibold">Disaster Type & Priority</div>
-                    <div class="fs-5 fw-bold text-info">${incident.disaster_type || 'General Disaster'}</div>
-                    <div class="mt-2 d-flex gap-2">
-                      <span class="badge bg-danger">${incident.severity} SEVERITY</span>
-                      <span class="badge bg-primary" id="modal-current-status-badge">${incident.status || 'ACTIVE'}</span>
+                    <div class="fs-4 fw-bold text-info">${incident.disaster_type || 'General Disaster'}</div>
+                    <div class="mt-2 d-flex gap-2 align-items-center">
+                      <span class="badge bg-danger p-2">${incident.severity} SEVERITY</span>
+                      <span class="badge bg-primary p-2" id="modal-current-status-badge">${incident.status || 'ACTIVE'}</span>
+                      <span class="small text-muted ms-auto"><i class="fa fa-clock me-1"></i> Logged Recently</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="p-3 rounded bg-dark border border-success border-opacity-50 h-100 d-flex flex-column justify-content-between">
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                      <div class="small text-success fw-bold"><i class="fa fa-shield-halved me-1 fs-6"></i> Sightengine AI Image Authenticity</div>
+                      <button type="button" class="btn btn-outline-success btn-sm py-0 px-2 fw-semibold" style="font-size:0.78rem;" onclick="rescueHandler.runSightengineVerification(${incident.id}, '${photoUrl || ''}')">
+                        <i class="fa fa-arrows-rotate me-1"></i> Scan Now
+                      </button>
+                    </div>
+                    <div id="top-sightengine-summary-card">
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-success bg-opacity-20 text-success border border-success p-2">
+                          <i class="fa fa-shield-check me-1"></i> Sightengine AI Shield Standby
+                        </span>
+                        <span class="small text-muted">Click Scan or View Evidence below</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -766,7 +784,6 @@ export const rescueHandler = {
 
               <!-- AI Route Advisor Widget -->
               <div class="p-3 mb-4 rounded bg-info bg-opacity-10 border border-info border-opacity-30">
-
                 <div class="d-flex align-items-center justify-content-between mb-2">
                   <div class="fw-bold text-info small"><i class="fa fa-route me-1"></i> AI Route & Distance Advisor</div>
                   <button class="btn btn-outline-info btn-sm py-0 px-2" style="font-size:0.75rem;" onclick="rescueHandler.calculateAIRoute(${incident.latitude || 19.0760}, ${incident.longitude || 72.8777})">
@@ -888,6 +905,7 @@ export const rescueHandler = {
     }
 
     this.calculateAIRoute(incident.latitude || 19.0760, incident.longitude || 72.8777);
+    this.runSightengineVerification(incident.id, photoUrl || '');
   },
 
   async runYoloAnalysis(incidentId, photoUrl) {
@@ -1000,7 +1018,20 @@ export const rescueHandler = {
       const aiPct = data.ai_synthetic_percentage || (isFake ? 98.5 : 0.2);
       const qualPct = data.quality_percentage || 85.0;
 
-      // Update image overlay badge
+      // Update top summary card & image overlay badge
+      const topSummary = document.getElementById('top-sightengine-summary-card');
+      if (topSummary) {
+        topSummary.innerHTML = `
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <span class="badge bg-${statusColor} p-2 fs-6 shadow-sm">
+              <i class="fa ${badgeIcon} me-1"></i> ${isFake ? 'AI FAKE DEEPFAKE' : 'AUTHENTIC REAL PHOTO'}
+            </span>
+            <span class="fs-6 fw-bold text-${statusColor}">${authPct}% Authentic</span>
+            <span class="small text-muted ms-auto font-monospace">Sightengine Quality: ${qualPct}%</span>
+          </div>
+        `;
+      }
+
       if (badgeOverlay) {
         badgeOverlay.innerHTML = `
           <span class="badge bg-${statusColor} p-2 shadow-lg fs-6 border border-light">
