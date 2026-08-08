@@ -1,0 +1,46 @@
+{
+  "disaster": "Flood",
+  "title": "Flood Safety & Evacuation Guide",
+  "summary": "Floods can develop rapidly. Move to higher ground immediately, avoid floodwaters, and follow emergency evacuation orders.",
+  "precautions": [
+    "Move to higher ground or upper floors immediately if water begins rising.",
+    "Turn off electrical main switches and gas valves before evacuating.",
+    "Do not walk, swim, or drive through moving floodwaters. Just 6 inches of moving water can knock you down.",
+    "Keep emergency supplies (food, clean water, flashlight, power bank, first aid kit) packed in a waterproof Go-Bag.",
+    "Listen to emergency broadcasts for official updates and evacuation routes."
+  ],
+  "evacuation": [
+    "Follow designated evacuation routes provided by rescue authorities.",
+    "Avoid taking shortcuts through low-lying areas, underpasses, or near riverbanks.",
+    "Disconnect all electrical devices before leaving your premises.",
+    "Assist elderly neighbours, children, and individuals with disabilities.",
+    "Proceed directly to the nearest designated relief shelter or high-altitude safe zone."
+  ],
+  "firstAid": [
+    "Treat hypothermia by removing wet clothing and wrapping the victim in dry blankets.",
+    "Clean and disinfect any open wounds exposed to floodwaters with clean water and antiseptic to prevent infection.",
+    "Perform CPR if victim is non-responsive and not breathing after submersion.",
+    "Do not ingest floodwater under any circumstances. Drink only sealed bottled or boiled water."
+  ],
+  "emergencyChecklist": [
+    "Clean Drinking Water (at least 3 liters per person per day)",
+    "Non-perishable ready-to-eat food supplies",
+    "Waterproof Flashlight with extra batteries",
+    "First Aid Kit & Essential Prescription Medicines",
+    "Fully charged Power Bank & Mobile Phone",
+    "Whistle to signal rescue teams",
+    "Important personal documents stored in a sealed ziplock bag"
+  ],
+  "dos": [
+    "DO move immediately to higher ground.",
+    "DO stay tuned to official government emergency alerts.",
+    "DO boil or disinfect drinking water.",
+    "DO keep phone lines free for emergency calls."
+  ],
+  "donts": [
+    "DON'T attempt to walk or drive through flooded roads.",
+    "DON'T touch fallen power lines or electrical equipment.",
+    "DON'T drink tap water or floodwater.",
+    "DON'T ignore official evacuation notices."
+  ]
+}

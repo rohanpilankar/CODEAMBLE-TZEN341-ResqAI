@@ -13,4 +13,8 @@ export const shelterApi = {
   updateShelter(id, data) {
     return apiClient.put(`/shelters/${id}`, data);
   },
+  getOccupancy() {
+    return apiClient.get('/shelters/occupancy');
+  },
 };
+

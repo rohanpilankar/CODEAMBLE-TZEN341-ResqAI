@@ -1,7 +1,7 @@
 // ── ResQAI Centralized Configuration ─────────────────────────────────────────
 export const CONFIG = {
   APP_NAME: 'ResQAI',
-  APP_TAGLINE: 'Smart Disaster Response Platform',
+  APP_TAGLINE: 'Smart Disaster Response & Emergency Coordination Platform',
 
   // API
   API_BASE_URL: 'http://localhost:8000/api/v1',
@@ -11,6 +11,10 @@ export const CONFIG = {
   // WebSocket
   WS_BASE_URL: 'ws://localhost:8000/ws',
   WS_RECONNECT_DELAY: 3000,
+
+  // Weather API Configuration
+  OPEN_METEO_API_KEY: '979ab1e38db18f596c7da16d60721135',
+  OPEN_METEO_BASE_URL: 'https://api.open-meteo.com/v1',
 
   // Map Defaults (Mumbai, India)
   MAP: {
@@ -37,11 +41,24 @@ export const CONFIG = {
 
   // Roles (matches backend Role names exactly)
   ROLES: {
-    CITIZEN: 'Citizen',
+    CITIZEN:   'Citizen',
     VOLUNTEER: 'Volunteer',
-    RESCUE:  'Rescue Team',
-    GOVT:    'Government Authority',
-    ADMIN:   'Admin',
+    RESCUE:    'Rescue Team',
+    GOVT:      'Government Authority',
+    NGO:       'NGO',
+    ADMIN:     'Admin',
+  },
+
+  // Tab prefix groups (for role-aware routing)
+  TAB_GROUPS: {
+    CITIZEN:    'citizen-',
+    RESCUE:     'rescue-',
+    GOV:        'gov-',
+    NGO:        'ngo-',
+    ADMIN:      'admin-',
+    BLOCKCHAIN: 'blockchain-',
+    AI:         'ai-',
+    SHARED:     'shared-',
   },
 
   // Dashboard auto-refresh intervals (ms)

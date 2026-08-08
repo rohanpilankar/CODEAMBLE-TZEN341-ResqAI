@@ -13,4 +13,8 @@ export const notificationApi = {
   getSystemLogs() {
     return apiClient.get('/notifications/system-logs');
   },
+  broadcastAlert(data) {
+    return apiClient.post('/notifications/broadcast', data);
+  },
 };
+

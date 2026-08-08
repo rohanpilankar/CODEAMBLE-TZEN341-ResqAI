@@ -30,3 +30,26 @@ class User(Base):
     role_rel = relationship("Role", back_populates="users")
     incidents = relationship("Incident", back_populates="reporter")
     notifications = relationship("Notification", back_populates="user")
+
+class PasswordResetToken(Base):
+    __tablename__ = "password_reset_tokens"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String(255), nullable=False, index=True)
+    token = Column(String(255), unique=True, nullable=False, index=True)
+    expires_at = Column(DateTime, nullable=False)
+    is_used = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class FamilySafeStatus(Base):
+    __tablename__ = "family_safe_statuses"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    contact_name = Column(String(100), nullable=False)
+    phone_number = Column(String(20), nullable=False)
+    status = Column(String(50), default="SAFE")  # SAFE, NEED_HELP, UNREACHABLE
+    location = Column(String(255), nullable=True)
+    last_updated = Column(DateTime, default=datetime.utcnow)
+
+

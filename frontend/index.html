@@ -1,240 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ResQAI - Smart Disaster Response & Emergency Coordination Platform</title>
-
-  <!-- CSS Dependencies -->
+  <title>ResQAI — Smart Disaster Response Platform</title>
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- Custom Modular CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/cards.css">
   <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/public.css">
 </head>
-
 <body>
 
-  <!-- Landing Header -->
-  <nav class="topbar px-4 py-3">
-    <div class="d-flex align-items-center gap-3">
-      <div class="brand-logo"
-        style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff; box-shadow: var(--shadow-glow-red);">
-        <i class="fa fa-shield-alt"></i>
+  <!-- ── Navigation ───────────────────────────────────────────────────────── -->
+  <nav class="pub-nav">
+    <a href="index.html" class="pub-nav-brand">
+      <div class="brand-icon"><i class="fa fa-shield-alt"></i></div>
+      <div class="brand-name">ResQ<span>AI</span></div>
+    </a>
+    
+    <div class="pub-nav-links">
+      <a href="index.html" class="pub-nav-link active">Home</a>
+      <a href="about.html" class="pub-nav-link">About</a>
+      <a href="features.html" class="pub-nav-link">Features</a>
+      <div class="pub-nav-dropdown">
+        <a href="awareness.html" class="pub-nav-link">Awareness <i class="fa fa-chevron-down ms-1" style="font-size:0.7rem;"></i></a>
+        <div class="pub-nav-dropdown-menu">
+          <a href="awareness-flood.html"><span class="dd-icon"><i class="fa fa-water"></i></span> Flood Safety</a>
+          <a href="awareness-fire.html"><span class="dd-icon"><i class="fa fa-fire"></i></span> Fire Safety</a>
+          <a href="awareness-cyclone.html"><span class="dd-icon"><i class="fa fa-wind"></i></span> Cyclone Safety</a>
+          <a href="awareness-earthquake.html"><span class="dd-icon"><i class="fa fa-house-crack"></i></span> Earthquake Safety</a>
+          <a href="awareness-landslide.html"><span class="dd-icon"><i class="fa fa-mountain"></i></span> Landslide Safety</a>
+        </div>
       </div>
-      <span class="font-weight-800 fs-4 color-white">ResQ<span style="color: var(--primary);">AI</span></span>
+      <a href="live-alerts.html" class="pub-nav-link">Live Alerts</a>
+      <a href="contact.html" class="pub-nav-link">Contact</a>
     </div>
-    <div class="d-flex align-items-center gap-3">
-      <a href="login.html" class="btn btn-secondary btn-sm"><i class="fa fa-sign-in-alt"></i> Portal Login</a>
-      <a href="login.html?register=true" class="btn btn-primary btn-sm"><i class="fa fa-exclamation-circle"></i> Report
-        Incident</a>
+
+    <div class="pub-nav-ctas">
+      <button class="btn btn-outline-secondary btn-sm me-2 theme-toggle-btn" data-theme-toggle title="Toggle Dark/Light Mode" aria-label="Toggle Theme"><i class="fa fa-adjust"></i></button>
+      <a href="donate.html" class="btn btn-secondary btn-sm"><i class="fa fa-hand-holding-heart me-1"></i> Donate</a>
+      <a href="login.html" class="btn btn-primary btn-sm"><i class="fa fa-sign-in-alt me-1"></i> Portal Login</a>
+      <button class="pub-nav-hamburger" id="pub-mobile-btn">
+        <span></span><span></span><span></span>
+      </button>
     </div>
+
   </nav>
 
-  <!-- Hero Section -->
-  <section class="hero-section text-center">
-    <video class="hero-video" id="hero-bg-video" preload="auto" autoplay muted loop playsinline poster="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width%3D'1920' height%3D'1080' viewBox%3D'0 0 1920 1080'%3E%3Crect width%3D'100%25' height%3D'100%25' fill%3D'%230a0f1e'%2F%3E%3Cpath d%3D'M0 100h1920M0 200h1920M0 300h1920M0 400h1920M0 500h1920M0 600h1920M0 700h1920M0 800h1920M0 900h1920M0 1000h1920M100 0v1080M200 0v1080M300 0v1080M400 0v1080M500 0v1080M600 0v1080M700 0v1080M800 0v1080M900 0v1080M1000 0v1080M1100 0v1080M1200 0v1080M1300 0v1080M1400 0v1080M1500 0v1080M1600 0v1080M1700 0v1080M1800 0v1080' stroke%3D'rgba(230,57,70,0.03)' stroke-width%3D'1'%2F%3E%3C/svg%3E">
-      <source src="assets/bg-video.mp4" type="video/mp4">
-    </video>
-    <div class="hero-overlay"></div>
-    <div class="container hero-content py-5">
-      <span class="badge badge-critical mb-3 px-3 py-2 fs-6"><i class="fa fa-broadcast-tower fa-spin me-2"></i> Live Emergency Command System</span>
-      <h1 class="display-3 font-weight-900 mb-3" style="letter-spacing: -0.03em;">Smart Disaster Response &amp; Rapid Coordination</h1>
-      <p class="fs-5 color-muted mb-4">Empowering citizens, rescue squads, and government authorities with real-time incident tracking, AI-assisted severity assessment, live status updates, and shelter availability.</p>
-      <div class="d-flex justify-content-center gap-3 flex-wrap">
-        <a href="login.html?register=true" class="btn btn-primary btn-lg"><i class="fa fa-exclamation-circle me-2"></i> Report Emergency</a>
-        <a href="#live-dashboard-section" class="btn btn-secondary btn-lg"><i class="fa fa-chart-line me-2"></i> Live Situation Board</a>
+  <div class="pub-nav-mobile-menu" id="pub-mobile-menu">
+    <a href="index.html" class="active">Home</a>
+    <a href="about.html">About</a>
+    <a href="features.html">Features</a>
+    <a href="awareness.html">Awareness Center</a>
+    <a href="live-alerts.html">Live Alerts</a>
+    <a href="donate.html">Donate</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+  <section class="pub-hero">
+    <div class="hero-badge"><i class="fa fa-satellite-dish pulse"></i> Live Emergency Command</div>
+    <h1>Unifying Disaster Response with <span class="highlight">Artificial Intelligence</span></h1>
+    <p>ResQAI empowers citizens, rescue teams, NGOs, and governments to collaborate in real-time. Report incidents, track rescue missions, find shelters, and donate securely via blockchain.</p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
+      <a href="login.html?register=true" class="btn btn-primary btn-lg"><i class="fa fa-exclamation-circle me-2"></i> Report Emergency</a>
+      <a href="live-alerts.html" class="btn btn-secondary btn-lg"><i class="fa fa-chart-line me-2"></i> View Live Board</a>
+    </div>
+  </section>
+
+  <!-- ── Stats ────────────────────────────────────────────────────────────── -->
+  <section class="pub-section" style="padding-top: 0;">
+    <div class="stats-row">
+      <div class="stat-cell">
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Faster Dispatch Time</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">1.2M+</div>
+        <div class="stat-label">Citizens Protected</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">450+</div>
+        <div class="stat-label">Active Rescue Teams</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Transparent Donations</div>
       </div>
     </div>
   </section>
 
-  <!-- Live Emergency Dashboard Section -->
-  <section id="live-dashboard-section" class="container my-5">
-    <div class="row g-4">
-      
-      <!-- Panel 1: Live Status & Metrics -->
-      <div class="col-lg-4 col-md-12">
-        <div class="card h-100 p-4 d-flex flex-column justify-content-between">
-          <div>
-            <div class="d-flex align-items-center justify-content-between mb-4">
-              <h3 class="fs-5 m-0 font-weight-700">
-                <i class="fa fa-chart-bar text-primary me-2"></i> Live Status Board
-              </h3>
-              <span class="badge" style="background: rgba(16,185,129,0.1); color: var(--success); border: 1px solid rgba(16,185,129,0.2);">
-                <span class="pulse-indicator"></span>Monitoring
-              </span>
-            </div>
-            
-            <!-- Stat Item 1: Active Emergencies -->
-            <div class="mb-4 p-3 rounded-3 hover-lift" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <span class="text-secondary font-size-sm">Active Emergencies</span>
-                  <h2 id="stat-active-incidents" class="m-0 font-weight-800 text-danger mt-1">0</h2>
-                </div>
-                <div class="p-3 rounded-3" style="background: rgba(239,68,68,0.1); color: var(--danger);">
-                  <i class="fa fa-exclamation-triangle fs-3"></i>
-                </div>
-              </div>
-            </div>
+  <!-- ── Features ─────────────────────────────────────────────────────────── -->
+  <section class="pub-section">
+    <div class="pub-section-title">
+      <span class="section-tag">Platform Features</span>
+      <h2>A Comprehensive Ecosystem</h2>
+      <p>Six unified modules working seamlessly together to drastically reduce response times and save lives during crises.</p>
+    </div>
 
-            <!-- Stat Item 2: Critical Alerts -->
-            <div class="mb-4 p-3 rounded-3 hover-lift" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <span class="text-secondary font-size-sm">Critical Severity</span>
-                  <h2 id="stat-critical-incidents" class="m-0 font-weight-800 text-warning mt-1">0</h2>
-                </div>
-                <div class="p-3 rounded-3" style="background: rgba(245,158,11,0.1); color: var(--warning);">
-                  <i class="fa fa-radiation fs-3"></i>
-                </div>
-              </div>
-            </div>
-
-            <!-- Stat Item 3: Shelter Occupancy -->
-            <div class="p-3 rounded-3 hover-lift" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <span class="text-secondary font-size-sm">Open Shelters</span>
-                  <h2 id="stat-active-shelters" class="m-0 font-weight-800 text-success mt-1">0</h2>
-                </div>
-                <div class="p-3 rounded-3" style="background: rgba(16,185,129,0.1); color: var(--success);">
-                  <i class="fa fa-house-chimney fs-3"></i>
-                </div>
-              </div>
-            </div>
-
-            <!-- System Status Panel -->
-            <div class="mt-4 pt-3 border-top border-glass">
-              <h4 class="fs-6 mb-3 font-weight-700 color-white">
-                <i class="fa fa-server text-info me-2"></i> System Health Status
-              </h4>
-              <div id="system-status-grid" class="status-grid">
-                <!-- AI Core -->
-                <div class="status-item">
-                  <div class="status-service-name">
-                    <i class="fa fa-brain text-primary"></i> AI Core
-                  </div>
-                  <span class="status-badge status-online">Online</span>
-                </div>
-                <!-- Backend API -->
-                <div class="status-item">
-                  <div class="status-service-name">
-                    <i class="fa fa-network-wired text-info"></i> API
-                  </div>
-                  <span class="status-badge status-connecting" id="status-api">Checking</span>
-                </div>
-                <!-- WebSockets -->
-                <div class="status-item">
-                  <div class="status-service-name">
-                    <i class="fa fa-exchange-alt text-warning"></i> WS
-                  </div>
-                  <span class="status-badge status-connecting" id="status-ws">Checking</span>
-                </div>
-                <!-- Database -->
-                <div class="status-item">
-                  <div class="status-service-name">
-                    <i class="fa fa-database text-success"></i> DB
-                  </div>
-                  <span class="status-badge status-online">Online</span>
-                </div>
-                <!-- Firebase -->
-                <div class="status-item">
-                  <div class="status-service-name">
-                    <i class="fa fa-cloud text-danger"></i> Firebase
-                  </div>
-                  <span class="status-badge status-online">Synced</span>
-                </div>
-                <!-- Storage -->
-                <div class="status-item">
-                  <div class="status-service-name">
-                    <i class="fa fa-hdd text-secondary"></i> Storage
-                  </div>
-                  <span class="status-badge status-online">Online</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="mt-4 pt-3 border-top border-glass">
-            <a href="login.html?register=true" class="btn btn-primary w-100">
-              <i class="fa fa-plus-circle me-2"></i> Report New Incident
-            </a>
-          </div>
-        </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-user-shield"></i></div>
+        <h3>Citizen Safety App</h3>
+        <p>Report emergencies instantly with GPS, request relief, check family safety, and receive push alerts tailored to your district.</p>
       </div>
-      
-      <!-- Panel 2: Live Incident Bulletin / Feed -->
-      <div class="col-lg-8 col-md-12">
-        <div class="card h-100 p-4">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fs-5 m-0 font-weight-700">
-              <i class="fa fa-rss text-danger me-2"></i> Live Incident Bulletin
-            </h3>
-            <span class="text-secondary font-size-sm" id="bulletin-timestamp">Updating...</span>
-          </div>
-          
-          <div id="live-bulletin-container" class="ticker-container">
-            <div class="text-center py-5">
-              <div class="spinner-border text-danger" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <p class="mt-2 text-secondary">Fetching latest status updates...</p>
-            </div>
-          </div>
-        </div>
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-building-flag"></i></div>
+        <h3>Government Command</h3>
+        <p>A centralized dashboard for triaging incidents, dispatching resources, managing shelters, and viewing AI-driven analytics.</p>
       </div>
-      
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-truck-medical"></i></div>
+        <h3>Rescue Operations</h3>
+        <p>Mobile-friendly interface for field teams to receive missions, navigate offline, upload evidence, and log victim data.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-link"></i></div>
+        <h3>Blockchain Donations</h3>
+        <p>Donate crypto directly to verified NGOs via our smart contract. Every transaction is transparent and immutable on-chain.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-brain"></i></div>
+        <h3>AI Prioritization</h3>
+        <p>Our NLP engine analyses incident descriptions and images to automatically deduce severity, flag duplicates, and predict resource needs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-warehouse"></i></div>
+        <h3>Resource & NGO Hub</h3>
+        <p>Coordinate food, water, and medical supplies across government warehouses and NGOs to prevent bottlenecks and shortages.</p>
+      </div>
     </div>
   </section>
 
-  <!-- Hotlines Grid -->
-  <section class="container my-5">
-    <div class="text-center mb-4">
-      <h2>Emergency Hotlines</h2>
-      <p class="color-muted">Direct toll-free lines for immediate response</p>
+  <!-- ── How It Works ─────────────────────────────────────────────────────── -->
+  <section class="pub-section" style="background: rgba(255,255,255,0.01); border-radius: var(--radius-lg); border: 1px solid var(--glass-border);">
+    <div class="pub-section-title">
+      <span class="section-tag">Workflow</span>
+      <h2>How ResQAI Works</h2>
+      <p>From the moment an emergency strikes to the final resolution, our platform orchestrates every step.</p>
     </div>
-    <div class="row g-4">
-      <div class="col-md-3">
-        <div class="card text-center py-4">
-          <i class="fa fa-phone-volume text-danger fs-1 mb-2"></i>
-          <h4>112</h4>
-          <div class="color-muted font-size-sm">National Emergency</div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h4>Report</h4>
+        <p>A citizen files an SOS with location and media. AI instantly flags its severity.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h4>Triage</h4>
+        <p>Government Command verifies the incident and allocates appropriate rescue units.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h4>Dispatch</h4>
+        <p>Field teams receive routing info and mission details via the Rescue Portal.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <h4>Resolve</h4>
+        <p>The situation is handled, victims are moved to shelters, and the mission is archived.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ──────────────────────────────────────────────────────────────── -->
+  <section class="pub-section">
+    <div class="pub-section-title">
+      <span class="section-tag">Questions & Answers</span>
+      <h2>Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question">
+          Is ResQAI free for citizens?
+          <i class="fa fa-chevron-down faq-arrow"></i>
+        </button>
+        <div class="faq-answer">
+          Yes. The citizen portal and mobile app are 100% free to use. You can report incidents, find shelters, and use the Family Safe Check feature without any charges.
         </div>
       </div>
-      <div class="col-md-3">
-        <div class="card text-center py-4">
-          <i class="fa fa-fire text-warning fs-1 mb-2"></i>
-          <h4>101</h4>
-          <div class="color-muted font-size-sm">Fire Rescue</div>
+      <div class="faq-item">
+        <button class="faq-question">
+          How do the blockchain donations work?
+          <i class="fa fa-chevron-down faq-arrow"></i>
+        </button>
+        <div class="faq-answer">
+          We use Ethereum-based smart contracts. You can connect your MetaMask wallet and donate crypto to a verified NGO. The funds are locked in a public contract, ensuring full transparency.
         </div>
       </div>
-      <div class="col-md-3">
-        <div class="card text-center py-4">
-          <i class="fa fa-ambulance text-success fs-1 mb-2"></i>
-          <h4>108</h4>
-          <div class="color-muted font-size-sm">Ambulance Service</div>
+      <div class="faq-item">
+        <button class="faq-question">
+          What happens if the internet goes down?
+          <i class="fa fa-chevron-down faq-arrow"></i>
+        </button>
+        <div class="faq-answer">
+          The Rescue Portal has offline-first capabilities. Teams can download maps and mission data beforehand. Any evidence uploaded offline will sync automatically once connectivity is restored.
         </div>
       </div>
-      <div class="col-md-3">
-        <div class="card text-center py-4">
-          <i class="fa fa-shield-alt text-info fs-1 mb-2"></i>
-          <h4>100</h4>
-          <div class="color-muted font-size-sm">Police Control</div>
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I register my NGO on the platform?
+          <i class="fa fa-chevron-down faq-arrow"></i>
+        </button>
+        <div class="faq-answer">
+          Yes. You can create an account and select the "NGO" role. A government administrator will review your credentials and verify your wallet address before you can receive relief requests or donations.
         </div>
       </div>
     </div>
   </section>
 
-  <!-- JS Dependencies -->
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <!-- Landing Page Business Logic -->
-  <script type="module" src="js/landing.js" defer></script>
+  <!-- ── Footer ───────────────────────────────────────────────────────────── -->
+  <footer class="pub-footer">
+    <div class="pub-footer-grid">
+      <div class="pub-footer-brand">
+        <a href="index.html" class="pub-nav-brand">
+          <div class="brand-icon"><i class="fa fa-shield-alt"></i></div>
+          <div class="brand-name">ResQ<span>AI</span></div>
+        </a>
+        <p>A unified, AI-driven disaster response platform designed to save lives through rapid coordination and resource management.</p>
+      </div>
+      
+      <div class="pub-footer-col">
+        <h5>Platform</h5>
+        <a href="features.html">Features</a>
+        <a href="live-alerts.html">Live Alerts</a>
+        <a href="shelter-finder.html">Shelter Finder</a>
+        <a href="donate.html">Blockchain Donate</a>
+      </div>
 
+      <div class="pub-footer-col">
+        <h5>Resources</h5>
+        <a href="awareness.html">Awareness Center</a>
+        <a href="news.html">News & Updates</a>
+        <a href="emergency-contacts.html">Emergency Contacts</a>
+        <a href="about.html">About Us</a>
+      </div>
+
+      <div class="pub-footer-col">
+        <h5>Legal</h5>
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms of Service</a>
+        <a href="about.html">Data Security</a>
+        <a href="contact.html">Contact Support</a>
+      </div>
+    </div>
+
+    <div class="pub-footer-bottom">
+      <p>&copy; 2026 ResQAI. All rights reserved.</p>
+      <div class="pub-footer-socials">
+        <a href="https://twitter.com" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
+        <a href="https://github.com" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+
+    // Mobile menu toggle
+    document.getElementById('pub-mobile-btn')?.addEventListener('click', () => {
+      document.getElementById('pub-mobile-menu')?.classList.toggle('open');
+    });
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
+</body>
 </html>

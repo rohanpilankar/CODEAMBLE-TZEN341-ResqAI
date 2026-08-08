@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-08-01T22:07:12.736098",
+  "dataset": "C:\\Users\\HP\\n1\\ResqAI\\data\\processed\\resqai_optimized_dataset_v2.csv",
+  "total_rows": 18226,
+  "total_clean_features": 93,
+  "train_size": 14580,
+  "test_size": 3646,
+  "classes": [
+    "Critical",
+    "High",
+    "Low",
+    "Medium"
+  ],
+  "xgb_performance": {
+    "accuracy": 0.9553,
+    "precision": 0.9553,
+    "recall": 0.9553,
+    "f1_score": 0.9548,
+    "roc_auc": 0.9602
+  }
+}

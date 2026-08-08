@@ -1,0 +1,87 @@
+================================================================================
+                 ResQAI — Platform Logical Flaws & Architectural Audit
+================================================================================
+
+[🔴 1. AUTHENTICATION, AUTHORIZATION & SECURITY LOGIC FLAWS]
+--------------------------------------------------------------------------------
+1.1. Substring Admin Permission Bypass in `dependencies.py`:
+     - `require_roles` checks `if "admin" in user_role`. Any custom or auxiliary role containing the string "admin" (e.g. "admin_assistant", "sub_admin", "admin_viewer") automatically bypasses role restrictions and gains full administrative privileges.
+     - Fix: Use exact equality matching (`user_role == "admin"`) or explicit role enum checks.
+
+1.2. Unchecked Null Role Relationship in Role Dependency:
+     - `require_roles` assumes `current_user.role_rel.name` is non-null. If an active user record in DB has a missing role ID or un-joined relationship, accessing `current_user.role_rel.name` raises an unhandled `AttributeError`, triggering an unhandled HTTP 500 server error instead of a clean HTTP 403 Forbidden.
+     - Fix: Safely evaluate `current_user.role_rel.name if current_user.role_rel else None`.
+
+1.3. Unprotected Incident Modification API (`PUT /api/v1/incidents/{id}`):
+     - `update_incident` endpoint in `incidents.py` does not verify if the requesting `current_user` is the creator of the incident or has elevated roles ("Rescue Team", "Government Authority", "Admin"). Any authenticated Citizen user can update incident titles, descriptions, assigned teams, or status codes.
+     - Fix: Add `require_roles` dependency or verify `current_user.id == incident.reported_by_id`.
+
+1.4. Axios 401 Refresh Token Queue Race Condition in `client.js`:
+     - In `client.js`, concurrent HTTP 401 requests trigger `isRefreshing = true`. If a secondary refresh error occurs, `failedQueue` is rejected, but `instance.defaults.headers.common['Authorization']` retains stale state and `failedQueue` promises can hang if non-standard errors occur.
+     - Fix: Ensure `failedQueue` reset and token clearing happen in a guaranteed `finally` block.
+
+
+[🟡 2. INCIDENT & AI ALGORITHMIC LOGIC FLAWS]
+--------------------------------------------------------------------------------
+2.1. User Severity Override by AI Triage Model:
+     - In `IncidentService.create_incident`, the user-submitted `req.severity` field is completely overwritten by `ai_res["predicted_severity"]`. If an emergency responder explicitly flags an incident as `CRITICAL`, but the text description lacks trigger words, the AI overrides user intent and downgrades the emergency to `LOW` or `MEDIUM`.
+     - Fix: Take `max(user_severity, ai_predicted_severity)` or preserve user severity when explicitly specified.
+
+2.2. Ignored Pagination Parameters in Incident Endpoint (`GET /api/v1/incidents`):
+     - `get_incidents` accepts `page: int = Query(1)` and `limit: int = Query(50)` parameters, but `IncidentRepository.get_all()` ignores them and fetches 100% of database records into Python memory on every query.
+     - Fix: Pass `offset=(page-1)*limit` and `limit=limit` to SQLAlchemy `.offset().limit()`.
+
+2.3. Unsorted & Unindexed Priority Queue and Citizen Feed:
+     - `get_priority_queue` and `get_citizen_feed` fetch all incident records from DB into memory and perform in-memory Python `sorted()` / `[:15]` slicing. Furthermore, `get_citizen_feed` slices without ordering by `created_at DESC`, displaying the oldest reported incidents at the top instead of fresh distress alerts.
+     - Fix: Push `ORDER BY created_at DESC LIMIT 15` and `ORDER BY severity DESC` down to SQL query level.
+
+2.4. Non-Spatial Incident Duplicate Detection in `ai_service.py`:
+     - `ai_service.detect_duplicate` calculates Jaccard similarity over text titles, ignoring geographic coordinates (`latitude`/`longitude`) and timestamp proximity. Two completely separate flash floods in different states with similar titles get flagged as duplicates.
+     - Fix: Require geographic distance threshold (e.g. < 2.0 km) alongside text similarity.
+
+
+[🔵 3. RESOURCE & SHELTER INVENTORY LOGIC FLAWS]
+--------------------------------------------------------------------------------
+3.1. Unbounded Occupancy & Inventory Quantity Updates:
+     - `ShelterUpdate` and `ResourceUpdate` schemas allow updating `current_occupancy` or `available_quantity` to negative values or numbers exceeding total capacity without validation.
+     - Fix: Add Pydantic field validators (`ge=0`) and check `current_occupancy <= total_capacity`.
+
+3.2. Missing Resource De-allocation on Incident Resolution:
+     - When emergency resources (vehicles, medical supplies, rescue gear) are allocated to an incident, `available_quantity` is decremented. However, when an incident status transitions to `RESOLVED` or `CLOSED`, assigned resources are NOT automatically released back to the available inventory pool.
+     - Fix: Hook into incident status update service to automatically restore assigned resource quantities.
+
+3.3. Distance Unit Inconsistency Between Frontend & Backend:
+     - Frontend `locationService.js` computes Haversine distance in kilometers, while backend `location_service.py` returns distance in meters without explicit unit labels, leading to display bugs when sorting nearest shelters across tabs.
+     - Fix: Standardize unit representation across all layers to kilometers (`km`).
+
+
+[🟢 4. DATABASE & WEBSOCKET REAL-TIME ARCHITECTURE FLAWS]
+--------------------------------------------------------------------------------
+4.1. SQLite Concurrency Write Locking (`database is locked`):
+     - Default SQLite engine connection in `session.py` does not enable Write-Ahead Logging (`PRAGMA journal_mode=WAL;`). Under concurrent WebSocket event broadcasts and API writes, transactions raise `sqlite3.OperationalError: database is locked`.
+     - Fix: Enable WAL mode on SQLite connection initialization (`connect_args={"check_same_thread": False}`).
+
+4.2. Missing Cascade Delete Constraints on Incident Media:
+     - Deleting an `Incident` row in `IncidentRepository.delete()` does not cascade to child `IncidentImage` records, leaving orphan rows in the `incident_images` table.
+     - Fix: Set `cascade="all, delete-orphan"` on `Incident.images` relationship definition in `backend/models/incident.py`.
+
+4.3. Disconnected WebSocket Connection Leak in `ConnectionManager`:
+     - In `backend/websocket/manager.py`, when a client disconnects, `disconnect()` removes the WebSocket object from `active_connections`, but retains stale references in `user_connections` dictionary, causing memory retention over long server runtimes.
+     - Fix: Purge key from `user_connections` upon socket closure.
+
+
+[🟣 5. FRONTEND STATE, ASYNC & UI ROUTING LOGIC FLAWS]
+--------------------------------------------------------------------------------
+5.1. Duplicate Generic Container Rendering in Dashboard Routing:
+     - In `dashboard.js`, multiple distinct sub-navigation tabs (e.g. `gov-resource-inventory`, `gov-vehicle-fleet`, `gov-medical-inventory`) all render the exact same generic container `#generic-resources-container` without passing category filters. Clicking different sub-tabs displays identical unfiltered data.
+     - Fix: Pass active tab category filter (e.g. `category='vehicle'`) to `resourceHandler.renderResourceOverview()`.
+
+5.2. Form Submission Button Lockout on Unhandled Exceptions:
+     - In `incidents.js` `handleFormSubmit`, `btn-submit-report` button is disabled (`btn.disabled = true`) at the start of submission. If an unhandled exception occurs during Firebase sync or image upload, execution jumps out of the try block without re-enabling the button in a `finally` block, permanently locking the user out from submitting until page refresh.
+     - Fix: Wrap form submit state reset in a `finally` block.
+
+5.3. Cross-Tab Storage Event Synchronization Gap:
+     - When Rescue Team location updates, `localStorage.setItem('resq_rescue_location', ...)` and custom event `rescueLocationUpdated` are fired locally, but opened browser tabs on public pages (e.g. `live-alerts.html`, `shelter-finder.html`) do not listen to window `storage` events, leaving open tabs out of sync until full page refresh.
+     - Fix: Add `window.addEventListener('storage', ...)` listener across public page handlers.
+
+================================================================================

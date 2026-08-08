@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResQAI — Awareness Center</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/public.css">
+  
+</head>
+<body>
+
+  <!-- ── Navigation ───────────────────────────────────────────────────────── -->
+  <nav class="pub-nav">
+    <a href="index.html" class="pub-nav-brand">
+      <div class="brand-icon"><i class="fa fa-shield-alt"></i></div>
+      <div class="brand-name">ResQ<span>AI</span></div>
+    </a>
+    
+    <div class="pub-nav-links">
+      <a href="index.html" class="pub-nav-link ">Home</a>
+      <a href="about.html" class="pub-nav-link ">About</a>
+      <a href="features.html" class="pub-nav-link ">Features</a>
+      <div class="pub-nav-dropdown">
+        <a href="awareness.html" class="pub-nav-link active">Awareness <i class="fa fa-chevron-down ms-1" style="font-size:0.7rem;"></i></a>
+        <div class="pub-nav-dropdown-menu">
+          <a href="awareness-flood.html"><span class="dd-icon"><i class="fa fa-water"></i></span> Flood Safety</a>
+          <a href="awareness-fire.html"><span class="dd-icon"><i class="fa fa-fire"></i></span> Fire Safety</a>
+          <a href="awareness-cyclone.html"><span class="dd-icon"><i class="fa fa-wind"></i></span> Cyclone Safety</a>
+          <a href="awareness-earthquake.html"><span class="dd-icon"><i class="fa fa-house-crack"></i></span> Earthquake Safety</a>
+          <a href="awareness-landslide.html"><span class="dd-icon"><i class="fa fa-mountain"></i></span> Landslide Safety</a>
+        </div>
+      </div>
+      <a href="live-alerts.html" class="pub-nav-link ">Live Alerts</a>
+      <a href="contact.html" class="pub-nav-link ">Contact</a>
+    </div>
+
+    <div class="pub-nav-ctas">
+      <a href="donate.html" class="btn btn-secondary btn-sm"><i class="fa fa-hand-holding-heart me-1"></i> Donate</a>
+      <a href="login.html" class="btn btn-primary btn-sm"><i class="fa fa-sign-in-alt me-1"></i> Portal Login</a>
+      <button class="pub-nav-hamburger" id="pub-mobile-btn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="pub-nav-mobile-menu" id="pub-mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="features.html">Features</a>
+    <a href="awareness.html">Awareness Center</a>
+    <a href="live-alerts.html">Live Alerts</a>
+    <a href="donate.html">Donate</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <section class="pub-hero">
+    <h1>Disaster <span class="highlight">Awareness Center</span></h1>
+    <p>Knowledge is your first line of defense. Learn how to prepare for, survive, and recover from various natural disasters.</p>
+  </section>
+
+  <section class="pub-section" style="padding-top:0;">
+    <div class="features-grid">
+      <a href="awareness-flood.html" class="feature-card disaster-flood" style="text-decoration:none;">
+        <div class="fc-icon" style="background:var(--d-bg);color:var(--d-color);"><i class="fa fa-water"></i></div>
+        <h3>Flood Safety</h3>
+        <p>Learn how to evacuate, what an emergency kit should contain, and how to stay safe in rising waters.</p>
+        <span style="display:inline-block;margin-top:16px;font-size:0.8rem;font-weight:600;color:var(--d-color);">Read Guide <i class="fa fa-arrow-right ms-1"></i></span>
+      </a>
+      
+      <a href="awareness-fire.html" class="feature-card disaster-fire" style="text-decoration:none;">
+        <div class="fc-icon" style="background:var(--d-bg);color:var(--d-color);"><i class="fa fa-fire"></i></div>
+        <h3>Fire Safety</h3>
+        <p>Wildfire and structural fire prevention, evacuation protocols, and smoke inhalation first aid.</p>
+        <span style="display:inline-block;margin-top:16px;font-size:0.8rem;font-weight:600;color:var(--d-color);">Read Guide <i class="fa fa-arrow-right ms-1"></i></span>
+      </a>
+      
+      <a href="awareness-cyclone.html" class="feature-card disaster-cyclone" style="text-decoration:none;">
+        <div class="fc-icon" style="background:var(--d-bg);color:var(--d-color);"><i class="fa fa-wind"></i></div>
+        <h3>Cyclone & Hurricane</h3>
+        <p>Securing your home, interpreting warning signals, and surviving extreme wind conditions.</p>
+        <span style="display:inline-block;margin-top:16px;font-size:0.8rem;font-weight:600;color:var(--d-color);">Read Guide <i class="fa fa-arrow-right ms-1"></i></span>
+      </a>
+
+      <a href="awareness-earthquake.html" class="feature-card disaster-earthquake" style="text-decoration:none;">
+        <div class="fc-icon" style="background:var(--d-bg);color:var(--d-color);"><i class="fa fa-house-crack"></i></div>
+        <h3>Earthquake Safety</h3>
+        <p>Drop, cover, and hold on. Learn structural safety, aftershock protocols, and hazard mitigation.</p>
+        <span style="display:inline-block;margin-top:16px;font-size:0.8rem;font-weight:600;color:var(--d-color);">Read Guide <i class="fa fa-arrow-right ms-1"></i></span>
+      </a>
+
+      <a href="awareness-landslide.html" class="feature-card disaster-landslide" style="text-decoration:none;">
+        <div class="fc-icon" style="background:var(--d-bg);color:var(--d-color);"><i class="fa fa-mountain"></i></div>
+        <h3>Landslide Safety</h3>
+        <p>Recognizing early warning signs, evacuation routes, and post-landslide rescue guidelines.</p>
+        <span style="display:inline-block;margin-top:16px;font-size:0.8rem;font-weight:600;color:var(--d-color);">Read Guide <i class="fa fa-arrow-right ms-1"></i></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Footer ───────────────────────────────────────────────────────────── -->
+  <footer class="pub-footer">
+    <div class="pub-footer-grid">
+      <div class="pub-footer-brand">
+        <a href="index.html" class="pub-nav-brand">
+          <div class="brand-icon"><i class="fa fa-shield-alt"></i></div>
+          <div class="brand-name">ResQ<span>AI</span></div>
+        </a>
+        <p>A unified, AI-driven disaster response platform designed to save lives through rapid coordination and resource management.</p>
+      </div>
+      
+      <div class="pub-footer-col">
+        <h5>Platform</h5>
+        <a href="features.html">Features</a>
+        <a href="live-alerts.html">Live Alerts</a>
+        <a href="shelter-finder.html">Shelter Finder</a>
+        <a href="donate.html">Blockchain Donate</a>
+      </div>
+
+      <div class="pub-footer-col">
+        <h5>Resources</h5>
+        <a href="awareness.html">Awareness Center</a>
+        <a href="news.html">News & Updates</a>
+        <a href="emergency-contacts.html">Emergency Contacts</a>
+        <a href="about.html">About Us</a>
+      </div>
+
+      <div class="pub-footer-col">
+        <h5>Legal</h5>
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms of Service</a>
+        <a href="about.html">Data Security</a>
+        <a href="contact.html">Contact Support</a>
+      </div>
+    </div>
+
+    <div class="pub-footer-bottom">
+      <p>&copy; 2026 ResQAI. All rights reserved.</p>
+      <div class="pub-footer-socials">
+        <a href="https://twitter.com" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
+        <a href="https://github.com" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="module" src="js/publicPages.js"></script>
+  <script>
+    document.getElementById('pub-mobile-btn')?.addEventListener('click', () => {
+      document.getElementById('pub-mobile-menu')?.classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

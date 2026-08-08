@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: resqai_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - API_PREFIX=/api/v1
+      - DATABASE_URL=sqlite:///./resqai.db
+    volumes:
+      - ./data:/app/data
+      - ./resqai.db:/app/resqai.db
+
+  frontend:
+    image: nginx:alpine
+    container_name: resqai_frontend
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - backend

@@ -1,0 +1,37 @@
+{
+  "disaster": "Landslide",
+  "title": "Landslide & Mudslide Safety Guide",
+  "summary": "Landslides occur rapidly on steep slopes after heavy rainfall or earthquakes. Move away from the path of debris immediately.",
+  "precautions": [
+    "Watch for warning signs: tilting trees, new cracks in soil/pavement, or sudden mudflow streams.",
+    "Listen for unusual sounds like trees cracking or boulders knocking together.",
+    "If near a stream or channel, be alert for sudden changes in water clarity (clear to muddy).",
+    "Evacuate slope areas immediately during intense prolonged rainfall."
+  ],
+  "evacuation": [
+    "Move quickly perpendicular to the direction of the slide path (run sideways, not downhill).",
+    "Reach high, stable ground or solid rock formations away from steep hillsides.",
+    "Avoid river valleys and low-lying gullies where mudslides funnel."
+  ],
+  "firstAid": [
+    "Check for trapped victims near the edge of the slide area without endangering yourself.",
+    "Treat crush injuries and broken limbs with immobilization and immediate medical transport.",
+    "Keep hypothermia and shock victims warm with blankets."
+  ],
+  "emergencyChecklist": [
+    "Sturdy hiking boots with non-slip soles",
+    "Emergency whistle and high-visibility jacket",
+    "Portable shovel or multi-tool",
+    "First aid kit and emergency blanket"
+  ],
+  "dos": [
+    "DO run sideways away from the path of mudflow.",
+    "DO curl into a tight ball protecting your head if caught in debris.",
+    "DO report cracked roads or mud movement to authorities."
+  ],
+  "donts": [
+    "DON'T cross flooded bridges or mud-covered mountain roads.",
+    "DON'T stay inside structures in direct line of steep hill slopes.",
+    "DON'T return to slide area until geologists clear it safe."
+  ]
+}

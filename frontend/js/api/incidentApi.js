@@ -19,8 +19,18 @@ export const incidentApi = {
   uploadImage(id, file) {
     const formData = new FormData();
     formData.append('file', file);
-    return apiClient.post(`/incidents/${id}/upload-image`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    return apiClient.post(`/incidents/${id}/upload-image`, formData);
+  },
+
+  mergeIncidents(primaryId, duplicateIds) {
+    return apiClient.post(`/incidents/${primaryId}/merge`, duplicateIds);
+  },
+  getPriorityQueue() {
+    return apiClient.get('/incidents/priority-queue');
+  },
+  getCitizenFeed() {
+    return apiClient.get('/incidents/feed');
   },
 };
+
+

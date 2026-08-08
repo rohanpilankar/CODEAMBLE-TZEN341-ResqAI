@@ -44,7 +44,7 @@ export class ChartController {
           {
             label: 'Reported',
             data: incidents,
-            backgroundColor: '#e63946',
+            backgroundColor: '#0d9488',
             borderRadius: 6
           },
           {

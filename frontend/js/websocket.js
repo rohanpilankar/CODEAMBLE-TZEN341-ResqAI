@@ -10,9 +10,14 @@ class WebSocketClient {
   }
 
   connect() {
+    const token = storageService.getAccessToken();
+    if (!token) {
+      console.warn('WebSocket connect skipped: No JWT access token available.');
+      return;
+    }
     const user = storageService.getUser();
     const clientId = user ? `user_${user.id}` : `anon_${Math.random().toString(36).substr(2, 9)}`;
-    const url = `${CONFIG.WS_BASE_URL}/${clientId}`;
+    const url = `${CONFIG.WS_BASE_URL}/${clientId}?token=${encodeURIComponent(token)}`;
 
     try {
       this.ws = new WebSocket(url);
@@ -31,9 +36,15 @@ class WebSocketClient {
         }
       };
 
-      this.ws.onclose = () => {
-        console.warn('WebSocket connection closed. Reconnecting...');
-        this.reconnectTimer = setTimeout(() => this.connect(), CONFIG.WS_RECONNECT_DELAY);
+      this.ws.onclose = (event) => {
+        if (event.code === 4001 || event.code === 4003) {
+          console.warn('WebSocket rejected due to auth error (4001). Reconnect stopped.');
+          return;
+        }
+        if (storageService.isLoggedIn()) {
+          console.warn('WebSocket connection closed. Reconnecting...');
+          this.reconnectTimer = setTimeout(() => this.connect(), CONFIG.WS_RECONNECT_DELAY);
+        }
       };
 
       this.ws.onerror = (err) => {

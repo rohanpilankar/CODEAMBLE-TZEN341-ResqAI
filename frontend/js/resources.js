@@ -13,7 +13,8 @@ export const resourceHandler = {
     el.innerHTML = '<div class="spinner"></div>';
 
     try {
-      this.allResources = await resourceApi.getResources();
+      const res = await resourceApi.getResources();
+      this.allResources = Array.isArray(res) ? res : (res.data || []);
 
       if (!this.allResources || this.allResources.length === 0) {
         el.innerHTML = '<div class="empty-state"><i class="fa fa-boxes empty-icon"></i><h3>No Resources Tracked</h3></div>';
@@ -84,8 +85,13 @@ export const resourceHandler = {
 
   async showAssignModal(resourceId, resourceName) {
     try {
-      const incidents = await incidentApi.getIncidents({ status: 'REPORTED' });
-      const options = incidents.map(i => `<option value="${i.id}">#${i.id} - ${i.title} (${i.severity})</option>`).join('');
+      const rawInc = await incidentApi.getIncidents();
+      const allInc = Array.isArray(rawInc) ? rawInc : (rawInc.data || []);
+      const incidents = allInc.filter(i => {
+        const s = String(i.status || '').toUpperCase();
+        return s !== 'RESOLVED' && s !== 'CLOSED';
+      });
+      const options = incidents.map(i => `<option value="${i.id}">#${i.id} - ${i.title} (${i.severity || 'MEDIUM'})</option>`).join('');
 
       const html = `
         <form id="form-assign-resource">

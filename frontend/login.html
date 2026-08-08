@@ -4,142 +4,770 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - ResQAI Platform</title>
+  <title>ResQAI — Sign In</title>
+  <meta name="description" content="Sign in to ResQAI — AI-powered disaster response and emergency coordination platform.">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/buttons.css">
-  <link rel="stylesheet" href="css/cards.css">
-  <link rel="stylesheet" href="css/forms.css">
-  <link rel="stylesheet" href="css/auth.css">
-  <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:       #06b6d4;
+      --primary-dark:  #0891b2;
+      --accent:        #f43f5e;
+      --bg-base:       #080d1a;
+      --bg-card:       rgba(15, 22, 41, 0.88);
+      --text-primary:  #f8fafc;
+      --text-secondary:#cbd5e1;
+      --text-muted:    #94a3b8;
+      --success:       #22c55e;
+      --danger:        #ef4444;
+      --warning:       #eab308;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background-image:
+        linear-gradient(rgba(6,182,212,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6,182,212,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* ── Glow blobs ───────────────────────── */
+    .blob {
+      position: fixed; border-radius: 50%;
+      filter: blur(100px); pointer-events: none; z-index: 0; opacity: 0.22;
+    }
+    .blob-1 { width: 420px; height: 420px; background: var(--primary); top: -80px; left: -100px; }
+    .blob-2 { width: 320px; height: 320px; background: var(--accent); bottom: -80px; right: -60px; }
+
+    /* ── Auth card ────────────────────────── */
+    .auth-card {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 440px;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 36px 32px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+    }
+
+    /* ── Logo ─────────────────────────────── */
+    .auth-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+    .logo-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      border-radius: 11px; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1.1rem;
+      box-shadow: 0 0 22px rgba(6,182,212,0.45); flex-shrink: 0;
+    }
+    .logo-text { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; }
+    .logo-text span { color: var(--primary); }
+
+    /* ── Tabs ─────────────────────────────── */
+    .auth-tabs {
+      display: flex;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px; padding: 4px; margin-bottom: 22px;
+    }
+    .auth-tab {
+      flex: 1; padding: 9px 12px; border-radius: 7px; border: none;
+      background: none; color: var(--text-muted);
+      font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s ease; text-align: center;
+    }
+    .auth-tab.active {
+      background: var(--primary); color: #fff;
+      box-shadow: 0 2px 12px rgba(6,182,212,0.35);
+    }
+
+    /* ── Panel visibility ─────────────────── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── Form elements ────────────────────── */
+    .form-group { margin-bottom: 14px; }
+    .form-label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: var(--text-secondary); margin-bottom: 6px; letter-spacing: 0.01em;
+    }
+    .label-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .label-link { font-size: 0.78rem; color: var(--primary); text-decoration: none; font-weight: 500; }
+    .label-link:hover { opacity: 0.75; }
+
+    .input-wrap { position: relative; }
+    .input-icon {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); font-size: 0.85rem; pointer-events: none;
+    }
+    .form-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; color: var(--text-primary);
+      font-family: 'Inter', sans-serif; font-size: 0.9rem;
+      padding: 11px 40px 11px 36px; outline: none;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    .form-input::placeholder { color: var(--text-muted); }
+    .form-input:focus {
+      border-color: var(--primary);
+      background: rgba(6,182,212,0.05);
+      box-shadow: 0 0 0 3px rgba(6,182,212,0.14);
+    }
+    .form-input.error { border-color: var(--danger); }
+    .input-action {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--text-muted); cursor: pointer;
+      font-size: 0.85rem; padding: 4px; transition: color 0.2s;
+    }
+    .input-action:hover { color: var(--text-secondary); }
+
+    .form-error {
+      font-size: 0.75rem; color: var(--danger); margin-top: 5px;
+      display: flex; align-items: center; gap: 4px;
+    }
+
+    /* ── Submit button ────────────────────── */
+    .btn-submit {
+      width: 100%; padding: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: none; border-radius: 10px; color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; margin-top: 6px;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 18px rgba(6,182,212,0.32);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 26px rgba(6,182,212,0.42); }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    /* ── Divider ──────────────────────────── */
+    .divider {
+      display: flex; align-items: center; gap: 12px; margin: 18px 0;
+      color: var(--text-muted); font-size: 0.75rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.08);
+    }
+
+    /* ── Demo chips ───────────────────────── */
+    .demo-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .demo-chip {
+      padding: 5px 12px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(255,255,255,0.03);
+      color: var(--text-muted); font-size: 0.75rem; font-weight: 600;
+      cursor: pointer; transition: all 0.18s;
+      font-family: 'Inter', sans-serif;
+    }
+    .demo-chip:hover {
+      border-color: rgba(6,182,212,0.4); color: var(--primary);
+      background: rgba(6,182,212,0.08);
+    }
+
+    /* ── Role chips (register) ────────────── */
+    .role-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .role-chip {
+      padding: 6px 14px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(255,255,255,0.03);
+      color: var(--text-muted); font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; transition: all 0.18s;
+      font-family: 'Inter', sans-serif;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .role-chip.active, .role-chip:hover {
+      border-color: rgba(6,182,212,0.4); color: var(--primary);
+      background: rgba(6,182,212,0.09);
+    }
+
+    /* ── Auth switch link ─────────────────── */
+    .auth-switch { text-align: center; font-size: 0.82rem; color: var(--text-muted); margin-top: 18px; }
+    .auth-switch a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .auth-switch a:hover { text-decoration: underline; }
+
+    /* ── OTP inputs ───────────────────────── */
+    .otp-row { display: flex; gap: 8px; justify-content: center; margin: 8px 0; }
+    .otp-box {
+      width: 46px; height: 52px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04); color: var(--text-primary);
+      font-size: 1.3rem; font-weight: 700;
+      font-family: 'Inter', sans-serif; text-align: center; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .otp-box:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(6,182,212,0.14); }
+
+    /* ── Backend status bar ───────────────── */
+    #backend-status {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 8px; margin-bottom: 16px;
+      font-size: 0.78rem; font-weight: 600;
+      transition: all 0.3s;
+    }
+    #backend-status.checking { background: rgba(148,163,184,0.1); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.06); }
+    #backend-status.online   { background: rgba(34,197,94,0.1);   color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
+    #backend-status.offline  { background: rgba(239,68,68,0.1);   color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .checking .status-dot { background: var(--text-muted); }
+    .online   .status-dot { background: #4ade80; box-shadow: 0 0 6px #4ade80; }
+    .offline  .status-dot { background: #f87171; }
+
+    /* ── Toast ────────────────────────────── */
+    #toast-container {
+      position: fixed; bottom: 24px; right: 24px;
+      z-index: 9999; display: flex; flex-direction: column; gap: 8px;
+    }
+    .toast {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 16px; border-radius: 12px;
+      background: rgba(15,22,41,0.97); border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      min-width: 260px; max-width: 340px;
+      animation: toastIn 0.3s ease;
+    }
+    .toast.toast-success { border-left: 3px solid var(--success); }
+    .toast.toast-error   { border-left: 3px solid var(--danger); }
+    .toast.toast-warning { border-left: 3px solid var(--warning); }
+    .toast.toast-info    { border-left: 3px solid var(--primary); }
+    .toast-icon { font-size: 1rem; margin-top: 1px; }
+    .toast.toast-success .toast-icon { color: var(--success); }
+    .toast.toast-error   .toast-icon { color: var(--danger); }
+    .toast.toast-warning .toast-icon { color: var(--warning); }
+    .toast.toast-info    .toast-icon { color: var(--primary); }
+    .toast-title   { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); }
+    .toast-message { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+    .toast-out { opacity: 0; transform: translateX(20px); transition: all 0.25s ease; }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── Back to home ─────────────────────── */
+    .back-home {
+      position: fixed; top: 24px; left: 24px;
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.82rem; color: var(--text-muted);
+      text-decoration: none; font-weight: 500; transition: color 0.2s; z-index: 10;
+    }
+    .back-home:hover { color: var(--text-primary); }
+
+    /* ── Server instructions box ──────────── */
+    .server-hint {
+      background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;
+      font-size: 0.77rem; color: #fca5a5; display: none;
+    }
+    .server-hint code {
+      background: rgba(0,0,0,0.35); padding: 2px 6px; border-radius: 4px;
+      font-family: monospace; font-size: 0.82rem; color: #67e8f9;
+    }
+    .server-hint strong { color: #f87171; }
+  </style>
 </head>
 
 <body>
 
-  <div class="auth-page">
-    <!-- Left Panel -->
-    <div class="auth-left">
-      <div class="auth-left-content">
-        <div class="auth-logo">
-          <i class="fa fa-shield-alt"></i>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <a href="index.html" class="back-home">
+    <i class="fa fa-arrow-left"></i> Back to home
+  </a>
+
+  <div class="auth-card">
+
+    <!-- Logo -->
+    <div class="auth-logo">
+      <div class="logo-icon"><i class="fa fa-shield-alt"></i></div>
+      <div class="logo-text">ResQ<span>AI</span></div>
+    </div>
+
+    <!-- Backend status -->
+    <div id="backend-status" class="checking">
+      <div class="status-dot"></div>
+      <span id="backend-status-text">Checking server connection…</span>
+    </div>
+
+    <!-- Server offline hint -->
+    <div class="server-hint" id="server-hint">
+      <strong>⚠ Backend not running.</strong> Open a terminal and run:<br><br>
+      <code>.venv\Scripts\python.exe -m uvicorn backend.main:app --reload --port 8000</code><br><br>
+      Then reload this page.
+    </div>
+
+    <!-- ── LOGIN PANEL ─────────────────────── -->
+    <div class="panel active" id="panel-login">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchPanel('panel-login', this, 0)">Sign In</button>
+        <button class="auth-tab"        onclick="switchPanel('panel-register', this, 1)">Create Account</button>
+      </div>
+
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email</label>
+          <div class="input-wrap">
+            <i class="fa fa-envelope input-icon"></i>
+            <input type="email" id="login-email" name="email" class="form-input"
+              placeholder="you@resqai.com" autocomplete="email" required>
+          </div>
         </div>
-        <h1>ResQAI</h1>
-        <p>Smart Disaster Response & Rapid Coordination Platform</p>
-        <ul class="auth-features">
-          <li>
-            <div class="icon"><i class="fa fa-map-marked-alt"></i></div> Real-time Emergency Incident Mapping
-          </li>
-          <li>
-            <div class="icon"><i class="fa fa-robot"></i></div> AI-Assisted Severity & Duplicate Detection
-          </li>
-          <li>
-            <div class="icon"><i class="fa fa-campground"></i></div> Live Shelter Occupancy Tracking
-          </li>
-          <li>
-            <div class="icon"><i class="fa fa-truck-monster"></i></div> Emergency Resource Allocation
-          </li>
-        </ul>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label class="form-label" for="login-password">Password</label>
+            <a href="#" class="label-link" onclick="switchPanel('panel-forgot', null); return false;">Forgot password?</a>
+          </div>
+          <div class="input-wrap">
+            <i class="fa fa-lock input-icon"></i>
+            <input type="password" id="login-password" name="password" class="form-input"
+              placeholder="Enter your password" autocomplete="current-password" required>
+            <button type="button" class="input-action" onclick="togglePw('login-password', this)" aria-label="Toggle password">
+              <i class="fa fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="login-btn" class="btn-submit">
+          <i class="fa fa-sign-in-alt"></i> Sign In
+        </button>
+      </form>
+
+      <div class="divider">Quick Demo Fill</div>
+      <div class="demo-chips">
+        <button class="demo-chip" onclick="fillDemo('citizen@resqai.com')">👤 Citizen</button>
+        <button class="demo-chip" onclick="fillDemo('rescue@resqai.com')">🚑 Rescue</button>
+        <button class="demo-chip" onclick="fillDemo('gov@resqai.com')">🏛 Gov</button>
+        <button class="demo-chip" onclick="fillDemo('ngo@resqai.com')">❤️ NGO</button>
+        <button class="demo-chip" onclick="fillDemo('admin@resqai.com')">🔧 Admin</button>
       </div>
     </div>
 
-    <!-- Right Panel -->
-    <div class="auth-right">
-      <div class="auth-form-container">
-        <h2 class="auth-heading">Sign In to ResQAI</h2>
-        <p class="auth-subheading">Select your role and authenticate to access command tools</p>
-
-        <!-- Role Tabs -->
-        <div class="role-tabs">
-          <div class="role-tab active" data-role="Citizen"><i class="fa fa-user"></i> Citizen</div>
-          <div class="role-tab" data-role="Rescue Team"><i class="fa fa-user-shield"></i> Rescue</div>
-          <div class="role-tab" data-role="Government Authority"><i class="fa fa-landmark"></i> Gov</div>
-          <div class="role-tab" data-role="Admin"><i class="fa fa-cog"></i> Admin</div>
-        </div>
-
-        <!-- Login Form -->
-        <form id="login-form">
-          <div class="form-group">
-            <label class="form-label">Email Address</label>
-            <div class="input-group-icon">
-              <i class="fa fa-envelope input-icon"></i>
-              <input type="email" name="email" id="login-email" class="form-control" value="citizen@resqai.com"
-                placeholder="name@domain.com" required />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Password</label>
-            <div class="input-group-icon">
-              <i class="fa fa-lock input-icon"></i>
-              <input type="password" name="password" id="login-password" class="form-control" value="password123"
-                placeholder="••••••••" required />
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary w-100 py-3 mt-2" id="login-submit-btn">
-            <i class="fa fa-sign-in-alt"></i> Sign In to Dashboard
-          </button>
-        </form>
-
-        <div class="auth-divider">Quick Demo Credentials</div>
-
-        <div class="d-flex flex-wrap gap-2 mb-4">
-          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="admin@resqai.com"
-            data-role="Admin">Admin</button>
-          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="gov@resqai.com"
-            data-role="Government Authority">Gov Officer</button>
-          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="rescue@resqai.com"
-            data-role="Rescue Team">Rescue Team</button>
-          <button class="btn btn-secondary btn-sm btn-demo-fill" data-email="citizen@resqai.com"
-            data-role="Citizen">Citizen</button>
-        </div>
-
-        <div class="text-center font-size-sm color-muted">
-          New citizen? <a href="#" id="toggle-register-link" style="color: var(--primary-light);">Register Citizen
-            Account</a>
-        </div>
-
-        <!-- Registration Form (Hidden by default) -->
-        <div id="register-container" style="display: none;" class="mt-4 pt-4 border-top border-glass">
-          <h3 class="fs-5 mb-3">Register Citizen Account</h3>
-          <form id="register-form">
-            <div class="form-group">
-              <label class="form-label">Full Name</label>
-              <input type="text" name="full_name" class="form-control" placeholder="Ravi Kumar" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Email</label>
-              <input type="email" name="email" class="form-control" placeholder="ravi@domain.com" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Phone Number</label>
-              <input type="text" name="phone_number" class="form-control" placeholder="+91-9000000000" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Password</label>
-              <input type="password" name="password" class="form-control" placeholder="••••••••" required />
-            </div>
-            <button type="submit" class="btn btn-success w-100" id="register-submit-btn">Create Account</button>
-          </form>
-        </div>
+    <!-- ── REGISTER PANEL ──────────────────── -->
+    <div class="panel" id="panel-register">
+      <div class="auth-tabs">
+        <button class="auth-tab"        onclick="switchPanel('panel-login', this, 0)">Sign In</button>
+        <button class="auth-tab active" onclick="switchPanel('panel-register', this, 1)">Create Account</button>
       </div>
+
+      <form id="register-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="reg-name">Full Name</label>
+          <div class="input-wrap">
+            <i class="fa fa-user input-icon"></i>
+            <input type="text" id="reg-name" name="full_name" class="form-input"
+              placeholder="Your full name" autocomplete="name" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-email">Email</label>
+          <div class="input-wrap">
+            <i class="fa fa-envelope input-icon"></i>
+            <input type="email" id="reg-email" name="email" class="form-input"
+              placeholder="you@email.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-phone">Phone <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
+          <div class="input-wrap">
+            <i class="fa fa-phone input-icon"></i>
+            <input type="tel" id="reg-phone" name="phone_number" class="form-input"
+              placeholder="+91 98765 43210" autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Account Type</label>
+          <div class="role-chips" id="role-chips">
+            <button type="button" class="role-chip active" data-role="Citizen"><i class="fa fa-user"></i> Citizen</button>
+            <button type="button" class="role-chip" data-role="Volunteer"><i class="fa fa-hands-helping"></i> Volunteer</button>
+            <button type="button" class="role-chip" data-role="Rescue Team"><i class="fa fa-ambulance"></i> Rescue</button>
+            <button type="button" class="role-chip" data-role="Government Authority"><i class="fa fa-landmark"></i> Gov</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Password</label>
+          <div class="input-wrap">
+            <i class="fa fa-lock input-icon"></i>
+            <input type="password" id="reg-password" name="password" class="form-input"
+              placeholder="Min. 8 characters" autocomplete="new-password" required>
+            <button type="button" class="input-action" onclick="togglePw('reg-password', this)">
+              <i class="fa fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-confirm">Confirm Password</label>
+          <div class="input-wrap">
+            <i class="fa fa-lock input-icon"></i>
+            <input type="password" id="reg-confirm" name="confirm_password" class="form-input"
+              placeholder="Re-enter password" autocomplete="new-password" required>
+          </div>
+        </div>
+
+        <button type="submit" id="register-btn" class="btn-submit">
+          <i class="fa fa-user-plus"></i> Create Account
+        </button>
+      </form>
+    </div>
+
+    <!-- ── FORGOT PASSWORD PANEL ───────────── -->
+    <div class="panel" id="panel-forgot">
+      <div style="margin-bottom:22px;">
+        <h2 style="font-size:1.15rem;font-weight:800;color:var(--text-primary);margin-bottom:4px;">Reset Password</h2>
+        <p style="font-size:0.82rem;color:var(--text-muted);">Enter your email and we'll send a reset code.</p>
+      </div>
+
+      <form id="forgot-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="forgot-email">Email</label>
+          <div class="input-wrap">
+            <i class="fa fa-envelope input-icon"></i>
+            <input type="email" id="forgot-email" name="email" class="form-input"
+              placeholder="you@resqai.com" autocomplete="email" required>
+          </div>
+        </div>
+        <button type="submit" id="forgot-btn" class="btn-submit">
+          <i class="fa fa-paper-plane"></i> Send Reset Code
+        </button>
+      </form>
+
+      <p class="auth-switch" style="margin-top:14px;">
+        <a href="#" onclick="switchPanel('panel-login', null); return false;">← Back to Sign In</a>
+      </p>
+    </div>
+
+    <!-- ── OTP PANEL ───────────────────────── -->
+    <div class="panel" id="panel-otp">
+      <div style="margin-bottom:22px;">
+        <h2 style="font-size:1.15rem;font-weight:800;color:var(--text-primary);margin-bottom:4px;">Verify Email</h2>
+        <p style="font-size:0.82rem;color:var(--text-muted);">Enter the 6-digit code sent to <strong id="otp-email-label" style="color:var(--text-secondary);">your email</strong></p>
+      </div>
+
+      <form id="otp-form" novalidate>
+        <div class="form-group">
+          <div class="otp-row">
+            <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+          </div>
+        </div>
+        <button type="submit" id="otp-btn" class="btn-submit">
+          <i class="fa fa-check-circle"></i> Verify Code
+        </button>
+      </form>
+
+      <p class="auth-switch" style="margin-top:14px;">
+        Didn't get a code? <a href="#" onclick="toast('info','Code Resent','A new code has been sent.'); return false;">Resend</a>
+        &nbsp;·&nbsp;
+        <a href="#" onclick="switchPanel('panel-login', null); return false;">Sign In</a>
+      </p>
+    </div>
+
+  </div><!-- /auth-card -->
+
+  <!-- Session Clear Helper (shown only when a stale session is detected) -->
+  <div id="session-notice" style="display:none; margin-top:16px; text-align:center;">
+    <div style="background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.25); border-radius:12px; padding:12px 20px; color:#93c5fd; font-size:0.85rem; max-width:420px; margin:0 auto; display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <span><i class="fa fa-info-circle me-1"></i> You have an existing session.</span>
+      <a href="dashboard.html" style="color:#60a5fa; text-decoration:underline;">
+        <i class="fa fa-tachometer-alt me-1"></i> Go to Dashboard
+      </a>
+      <span style="opacity:0.5;">or</span>
+      <a href="#" style="color:#f87171; text-decoration:underline;"
+         onclick="localStorage.clear(); sessionStorage.clear(); document.getElementById('session-notice').style.display='none'; toast('success','Cleared','Old session cleared. You can log in fresh.'); return false;">
+        <i class="fa fa-times me-1"></i> Clear &amp; Login Fresh
+      </a>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script type="module" src="js/app.js"></script>
-  <script>
-    document.getElementById('toggle-register-link')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      const reg = document.getElementById('register-container');
-      if (reg) reg.style.display = reg.style.display === 'none' ? 'block' : 'none';
-    });
-  </script>
-</body>
+  <div id="toast-container"></div>
 
+  <script>
+    // ═══════════════════════════════════════════════════════════════════
+    //  ResQAI Login — Fully self-contained, zero external JS deps.
+    //  All auth logic is inline; no module imports that can silently fail.
+    // ═══════════════════════════════════════════════════════════════════
+
+    const API = 'http://localhost:8000/api/v1';
+    const KEYS = { token: 'resqai_access_token', refresh: 'resqai_refresh_token', user: 'resqai_user' };
+
+    // ── Check session state ──────────────────────────────────────────
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.get('autologin') === 'true' && localStorage.getItem(KEYS.token) && localStorage.getItem(KEYS.user)) {
+      window.location.replace('dashboard.html');
+    } else if (localStorage.getItem(KEYS.token) && localStorage.getItem(KEYS.user)) {
+      // Show a notice that a session exists — user can re-enter or clear
+      const notice = document.getElementById('session-notice');
+      if (notice) notice.style.display = 'block';
+    }
+
+    // ── Panel switching ────────────────────────────────────────────────
+    function switchPanel(panelId, clickedTab, tabIndex) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+
+      // Sync tab active state in the current panel if tab was clicked
+      if (clickedTab) {
+        const parentPanel = document.getElementById(panelId);
+        parentPanel.querySelectorAll('.auth-tab').forEach((t, i) => {
+          t.classList.toggle('active', i === tabIndex);
+        });
+      }
+    }
+
+    // ── Password toggle ────────────────────────────────────────────────
+    function togglePw(inputId, btn) {
+      const inp = document.getElementById(inputId);
+      const show = inp.type === 'password';
+      inp.type = show ? 'text' : 'password';
+      btn.querySelector('i').className = 'fa ' + (show ? 'fa-eye-slash' : 'fa-eye');
+    }
+
+    // ── Demo quick-fill ────────────────────────────────────────────────
+    function fillDemo(email) {
+      document.getElementById('login-email').value    = email;
+      document.getElementById('login-password').value = 'password123';
+      switchPanel('panel-login', null);
+      document.getElementById('login-email').focus();
+    }
+
+    // ── Toast notifications ────────────────────────────────────────────
+    function toast(type, title, message, duration = 4000) {
+      const icons = { success:'fa-check-circle', error:'fa-times-circle', warning:'fa-exclamation-triangle', info:'fa-info-circle' };
+      const container = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = `toast toast-${type}`;
+      t.innerHTML = `
+        <div class="toast-icon"><i class="fa ${icons[type] || icons.info}"></i></div>
+        <div>
+          <div class="toast-title">${title}</div>
+          ${message ? `<div class="toast-message">${message}</div>` : ''}
+        </div>`;
+      container.appendChild(t);
+      setTimeout(() => { t.classList.add('toast-out'); setTimeout(() => t.remove(), 260); }, duration);
+    }
+
+    // ── Set button loading state ───────────────────────────────────────
+    function setBusy(btn, busy, defaultHtml) {
+      btn.disabled = busy;
+      if (busy) btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Please wait…';
+      else      btn.innerHTML = defaultHtml;
+    }
+
+    // ── Persist session ────────────────────────────────────────────────
+    function saveSession(data) {
+      // Normalize role: backend may return role as an object {name: ...} or a string
+      if (data.user && typeof data.user.role === 'object' && data.user.role !== null) {
+        data.user.role = data.user.role.name || 'Citizen';
+      }
+      localStorage.setItem(KEYS.token,   data.access_token);
+      localStorage.setItem(KEYS.refresh, data.refresh_token);
+      localStorage.setItem(KEYS.user,    JSON.stringify(data.user));
+    }
+
+    // ── Backend health check ───────────────────────────────────────────
+    async function checkBackend() {
+      const el   = document.getElementById('backend-status');
+      const text = document.getElementById('backend-status-text');
+      const hint = document.getElementById('server-hint');
+      const urls = ['http://localhost:8000/api/health', 'http://127.0.0.1:8000/api/health'];
+      
+      for (const url of urls) {
+        try {
+          const res = await fetch(url, { signal: AbortSignal.timeout(4000) });
+          if (res.ok) {
+            el.className = 'online';
+            text.textContent = 'Backend server online';
+            hint.style.display = 'none';
+            return;
+          }
+        } catch (e) {}
+      }
+
+      el.className = 'offline';
+      text.textContent = 'Backend server offline — see instructions below';
+      hint.style.display = 'block';
+    }
+    checkBackend();
+
+
+    // ── Role chip selection ────────────────────────────────────────────
+    let selectedRole = 'Citizen';
+    document.querySelectorAll('#role-chips .role-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('#role-chips .role-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        selectedRole = chip.dataset.role;
+      });
+    });
+
+    // ── OTP box auto-advance ───────────────────────────────────────────
+    const otpBoxes = document.querySelectorAll('.otp-box');
+    otpBoxes.forEach((box, i) => {
+      box.addEventListener('input', () => {
+        box.value = box.value.replace(/\D/g, '');
+        if (box.value && i < otpBoxes.length - 1) otpBoxes[i + 1].focus();
+      });
+      box.addEventListener('keydown', e => {
+        if (e.key === 'Backspace' && !box.value && i > 0) otpBoxes[i - 1].focus();
+      });
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    //  LOGIN FORM
+    // ══════════════════════════════════════════════════════════════════
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email    = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const btn      = document.getElementById('login-btn');
+
+      if (!email || !password) {
+        toast('error', 'Missing Fields', 'Please enter your email and password.');
+        return;
+      }
+
+      setBusy(btn, true);
+      try {
+        const res = await fetch(`${API}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const body = await res.json();
+
+        if (!res.ok) {
+          const detail = body?.detail || body?.message || 'Invalid email or password.';
+          toast('error', 'Login Failed', detail);
+          return;
+        }
+
+        const data = body.data || body;
+        saveSession(data);
+
+        const roleLabel = data.user?.role || 'User';
+        toast('success', 'Welcome Back!', `Logged in as ${data.user?.full_name || 'User'} · ${roleLabel}`);
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+
+      } catch (err) {
+        console.error('Login error:', err);
+        toast('error', 'Connection Error', 'Cannot reach the backend server. Is it running on port 8000?');
+      } finally {
+        setBusy(btn, false, '<i class="fa fa-sign-in-alt"></i> Sign In');
+      }
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    //  REGISTER FORM
+    // ══════════════════════════════════════════════════════════════════
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const full_name      = document.getElementById('reg-name').value.trim();
+      const email          = document.getElementById('reg-email').value.trim();
+      const phone_number   = document.getElementById('reg-phone').value.trim();
+      const password       = document.getElementById('reg-password').value;
+      const confirm        = document.getElementById('reg-confirm').value;
+      const btn            = document.getElementById('register-btn');
+
+      if (!full_name || !email || !password) {
+        toast('error', 'Missing Fields', 'Please fill in all required fields.');
+        return;
+      }
+      if (password !== confirm) {
+        toast('error', 'Password Mismatch', 'Your passwords do not match.');
+        return;
+      }
+      if (password.length < 8) {
+        toast('error', 'Weak Password', 'Password must be at least 8 characters.');
+        return;
+      }
+
+      setBusy(btn, true);
+      try {
+        const res = await fetch(`${API}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ full_name, email, password, phone_number, role: selectedRole }),
+        });
+
+        const body = await res.json();
+
+        if (!res.ok) {
+          const detail = body?.detail || body?.message || 'Registration failed.';
+          toast('error', 'Registration Error', detail);
+          return;
+        }
+
+        const data = body.data || body;
+        saveSession(data);
+
+        toast('success', 'Account Created!', `${selectedRole} account ready. Redirecting…`);
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+
+      } catch (err) {
+        console.error('Register error:', err);
+        toast('error', 'Connection Error', 'Cannot reach the backend server. Is it running on port 8000?');
+      } finally {
+        setBusy(btn, false, '<i class="fa fa-user-plus"></i> Create Account');
+      }
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    //  FORGOT PASSWORD FORM (stub)
+    // ══════════════════════════════════════════════════════════════════
+    document.getElementById('forgot-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('forgot-email').value.trim();
+      const btn   = document.getElementById('forgot-btn');
+      if (!email) { toast('error', 'Missing Email', 'Please enter your email.'); return; }
+      setBusy(btn, true);
+      await new Promise(r => setTimeout(r, 700));
+      document.getElementById('otp-email-label').textContent = email;
+      setBusy(btn, false, '<i class="fa fa-paper-plane"></i> Send Reset Code');
+      switchPanel('panel-otp', null);
+      toast('success', 'Code Sent', `Check your inbox at ${email}.`);
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    //  OTP FORM (stub)
+    // ══════════════════════════════════════════════════════════════════
+    document.getElementById('otp-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = Array.from(otpBoxes).map(b => b.value).join('');
+      if (code.length < 6) { toast('error', 'Incomplete Code', 'Enter all 6 digits.'); return; }
+      toast('success', 'Verified!', 'Email verified. You can now sign in.');
+      switchPanel('panel-login', null);
+    });
+
+    // ── Open register panel if ?register=true ──────────────────────────
+    if (new URLSearchParams(location.search).get('register') === 'true') {
+      switchPanel('panel-register', null);
+    }
+  </script>
+
+</body>
 </html>

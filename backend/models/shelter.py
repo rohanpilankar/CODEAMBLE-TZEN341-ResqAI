@@ -47,3 +47,35 @@ class MedicalFacility(Base):
     longitude = Column(Float, nullable=False)
     available_beds = Column(Integer, default=20)
     phone = Column(String(20), nullable=True)
+
+class Hospital(Base):
+    __tablename__ = "hospitals"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    address = Column(String(255), nullable=False)
+    total_beds = Column(Integer, default=100)
+    icu_beds = Column(Integer, default=15)
+    occupied_beds = Column(Integer, default=45)
+    phone_number = Column(String(20), nullable=True)
+
+class BloodBank(Base):
+    __tablename__ = "blood_banks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    hospital_name = Column(String(100), nullable=False)
+    blood_group = Column(String(10), nullable=False) # A+, O-, B+, etc.
+    units_available = Column(Integer, default=50)
+
+class EvacuationRequest(Base):
+    __tablename__ = "evacuation_requests"
+
+    id = Column(Integer, primary_key=True, index=True)
+    citizen_name = Column(String(100), nullable=False)
+    phone_number = Column(String(20), nullable=False)
+    pickup_address = Column(String(255), nullable=False)
+    target_shelter_id = Column(Integer, ForeignKey("shelters.id"), nullable=True)
+    people_count = Column(Integer, default=1)
+    status = Column(String(50), default="PENDING") # PENDING, ASSIGNED, COMPLETED
+    requested_at = Column(DateTime, default=datetime.utcnow)
+

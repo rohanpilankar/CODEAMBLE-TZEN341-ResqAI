@@ -18,7 +18,8 @@
 /* ── Smart Stat Cards (Row 1) ────────────────────────────────────── */
 .cc-stat-card {
   background: var(--bg-card);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   padding: 20px;
@@ -28,12 +29,13 @@
   transition: all var(--transition-med);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-inset-highlight), var(--shadow-xs);
 }
 .cc-stat-card:hover {
   background: var(--bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.16);
   transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-inset-highlight), var(--shadow-md);
 }
 .cc-stat-header {
   display: flex;
@@ -50,11 +52,11 @@
   font-size: 1.15rem;
   flex-shrink: 0;
 }
-.cc-stat-icon.red    { background: rgba(230, 57, 70, 0.15);  color: var(--primary); }
-.cc-stat-icon.orange { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
-.cc-stat-icon.green  { background: rgba(16, 185, 129, 0.15); color: var(--success); }
-.cc-stat-icon.blue   { background: rgba(59, 130, 246, 0.15); color: var(--info); }
-.cc-stat-icon.purple { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+.cc-stat-icon.red    { background: rgba(13, 148, 136, 0.18);  color: var(--primary-light); }
+.cc-stat-icon.orange { background: rgba(245, 158, 11, 0.18); color: var(--warning); }
+.cc-stat-icon.green  { background: rgba(16, 185, 129, 0.18); color: var(--success); }
+.cc-stat-icon.blue   { background: rgba(56, 189, 248, 0.18); color: var(--info); }
+.cc-stat-icon.purple { background: rgba(139, 92, 246, 0.18); color: #a78bfa; }
 
 .cc-stat-trend {
   display: flex;
@@ -94,13 +96,13 @@
 }
 .cc-stat-sparkline .spark-bar {
   flex: 1;
-  background: rgba(230, 57, 70, 0.35);
+  background: rgba(13, 148, 136, 0.35);
   border-radius: 2px 2px 0 0;
   min-height: 3px;
   transition: height var(--transition-med);
 }
 .cc-stat-card:hover .spark-bar {
-  background: rgba(230, 57, 70, 0.55);
+  background: rgba(13, 148, 136, 0.55);
 }
 .cc-stat-meta {
   display: flex;
@@ -138,14 +140,17 @@
 /* ── Section Panel ───────────────────────────────────────────────── */
 .cc-panel {
   background: var(--bg-card);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: all var(--transition-med);
+  box-shadow: var(--shadow-inset-highlight), var(--shadow-xs);
 }
 .cc-panel:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: var(--shadow-inset-highlight), var(--shadow-sm);
 }
 .cc-panel-header {
   display: flex;
@@ -339,9 +344,9 @@
   color: var(--text-primary);
 }
 .cc-pq-btn.primary {
-  background: rgba(230, 57, 70, 0.15);
+  background: rgba(13, 148, 136, 0.15);
   color: var(--primary-light);
-  border-color: rgba(230, 57, 70, 0.3);
+  border-color: rgba(13, 148, 136, 0.3);
 }
 
 /* ── Resource Utilization ────────────────────────────────────────── */
@@ -592,7 +597,7 @@
 }
 .cc-mission-status-badge.en-route   { background: rgba(59, 130, 246, 0.15); color: var(--info); }
 .cc-mission-status-badge.on-site    { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
-.cc-mission-status-badge.extracting { background: rgba(230, 57, 70, 0.15); color: var(--primary-light); }
+.cc-mission-status-badge.extracting { background: rgba(13, 148, 136, 0.15); color: var(--primary-light); }
 .cc-mission-status-badge.returning  { background: rgba(16, 185, 129, 0.15); color: var(--success); }
 
 /* ── Forecast Bars ───────────────────────────────────────────────── */
@@ -718,9 +723,9 @@
   background: rgba(255, 255, 255, 0.08);
 }
 .cc-notif-tab.active {
-  background: rgba(230, 57, 70, 0.15);
+  background: rgba(13, 148, 136, 0.15);
   color: var(--primary-light);
-  border-color: rgba(230, 57, 70, 0.3);
+  border-color: rgba(13, 148, 136, 0.3);
 }
 .cc-notif-count {
   padding: 1px 6px;
@@ -903,12 +908,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(230, 57, 70, 0.5);
+  box-shadow: 0 4px 20px rgba(13, 148, 136, 0.5);
   transition: all var(--transition-med);
 }
 .cc-quick-toggle:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 28px rgba(230, 57, 70, 0.7);
+  box-shadow: 0 6px 28px rgba(13, 148, 136, 0.7);
 }
 .cc-quick-toggle.open { transform: rotate(45deg); }
 
@@ -976,7 +981,7 @@
 .cc-global-search input:focus {
   border-color: var(--primary);
   background: rgba(255, 255, 255, 0.09);
-  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
 }
 .cc-global-search .search-icon {
   position: absolute;
@@ -1073,9 +1078,9 @@
 }
 .cc-map-filter-chip:hover,
 .cc-map-filter-chip.active {
-  background: rgba(230, 57, 70, 0.15);
+  background: rgba(13, 148, 136, 0.15);
   color: var(--primary-light);
-  border-color: rgba(230, 57, 70, 0.3);
+  border-color: rgba(13, 148, 136, 0.3);
 }
 
 /* ── Fullscreen Map Button ───────────────────────────────────────── */

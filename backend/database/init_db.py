@@ -25,8 +25,10 @@ def seed_data():
         # ─── Roles ────────────────────────────────────────────────────────
         roles = [
             Role(name="Citizen",              description="Regular citizen reporting emergencies"),
+            Role(name="Volunteer",             description="Community volunteer assisting in relief operations"),
             Role(name="Rescue Team",          description="Field rescue and response personnel"),
             Role(name="Government Authority", description="District/state government officials"),
+            Role(name="NGO",                  description="Non-governmental organization partner"),
             Role(name="Admin",                description="System administrator with full access"),
         ]
         for r in roles:
@@ -37,10 +39,12 @@ def seed_data():
 
         # ─── Demo Users ───────────────────────────────────────────────────
         users = [
-            User(email="admin@resqai.com",   full_name="Admin User",       hashed_password=hash_password("password123"), role_id=role_map["Admin"].id,                 phone_number="+91-9000000001"),
-            User(email="gov@resqai.com",     full_name="District Officer",  hashed_password=hash_password("password123"), role_id=role_map["Government Authority"].id,   phone_number="+91-9000000002"),
-            User(email="rescue@resqai.com",  full_name="Rescue Team Alpha", hashed_password=hash_password("password123"), role_id=role_map["Rescue Team"].id,            phone_number="+91-9000000003"),
-            User(email="citizen@resqai.com", full_name="Ravi Kumar",        hashed_password=hash_password("password123"), role_id=role_map["Citizen"].id,                phone_number="+91-9000000004"),
+            User(email="admin@resqai.com",     full_name="Admin User",       hashed_password=hash_password("password123"), role_id=role_map["Admin"].id,                 phone_number="+91-9000000001"),
+            User(email="gov@resqai.com",       full_name="District Officer",  hashed_password=hash_password("password123"), role_id=role_map["Government Authority"].id,   phone_number="+91-9000000002"),
+            User(email="rescue@resqai.com",    full_name="Rescue Team Alpha", hashed_password=hash_password("password123"), role_id=role_map["Rescue Team"].id,            phone_number="+91-9000000003"),
+            User(email="citizen@resqai.com",   full_name="Ravi Kumar",        hashed_password=hash_password("password123"), role_id=role_map["Citizen"].id,                phone_number="+91-9000000004"),
+            User(email="volunteer@resqai.com", full_name="Priya Sharma",      hashed_password=hash_password("password123"), role_id=role_map["Volunteer"].id,              phone_number="+91-9000000005"),
+            User(email="ngo@resqai.com",       full_name="Relief NGO",        hashed_password=hash_password("password123"), role_id=role_map["NGO"].id,                    phone_number="+91-9000000006"),
         ]
         for u in users:
             db.add(u)
@@ -118,6 +122,15 @@ def seed_data():
         for s in settings_data:
             db.add(s)
 
+        # ─── News Articles ────────────────────────────────────────────────
+        articles = [
+            NewsArticle(title="ResQAI v2.0 Released: Blockchain Donations are Live!", content="We are thrilled to announce that our new smart-contract based donation system is now live on mainnet. Citizens can donate directly to verified NGOs with full on-chain transparency.", author="System Admin", is_published=1),
+            NewsArticle(title="AI Duplicate Detection Accuracy Reaches 98%", content="Our NLP models have been updated to better process multi-lingual text and voice inputs. In the latest drill, the system successfully merged 1,400 duplicate reports down to 43 unique events in under 2 seconds.", author="ResQAI AI Lab", is_published=1),
+            NewsArticle(title="Monsoon Preparedness & Relief Center Guidance", content="State authorities and emergency units have set up 15 high-capacity relief hubs equipped with medical kits, clean water, and satellite communications.", author="Disaster Management Authority", is_published=1),
+        ]
+        for a in articles:
+            db.add(a)
+
         db.commit()
         app_logger.info("Demo seed data inserted successfully.")
 
@@ -126,3 +139,4 @@ def seed_data():
         app_logger.error(f"Seed data error: {e}")
     finally:
         db.close()
+

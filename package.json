@@ -1,12 +1,19 @@
 {
   "name": "resq-ai",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
-    "start": "http-server frontend -a 127.0.0.1 -p 3000 -o /index.html -c-1",
-    "dev": "http-server frontend -a 127.0.0.1 -p 3000 -o /index.html -c-1"
+    "backend": "python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000",
+
+    "frontend": "http-server frontend -a 127.0.0.1 -p 3000 -o /index.html -c-1",
+    "dev": "concurrently --kill-others \"npm:backend\" \"npm:frontend\"",
+    "start": "npm run dev"
+
   },
   "private": true,
   "dependencies": {
     "http-server": "^14.1.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }

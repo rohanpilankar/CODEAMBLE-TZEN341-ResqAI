@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional, List
 from datetime import datetime
 from backend.models.incident import SeverityLevel, IncidentStatus
@@ -7,8 +7,7 @@ class IncidentImageSchema(BaseModel):
     id: int
     image_url: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class IncidentCreate(BaseModel):
     title: str
@@ -18,6 +17,9 @@ class IncidentCreate(BaseModel):
     latitude: float
     longitude: float
     address: Optional[str] = None
+    phone_number: Optional[str] = None
+    people_affected: Optional[int] = 1
+    media_url: Optional[str] = None
 
 class IncidentUpdate(BaseModel):
     title: Optional[str] = None
@@ -27,6 +29,9 @@ class IncidentUpdate(BaseModel):
     status: Optional[IncidentStatus] = None
     assigned_team_id: Optional[int] = None
     address: Optional[str] = None
+    phone_number: Optional[str] = None
+    people_affected: Optional[int] = None
+    media_url: Optional[str] = None
 
 class IncidentResponse(BaseModel):
     id: int
@@ -38,6 +43,9 @@ class IncidentResponse(BaseModel):
     latitude: float
     longitude: float
     address: Optional[str] = None
+    phone_number: Optional[str] = None
+    people_affected: Optional[int] = 1
+    media_url: Optional[str] = None
     reported_by_id: int
     assigned_team_id: Optional[int] = None
     is_ai_verified: int
@@ -46,5 +54,4 @@ class IncidentResponse(BaseModel):
     updated_at: datetime
     images: List[IncidentImageSchema] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

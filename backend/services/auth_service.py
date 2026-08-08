@@ -56,6 +56,8 @@ class AuthService:
         role_name = req.role or "Citizen"
         role = self.user_repo.get_role_by_name(role_name)
         if not role:
+            role = self.user_repo.db.query(Role).filter(Role.name.ilike(f"%{role_name}%")).first()
+        if not role:
             role = self.user_repo.get_role_by_name("Citizen")
 
         new_user = User(
@@ -108,3 +110,50 @@ class AuthService:
             refresh_token=new_refresh_token,
             user=user_info
         )
+
+    def request_password_reset(self, email: str) -> str:
+        import secrets
+        from datetime import datetime, timedelta
+        from backend.models.user import PasswordResetToken
+
+        user = self.user_repo.get_by_email(email)
+        if not user:
+            # Return pseudo token for security
+            return secrets.token_urlsafe(16)
+
+        token_str = secrets.token_urlsafe(16)
+        token_obj = PasswordResetToken(
+            email=email,
+            token=token_str,
+            expires_at=datetime.utcnow() + timedelta(hours=1),
+            is_used=False
+        )
+        self.user_repo.db.add(token_obj)
+        self.user_repo.db.commit()
+        return token_str
+
+    def reset_password(self, token: str, new_password: str) -> bool:
+        from datetime import datetime
+        from backend.models.user import PasswordResetToken
+
+        token_obj = self.user_repo.db.query(PasswordResetToken).filter(
+            PasswordResetToken.token == token,
+            PasswordResetToken.is_used == False,
+            PasswordResetToken.expires_at > datetime.utcnow()
+        ).first()
+
+        if not token_obj:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid or expired reset token"
+            )
+
+        user = self.user_repo.get_by_email(token_obj.email)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        user.hashed_password = hash_password(new_password)
+        token_obj.is_used = True
+        self.user_repo.db.commit()
+        return True
+

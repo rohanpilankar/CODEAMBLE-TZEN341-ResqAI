@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResQAI — Features</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/public.css">
+  
+</head>
+<body>
+
+  <!-- ── Navigation ───────────────────────────────────────────────────────── -->
+  <nav class="pub-nav">
+    <a href="index.html" class="pub-nav-brand">
+      <div class="brand-icon"><i class="fa fa-shield-alt"></i></div>
+      <div class="brand-name">ResQ<span>AI</span></div>
+    </a>
+    
+    <div class="pub-nav-links">
+      <a href="index.html" class="pub-nav-link ">Home</a>
+      <a href="about.html" class="pub-nav-link ">About</a>
+      <a href="features.html" class="pub-nav-link active">Features</a>
+      <div class="pub-nav-dropdown">
+        <a href="awareness.html" class="pub-nav-link ">Awareness <i class="fa fa-chevron-down ms-1" style="font-size:0.7rem;"></i></a>
+        <div class="pub-nav-dropdown-menu">
+          <a href="awareness-flood.html"><span class="dd-icon"><i class="fa fa-water"></i></span> Flood Safety</a>
+          <a href="awareness-fire.html"><span class="dd-icon"><i class="fa fa-fire"></i></span> Fire Safety</a>
+          <a href="awareness-cyclone.html"><span class="dd-icon"><i class="fa fa-wind"></i></span> Cyclone Safety</a>
+          <a href="awareness-earthquake.html"><span class="dd-icon"><i class="fa fa-house-crack"></i></span> Earthquake Safety</a>
+          <a href="awareness-landslide.html"><span class="dd-icon"><i class="fa fa-mountain"></i></span> Landslide Safety</a>
+        </div>
+      </div>
+      <a href="live-alerts.html" class="pub-nav-link ">Live Alerts</a>
+      <a href="contact.html" class="pub-nav-link ">Contact</a>
+    </div>
+
+    <div class="pub-nav-ctas">
+      <a href="donate.html" class="btn btn-secondary btn-sm"><i class="fa fa-hand-holding-heart me-1"></i> Donate</a>
+      <a href="login.html" class="btn btn-primary btn-sm"><i class="fa fa-sign-in-alt me-1"></i> Portal Login</a>
+      <button class="pub-nav-hamburger" id="pub-mobile-btn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="pub-nav-mobile-menu" id="pub-mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="features.html">Features</a>
+    <a href="awareness.html">Awareness Center</a>
+    <a href="live-alerts.html">Live Alerts</a>
+    <a href="donate.html">Donate</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <section class="pub-hero">
+    <h1>Platform <span class="highlight">Features</span></h1>
+    <p>Explore the tools that power the next generation of emergency response and disaster management.</p>
+  </section>
+
+  <section class="pub-section" style="padding-top:0;">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-map-location-dot"></i></div>
+        <h3>Live GIS Mapping</h3>
+        <p>Visualize all active incidents, deployed rescue teams, and available shelters on a dynamic, real-time map.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-robot"></i></div>
+        <h3>AI Duplicate Detection</h3>
+        <p>Our NLP model analyzes incoming SOS reports to merge duplicate complaints, preventing resource waste.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-boxes-packing"></i></div>
+        <h3>Predictive Resource Allocation</h3>
+        <p>Based on incident severity, the system automatically suggests the required number of ambulances, fire trucks, and medical kits.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-wifi"></i></div>
+        <h3>Offline-First Mobile App</h3>
+        <p>Rescue teams can download maps and mission data beforehand. The app syncs automatically when connection is restored.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-file-contract"></i></div>
+        <h3>Smart Contract Donations</h3>
+        <p>Eliminate fraud. All donations to NGOs are routed through verifiable blockchain smart contracts on the Ethereum network.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon"><i class="fa fa-bullhorn"></i></div>
+        <h3>Geo-Fenced Alerts</h3>
+        <p>Government authorities can push SMS and app notifications to citizens located strictly within a specific danger zone.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ───────────────────────────────────────────────────────────── -->
+  <footer class="pub-footer">
+    <div class="pub-footer-grid">
+      <div class="pub-footer-brand">
+        <a href="index.html" class="pub-nav-brand">
+          <div class="brand-icon"><i class="fa fa-shield-alt"></i></div>
+          <div class="brand-name">ResQ<span>AI</span></div>
+        </a>
+        <p>A unified, AI-driven disaster response platform designed to save lives through rapid coordination and resource management.</p>
+      </div>
+      
+      <div class="pub-footer-col">
+        <h5>Platform</h5>
+        <a href="features.html">Features</a>
+        <a href="live-alerts.html">Live Alerts</a>
+        <a href="shelter-finder.html">Shelter Finder</a>
+        <a href="donate.html">Blockchain Donate</a>
+      </div>
+
+      <div class="pub-footer-col">
+        <h5>Resources</h5>
+        <a href="awareness.html">Awareness Center</a>
+        <a href="news.html">News & Updates</a>
+        <a href="emergency-contacts.html">Emergency Contacts</a>
+        <a href="about.html">About Us</a>
+      </div>
+
+      <div class="pub-footer-col">
+        <h5>Legal</h5>
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms of Service</a>
+        <a href="about.html">Data Security</a>
+        <a href="contact.html">Contact Support</a>
+      </div>
+    </div>
+
+    <div class="pub-footer-bottom">
+      <p>&copy; 2026 ResQAI. All rights reserved.</p>
+      <div class="pub-footer-socials">
+        <a href="https://twitter.com" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
+        <a href="https://github.com" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="module" src="js/publicPages.js"></script>
+  <script>
+    document.getElementById('pub-mobile-btn')?.addEventListener('click', () => {
+      document.getElementById('pub-mobile-menu')?.classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

@@ -9,7 +9,8 @@ export const analyticsHandler = {
     el.innerHTML = '<div class="spinner"></div>';
 
     try {
-      const data = await analyticsApi.getOverview();
+      const res = await analyticsApi.getOverview();
+      const data = res.data || res;
 
       el.innerHTML = `
         <div class="row mb-4">

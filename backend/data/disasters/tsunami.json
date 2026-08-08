@@ -1,0 +1,35 @@
+{
+  "disaster": "Tsunami",
+  "title": "Tsunami Coastal Safety & Evacuation Guide",
+  "summary": "Tsunamis are series of massive ocean waves caused by undersea earthquakes. Move inland and to high ground immediately.",
+  "precautions": [
+    "If you feel a strong coastal earthquake or see sudden ocean drawback (water receding rapidly exposing sea floor), MOVE INLAND IMMEDIATELY.",
+    "Do NOT wait for official warning sirens if natural warning signs are observed.",
+    "Tsunamis consist of multiple wave surges over several hours; the first wave is rarely the largest."
+  ],
+  "evacuation": [
+    "Move inland at least 2-3 km or climb to an elevation of at least 30 meters (100 feet) above sea level.",
+    "If trapped, climb to upper floors or roof of a reinforced concrete high-rise building.",
+    "Abandon vehicles if traffic grinds to a halt; proceed on foot up hill slopes."
+  ],
+  "firstAid": [
+    "Administer CPR to drowning victims immediately.",
+    "Treat salt-water aspiration and hypothermia with dry clothing, warmth, and oxygen.",
+    "Clean debris wounds to prevent sea-water bacterial infections."
+  ],
+  "emergencyChecklist": [
+    "Go-Bag with water, food, and medicines",
+    "Waterproof pouch for identity documents",
+    "Emergency signal light or torch",
+    "High-decibel rescue whistle"
+  ],
+  "dos": [
+    "DO move to high ground immediately after coastal shaking.",
+    "DO stay away from beaches and coastal inlets.",
+    "DO wait for official 'All Clear' before returning."
+  ],
+  "donts": [
+    "DON'T go down to the beach to watch the tsunami wave.",
+    "DON'T return after the first wave passes."
+  ]
+}

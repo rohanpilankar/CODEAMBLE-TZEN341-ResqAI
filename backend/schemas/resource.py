@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional
 from datetime import datetime
 from backend.models.resource import ResourceType, ResourceStatus
@@ -6,7 +6,7 @@ from backend.models.resource import ResourceType, ResourceStatus
 class ResourceCreate(BaseModel):
     name: str
     resource_type: ResourceType
-    quantity: int = 1
+    quantity: int = Field(1, ge=0)
     status: ResourceStatus = ResourceStatus.AVAILABLE
     location_name: Optional[str] = None
     latitude: Optional[float] = None
@@ -15,10 +15,11 @@ class ResourceCreate(BaseModel):
 
 class ResourceUpdate(BaseModel):
     name: Optional[str] = None
-    quantity: Optional[int] = None
+    quantity: Optional[int] = Field(None, ge=0)
     status: Optional[ResourceStatus] = None
     location_name: Optional[str] = None
     team_id: Optional[int] = None
+
 
 class ResourceResponse(BaseModel):
     id: int
@@ -32,8 +33,7 @@ class ResourceResponse(BaseModel):
     team_id: Optional[int] = None
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class RescueTeamResponse(BaseModel):
     id: int
@@ -45,8 +45,7 @@ class RescueTeamResponse(BaseModel):
     current_longitude: Optional[float] = None
     is_active: bool
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class AssignmentCreate(BaseModel):
     incident_id: int

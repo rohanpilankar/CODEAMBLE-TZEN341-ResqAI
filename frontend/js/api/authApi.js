@@ -13,4 +13,11 @@ export const authApi = {
   getCurrentUser() {
     return apiClient.get('/auth/me');
   },
+  forgotPassword(email) {
+    return apiClient.post('/auth/forgot-password', { email });
+  },
+  resetPassword(token, new_password) {
+    return apiClient.post('/auth/reset-password', { token, new_password });
+  },
 };
+

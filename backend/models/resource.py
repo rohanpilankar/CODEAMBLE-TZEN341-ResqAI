@@ -93,3 +93,45 @@ class Assignment(Base):
 
     incident = relationship("Incident", back_populates="assignments")
     resource = relationship("Resource", back_populates="assignments")
+
+class VictimLog(Base):
+    __tablename__ = "victim_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    incident_id = Column(Integer, ForeignKey("incidents.id"), nullable=False)
+    victim_name = Column(String(100), nullable=False)
+    age = Column(Integer, nullable=True)
+    gender = Column(String(20), nullable=True)
+    triage_status = Column(String(50), default="GREEN") # GREEN, YELLOW, RED, BLACK
+    notes = Column(String(255), nullable=True)
+    logged_at = Column(DateTime, default=datetime.utcnow)
+
+class MissionEvidence(Base):
+    __tablename__ = "mission_evidence"
+
+    id = Column(Integer, primary_key=True, index=True)
+    incident_id = Column(Integer, ForeignKey("incidents.id"), nullable=False)
+    image_url = Column(String(255), nullable=False)
+    caption = Column(String(255), nullable=True)
+    uploaded_at = Column(DateTime, default=datetime.utcnow)
+
+class ResourceTransfer(Base):
+    __tablename__ = "resource_transfers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    resource_id = Column(Integer, ForeignKey("resources.id"), nullable=False)
+    from_location = Column(String(150), nullable=False)
+    to_location = Column(String(150), nullable=False)
+    quantity = Column(Integer, default=1)
+    status = Column(String(50), default="DISPATCHED")
+    transferred_at = Column(DateTime, default=datetime.utcnow)
+
+class Warehouse(Base):
+    __tablename__ = "warehouses"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    location = Column(String(150), nullable=False)
+    capacity = Column(Integer, default=1000)
+    manager_name = Column(String(100), nullable=True)
+

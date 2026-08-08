@@ -1,0 +1,37 @@
+{
+  "disaster": "Gas Leak",
+  "title": "Gas Leak & Hazardous Chemical Spill Guide",
+  "summary": "Gas leaks present immediate fire, explosion, and asphyxiation risks. Evacuate upwind and eliminate ignition sources.",
+  "precautions": [
+    "If you smell gas or chemical fumes, do NOT operate any electrical switches, appliances, light fixtures, or phones in the area.",
+    "Do NOT light matches, lighters, or open flames.",
+    "Open doors and windows if safe to do so while evacuating to ventilate the space."
+  ],
+  "evacuation": [
+    "Evacuate the building immediately on foot.",
+    "Determine wind direction and move UPWIND and CROSSWIND away from the leak source.",
+    "Do not start car engines near the suspected gas plume.",
+    "Call Emergency Fire & Disaster Response (101 / 108) from a safe location well outside the gas zone."
+  ],
+  "firstAid": [
+    "Move exposed persons to fresh air immediately.",
+    "If chemical fumes contact eyes or skin, flush with clean running water for at least 15-20 minutes.",
+    "If victim is not breathing, administer artificial respiration outside the contaminated area."
+  ],
+  "emergencyChecklist": [
+    "Wet cotton cloths or N95 masks to cover nose and mouth",
+    "Safety goggles",
+    "Emergency flashlight (explosion-proof grade)",
+    "Contact number for local Gas Utility Hotline"
+  ],
+  "dos": [
+    "DO evacuate upwind away from fumes.",
+    "DO cover your mouth and nose with a damp cloth.",
+    "DO report gas odors immediately."
+  ],
+  "donts": [
+    "DON'T flip light switches or unplug devices.",
+    "DON'T use elevators or enclosed stairwells filled with gas.",
+    "DON'T smoke or ignite any flame."
+  ]
+}

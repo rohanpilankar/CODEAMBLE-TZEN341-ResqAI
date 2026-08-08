@@ -38,6 +38,9 @@ class Incident(Base):
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
     address = Column(String(255), nullable=True)
+    phone_number = Column(String(20), nullable=True)
+    people_affected = Column(Integer, default=1, nullable=True)
+    media_url = Column(String(255), nullable=True)
     
     reported_by_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     assigned_team_id = Column(Integer, ForeignKey("rescue_teams.id"), nullable=True)
@@ -51,7 +54,8 @@ class Incident(Base):
     reporter = relationship("User", back_populates="incidents")
     assigned_team = relationship("RescueTeam", back_populates="incidents")
     images = relationship("IncidentImage", back_populates="incident", cascade="all, delete-orphan")
-    assignments = relationship("Assignment", back_populates="incident")
+    assignments = relationship("Assignment", back_populates="incident", cascade="all, delete-orphan")
+
 
 class IncidentImage(Base):
     __tablename__ = "incident_images"

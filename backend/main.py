@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -13,7 +13,12 @@ from backend.websocket.manager import ws_manager
 from backend.auth.dependencies import get_ws_current_user
 from backend.utils.logger import app_logger
 
-from backend.routers import auth, users, incidents, shelters, resources, notifications, analytics, ai
+from backend.routers import (
+    auth, users, incidents, shelters, resources, notifications,
+    analytics, ai, public, fleet, logistics, medical, reports,
+    comms, volunteers, ngo, audit, citizen, blockchain
+)
+
 
 
 @asynccontextmanager
@@ -96,6 +101,7 @@ app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # ─── API Routers ───────────────────────────────────────────────────────────────
 prefix = settings.API_PREFIX
+app.include_router(public.router, prefix=prefix)
 app.include_router(auth.router, prefix=prefix)
 app.include_router(users.router, prefix=prefix)
 app.include_router(incidents.router, prefix=prefix)
@@ -104,6 +110,17 @@ app.include_router(resources.router, prefix=prefix)
 app.include_router(notifications.router, prefix=prefix)
 app.include_router(analytics.router, prefix=prefix)
 app.include_router(ai.router, prefix=prefix)
+app.include_router(fleet.router, prefix=prefix)
+app.include_router(logistics.router, prefix=prefix)
+app.include_router(medical.router, prefix=prefix)
+app.include_router(reports.router, prefix=prefix)
+app.include_router(comms.router, prefix=prefix)
+app.include_router(volunteers.router, prefix=prefix)
+app.include_router(ngo.router, prefix=prefix)
+app.include_router(audit.router, prefix=prefix)
+app.include_router(citizen.router, prefix=prefix)
+app.include_router(blockchain.router, prefix=prefix)
+
 
 # ─── WebSocket Endpoint (JWT Authenticated) ────────────────────────────────────
 @app.websocket(f"{settings.WS_PREFIX}/{{client_id}}")
@@ -115,7 +132,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
         return
 
     user_id = user.id
-    role = user.role_rel.name
+    role = user.role_rel.name if user.role_rel else "Citizen"
     await ws_manager.connect(client_id, websocket, user_id, role)
     try:
         while True:
@@ -135,7 +152,7 @@ def health_check():
         "version": "1.0.0",
         "environment": settings.ENVIRONMENT,
         "ws_connections": ws_manager.connection_count,
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
     }
 
 

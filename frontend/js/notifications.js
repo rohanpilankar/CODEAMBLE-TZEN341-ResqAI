@@ -7,7 +7,8 @@ export const notificationHandler = {
     if (!el) return;
 
     try {
-      const notifs = await notificationApi.getNotifications();
+      const rawNotifs = await notificationApi.getNotifications();
+      const notifs = Array.isArray(rawNotifs) ? rawNotifs : (rawNotifs.data || []);
 
       if (!notifs || notifs.length === 0) {
         el.innerHTML = '<div class="empty-state"><i class="fa fa-bell-slash empty-icon"></i><h3>No Unread Notifications</h3></div>';

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Dict, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 class WSEventType:
     INCIDENT_CREATED = "INCIDENT_CREATED"
@@ -9,10 +9,12 @@ class WSEventType:
     RESOURCE_ASSIGNED = "RESOURCE_ASSIGNED"
     MISSION_COMPLETED = "MISSION_COMPLETED"
     NOTIFICATION = "NOTIFICATION"
+    RESCUE_LOCATION_UPDATE = "RESCUE_LOCATION_UPDATE"
+
 
 class WSEvent(BaseModel):
     event_type: str
     data: Dict[str, Any]
-    timestamp: str = datetime.utcnow().isoformat()
+    timestamp: str = datetime.now(timezone.utc).isoformat()
     target_role: Optional[str] = None
     target_user_id: Optional[int] = None

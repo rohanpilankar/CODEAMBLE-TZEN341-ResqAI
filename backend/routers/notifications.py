@@ -44,3 +44,33 @@ def mark_as_read(
     service = NotificationService(db)
     service.mark_as_read(notification_id, current_user.id)
     return api_response(success=True, message="Notification marked as read", data={"id": notification_id})
+
+@router.post("/broadcast")
+async def broadcast_alert(
+    data: dict,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_roles(["Government Authority", "Admin"]))
+):
+    from backend.websocket.manager import ws_manager
+    from backend.models.user import User
+    from backend.models.notification import Notification
+
+    title = data.get("title", "EMERGENCY BROADCAST")
+    message = data.get("message", "High priority system alert broadcasted by Command Center.")
+    notif_type = data.get("type", "CRITICAL")
+
+    # Broadcast to all connected WebSockets
+    await ws_manager.broadcast({
+        "event": "BROADCAST_ALERT",
+        "data": {"title": title, "message": message, "type": notif_type}
+    })
+
+    # Also persist to database for active users
+    users = db.query(User).filter(User.is_active == True).all()
+    for u in users:
+        n = Notification(user_id=u.id, title=title, message=message, type=notif_type)
+        db.add(n)
+    db.commit()
+
+    return api_response(success=True, message=f"Broadcast sent to all active users.", data={"broadcast_count": len(users)})
+

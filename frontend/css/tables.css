@@ -55,17 +55,18 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-.badge-critical { background: rgba(255,0,56,0.15);   color: var(--severity-critical); }
-.badge-high     { background: rgba(255,107,0,0.15);  color: var(--severity-high); }
-.badge-medium   { background: rgba(245,158,11,0.15); color: var(--severity-medium); }
-.badge-low      { background: rgba(16,185,129,0.15); color: var(--severity-low); }
-.badge-reported    { background: rgba(148,163,184,0.15); color: #94a3b8; }
-.badge-verified    { background: rgba(59,130,246,0.15);  color: var(--info); }
-.badge-in-progress { background: rgba(245,158,11,0.15);  color: var(--warning); }
-.badge-resolved    { background: rgba(16,185,129,0.15);   color: var(--success); }
-.badge-closed      { background: rgba(100,116,139,0.15); color: var(--text-muted); }
-.badge-available   { background: rgba(16,185,129,0.15);  color: var(--success); }
-.badge-assigned    { background: rgba(59,130,246,0.15);  color: var(--info); }
+.badge-critical { background: rgba(255, 34, 72, 0.18);   color: var(--severity-critical); }
+.badge-high     { background: rgba(251, 146, 60, 0.18);  color: var(--severity-high); }
+.badge-medium   { background: rgba(245, 158, 11, 0.15); color: var(--severity-medium); }
+.badge-low      { background: rgba(16, 185, 129, 0.15); color: var(--severity-low); }
+.badge-reported    { background: rgba(148, 163, 184, 0.14); color: var(--text-muted); }
+.badge-verified    { background: rgba(56, 189, 248, 0.15);  color: var(--info); }
+.badge-in-progress { background: rgba(245, 158, 11, 0.15);  color: var(--warning); }
+.badge-resolved    { background: rgba(16, 185, 129, 0.15);   color: var(--success); }
+.badge-closed      { background: rgba(100, 116, 139, 0.14); color: var(--text-muted); }
+.badge-available   { background: rgba(16, 185, 129, 0.15);  color: var(--success); }
+.badge-assigned    { background: rgba(56, 189, 248, 0.15);  color: var(--info); }
+.badge-info        { background: rgba(56, 189, 248, 0.15);  color: var(--info); }
 
 /* Pagination */
 .pagination-wrapper {

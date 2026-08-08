@@ -1,0 +1,39 @@
+{
+  "disaster": "Cyclone",
+  "title": "Cyclone & Severe Storm Safety Guide",
+  "summary": "Cyclones bring destructive winds and storm surges. Secure your home, stay indoors in the strongest room, and avoid coastal regions.",
+  "precautions": [
+    "Board up or tape windows and secure loose outdoor objects (furniture, roof sheets, signboards).",
+    "Disconnect electrical appliances and turn off gas cylinders.",
+    "Stock up on non-perishable food, fresh drinking water, and essential medicines for 3-5 days.",
+    "Stay indoors away from windows in an interior windowless room or bathroom.",
+    "Beware of the 'Eye of the Cyclone' — a temporary calm period followed by fierce winds from the opposite direction."
+  ],
+  "evacuation": [
+    "If living in coastal low-lying areas or weak structures, evacuate early to official cyclone shelters.",
+    "Carry your emergency Go-Bag, warm clothes, and important documents.",
+    "Follow police and disaster management instruction routes strictly."
+  ],
+  "firstAid": [
+    "Clean windblown debris cuts with clean water and antiseptic.",
+    "Treat head injuries from flying debris carefully; keep victim still and support the head.",
+    "Keep hypothermia victims warm using dry blankets."
+  ],
+  "emergencyChecklist": [
+    "Battery-operated emergency radio",
+    "Heavy-duty rope and plastic tarpaulins",
+    "Waterproof flashlights and extra batteries",
+    "3-day supply of drinking water and canned food",
+    "First aid kit and prescription medications"
+  ],
+  "dos": [
+    "DO remain indoors until official 'All Clear' is announced.",
+    "DO stay away from coastal waters and storm surge zones.",
+    "DO keep emergency lights charged."
+  ],
+  "donts": [
+    "DON'T go outside during the calm 'Eye of the Storm'.",
+    "DON'T touch fallen trees or downed electric wires.",
+    "DON'T venture into sea for fishing or sightseeing."
+  ]
+}

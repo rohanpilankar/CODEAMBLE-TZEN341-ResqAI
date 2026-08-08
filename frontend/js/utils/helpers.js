@@ -1,3 +1,34 @@
+import { CONFIG } from '../config.js';
+
+function apiOrigin() {
+  try {
+    return new URL(CONFIG.API_BASE_URL).origin;
+  } catch {
+    return CONFIG.API_BASE_URL.split('/').slice(0, 3).join('/');
+  }
+}
+
+export function resolveMediaUrl(url) {
+  if (!url) return url;
+  if (/^(https?:)?\/\//.test(url) || url.startsWith('data:') || url.startsWith('blob:')) {
+    return url;
+  }
+  if (url.startsWith('/')) {
+    return apiOrigin() + url;
+  }
+  return url;
+}
+
+export function pickMediaUrl(inc) {
+  const candidates = [];
+  if (inc.media_url) candidates.push(inc.media_url);
+  if (Array.isArray(inc.images)) {
+    inc.images.forEach((img) => candidates.push(typeof img === 'string' ? img : (img && img.image_url)));
+  }
+  const real = candidates.find((c) => c && !c.startsWith('data:'));
+  return real || candidates.find(Boolean) || null;
+}
+
 export function debounce(func, wait = 300) {
   let timeout;
   return function executedFunction(...args) {

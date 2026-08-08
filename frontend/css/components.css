@@ -99,3 +99,22 @@
 .alert-warning { background: rgba(245,158,11,0.10); border-color: var(--warning); }
 .alert-success { background: rgba(16,185,129,0.10); border-color: var(--success); }
 .alert-info    { background: rgba(59,130,246,0.10);  border-color: var(--info); }
+
+/* Rescue Location & Weather Radar UI */
+#rd-weather-radar-card {
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 180, 216, 0.15);
+}
+#rd-weather-radar-card:hover {
+  box-shadow: 0 6px 25px rgba(0, 180, 216, 0.25);
+}
+#rescue-gps-badge {
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+}
+.btn-xs {
+  padding: 0.15rem 0.4rem;
+  font-size: 0.7rem;
+  border-radius: 4px;
+}
+

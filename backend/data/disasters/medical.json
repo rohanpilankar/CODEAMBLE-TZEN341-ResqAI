@@ -1,0 +1,39 @@
+{
+  "disaster": "Medical Emergency",
+  "title": "Medical Emergency & Disaster First Aid Guide",
+  "summary": "Quick first aid saves lives in disaster emergencies. Check scene safety, assess responsiveness, and call emergency medical aid.",
+  "precautions": [
+    "Ensure scene safety before approaching any injured victim (check for live wires, falling debris, or gas fumes).",
+    "Use personal protective equipment (gloves, masks) if available to avoid blood-borne exposure.",
+    "Call 108 or the local Ambulance Service immediately."
+  ],
+  "evacuation": [
+    "Do NOT move victims with suspected spinal or head trauma unless there is immediate life-threatening danger (fire, rising water).",
+    "Use a firm stretcher or improvised wooden board for spinal immobilization when evacuation is mandatory."
+  ],
+  "firstAid": [
+    "Severe Bleeding: Apply firm, continuous direct pressure to the wound with a clean cloth or bandage. Elevate limb above heart level.",
+    "Unresponsive & Not Breathing: Start CPR immediately — 30 chest compressions followed by 2 rescue breaths.",
+    "Choking: Perform abdominal thrusts (Heimlich maneuver) until blockage is cleared.",
+    "Fractures: Immobilize bone above and below the fracture site using splints and soft padding.",
+    "Heatstroke / Dehydration: Move victim to shade, loosen tight clothing, and offer small sips of ORS (Oral Rehydration Solution) or clean water."
+  ],
+  "emergencyChecklist": [
+    "Sterile gauze pads and adhesive bandages",
+    "Antiseptic solution (Betadine/Dettol) and alcohol wipes",
+    "Medical shears/scissors and tweezers",
+    "Elastic compression bandages and splints",
+    "Oral Rehydration Salts (ORS) packets",
+    "Disposable latex/nitrile gloves"
+  ],
+  "dos": [
+    "DO call emergency medical services (108) early.",
+    "DO keep injured victims calm and warm.",
+    "DO apply direct pressure to stop heavy bleeding."
+  ],
+  "donts": [
+    "DON'T move victims with back/neck pain unnecessarily.",
+    "DON'T give food or liquids to an unconscious person.",
+    "DON'T remove impaled objects from wounds; stabilize them in place."
+  ]
+}

@@ -16,4 +16,8 @@ export const resourceApi = {
   assignResource(data) {
     return apiClient.post('/resources/assign', data);
   },
+  getUtilization() {
+    return apiClient.get('/resources/utilization');
+  },
 };
+

@@ -11,10 +11,15 @@ export function renderNavbar(user, title = 'Dashboard') {
       </div>
 
       <div class="topbar-actions d-flex align-items-center gap-3">
+        <button class="topbar-icon-btn theme-toggle-btn" data-theme-toggle title="Toggle Dark/Light Mode" aria-label="Toggle Theme">
+          <i class="fa fa-adjust"></i>
+        </button>
+
         <button class="topbar-icon-btn" id="btn-notifications" title="Notifications">
           <i class="fa fa-bell"></i>
           <span class="notification-dot" id="notif-dot" style="display: none;"></span>
         </button>
+
 
         <div class="d-flex align-items-center gap-2 px-2 py-1" style="background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border); border-radius: 20px;">
           <div class="user-avatar-sm" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary-light)); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;">

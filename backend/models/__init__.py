@@ -4,6 +4,7 @@ from backend.models.shelter import Shelter, ShelterCapacity, MedicalFacility
 from backend.models.resource import Resource, RescueTeam, Vehicle, Equipment, Volunteer, Assignment, ResourceType, ResourceStatus
 from backend.models.notification import Notification, SystemLog, AuditLog
 from backend.models.emergency import EmergencyContact, RouteHistory, Settings
+from backend.models.public import NewsArticle, ContactMessage
 
 __all__ = [
     "Role", "User",
@@ -11,5 +12,6 @@ __all__ = [
     "Shelter", "ShelterCapacity", "MedicalFacility",
     "Resource", "RescueTeam", "Vehicle", "Equipment", "Volunteer", "Assignment", "ResourceType", "ResourceStatus",
     "Notification", "SystemLog", "AuditLog",
-    "EmergencyContact", "RouteHistory", "Settings"
+    "EmergencyContact", "RouteHistory", "Settings",
+    "NewsArticle", "ContactMessage"
 ]

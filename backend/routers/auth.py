@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.database.session import get_db
-from backend.schemas.auth import LoginRequest, RegisterRequest, RefreshTokenRequest, TokenResponse
+from backend.schemas.auth import LoginRequest, RegisterRequest, RefreshTokenRequest, TokenResponse, ForgotPasswordRequest, ResetPasswordRequest
 from backend.schemas.user import UserResponse
 from backend.services.auth_service import AuthService
 from backend.auth.dependencies import get_current_user
@@ -56,6 +56,26 @@ def refresh(req: RefreshTokenRequest, db: Session = Depends(get_db)):
         }
     )
 
+@router.post("/forgot-password")
+def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    service = AuthService(db)
+    token = service.request_password_reset(req.email)
+    return api_response(
+        success=True,
+        message="Password reset instructions have been generated.",
+        data={"reset_token": token}
+    )
+
+@router.post("/reset-password")
+def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
+    service = AuthService(db)
+    service.reset_password(req.token, req.new_password)
+    return api_response(
+        success=True,
+        message="Password has been reset successfully. You can now log in.",
+        data={}
+    )
+
 @router.get("/me")
 def get_me(current_user: User = Depends(get_current_user)):
     return api_response(
@@ -71,3 +91,4 @@ def get_me(current_user: User = Depends(get_current_user)):
             "avatar_url": current_user.avatar_url
         }
     )
+

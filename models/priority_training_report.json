@@ -1,0 +1,14 @@
+{
+    "best_model": "XGBoost",
+    "accuracy": 0.9684,
+    "weighted_f1": 0.9683914221698197,
+    "classes": [
+        "Critical",
+        "High",
+        "Low",
+        "Medium"
+    ],
+    "num_features": 36,
+    "train_samples": 40000,
+    "test_samples": 10000
+}

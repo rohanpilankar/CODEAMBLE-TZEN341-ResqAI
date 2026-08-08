@@ -27,7 +27,9 @@ export const storageService = {
   },
   getUserRole() {
     const user = this.getUser();
-    return user?.role || null;
+    if (!user) return null;
+    if (typeof user.role === 'object' && user.role !== null) return user.role.name || null;
+    return user.role || null;
   },
   setAccessToken(token) {
     localStorage.setItem(CONFIG.ACCESS_TOKEN_KEY, token);

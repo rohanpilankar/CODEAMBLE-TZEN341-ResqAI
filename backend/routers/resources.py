@@ -31,11 +31,39 @@ def get_resources(
     data = [_serialize_resource(r) for r in resources]
     return api_response(success=True, message=f"Retrieved {len(data)} resources", data=data)
 
+@router.get("/utilization")
+def get_resource_utilization(db: Session = Depends(get_db)):
+    service = ResourceService(db)
+    resources = service.get_resources()
+    total = len(resources) or 1
+    deployed = sum(1 for r in resources if str(r.status).upper() in ["DEPLOYED", "ASSIGNED", "IN_USE"])
+    available = sum(1 for r in resources if str(r.status).upper() in ["AVAILABLE", "READY"])
+    maintenance = total - (deployed + available)
+
+    util_data = {
+        "total_resources": total,
+        "deployed_count": deployed,
+        "available_count": available,
+        "maintenance_count": max(0, maintenance),
+        "utilization_pct": round((deployed / total) * 100, 1),
+        "by_type": {}
+    }
+    for r in resources:
+        rtype = r.resource_type or "General"
+        if rtype not in util_data["by_type"]:
+            util_data["by_type"][rtype] = {"total": 0, "deployed": 0}
+        util_data["by_type"][rtype]["total"] += r.quantity or 1
+        if str(r.status).upper() in ["DEPLOYED", "ASSIGNED", "IN_USE"]:
+            util_data["by_type"][rtype]["deployed"] += r.quantity or 1
+
+    return api_response(success=True, message="Resource utilization retrieved", data=util_data)
+
 @router.get("/{resource_id}")
 def get_resource(resource_id: int, db: Session = Depends(get_db)):
     service = ResourceService(db)
     r = service.get_resource_by_id(resource_id)
     return api_response(success=True, message="Resource retrieved", data=_serialize_resource(r))
+
 
 @router.post("")
 def create_resource(

@@ -1,53 +1,115 @@
 :root {
-  /* Brand Colors */
-  --primary: #e63946;
-  --primary-dark: #c1121f;
-  --primary-light: #ff6b6b;
-  --secondary: #1d3557;
-  --secondary-light: #457b9d;
-  --accent: #f4a261;
-  --accent-dark: #e76f51;
+  /* ── ResQ AI — Fresh Rescue + AI Theme ─────────────────────────── */
+  --bg-base:    #080d1a;
+  --bg-surface: #0f1629;
+  --bg-dark:    #080d1a;
 
-  /* Neutrals */
-  --bg-dark: #0a0f1e;
-  --bg-card: rgba(255, 255, 255, 0.06);
-  --bg-card-hover: rgba(255, 255, 255, 0.10);
-  --glass-border: rgba(255, 255, 255, 0.10);
-  --text-primary: #f0f4ff;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  /* ── Glass Card Tokens ──────────────────────────────────────────── */
+  --bg-card:       rgba(15, 22, 41, 0.82);
+  --bg-card-hover: rgba(15, 22, 41, 0.96);
+  --glass-border:  rgba(255, 255, 255, 0.09);
 
-  /* Status Colors */
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --info: #3b82f6;
+  /* ── Brand — AI Cyan + Rescue Coral ───────────────────────────── */
+  --primary:       #06b6d4;
+  --primary-dark:  #0891b2;
+  --primary-light: #67e8f9;
+  --primary-rgb:   6, 182, 212;
 
-  /* Severity Colors */
-  --severity-critical: #ff0038;
-  --severity-high: #ff6b00;
-  --severity-medium: #f59e0b;
-  --severity-low: #10b981;
+  --secondary:       #1e3a5f;
+  --secondary-light: #7dd3fc;
 
-  /* Spacing */
+  --accent:      #f43f5e;
+  --accent-dark: #e11d48;
+  --accent-rgb:  244, 63, 94;
+
+  /* ── Semantic Status Colors ────────────────────────────────────── */
+  --success: #22c55e;
+  --warning: #eab308;
+  --danger:  #ef4444;
+  --info:    #38bdf8;
+
+  /* ── Text Hierarchy ────────────────────────────────────────────── */
+  --text-primary:   #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted:     #94a3b8;
+
+  /* ── Severity Colors (safety-critical — keep fully saturated) ─── */
+  --severity-critical: #ff2d55;
+  --severity-high:     #ff7f32;
+  --severity-medium:   #fbbf24;
+  --severity-low:      #34d399;
+
+  /* ── Primary alpha helpers (use: rgba(var(--primary-rgb), X)) ─── */
+  --primary-alpha-05: rgba(var(--primary-rgb), 0.05);
+  --primary-alpha-15: rgba(var(--primary-rgb), 0.15);
+  --primary-alpha-18: rgba(var(--primary-rgb), 0.18);
+  --primary-alpha-22: rgba(var(--primary-rgb), 0.22);
+  --primary-alpha-25: rgba(var(--primary-rgb), 0.25);
+  --primary-alpha-30: rgba(var(--primary-rgb), 0.30);
+  --primary-alpha-35: rgba(var(--primary-rgb), 0.35);
+  --primary-alpha-40: rgba(var(--primary-rgb), 0.40);
+  --primary-alpha-45: rgba(var(--primary-rgb), 0.45);
+  --primary-alpha-50: rgba(var(--primary-rgb), 0.50);
+  --primary-alpha-55: rgba(var(--primary-rgb), 0.55);
+  --primary-alpha-70: rgba(var(--primary-rgb), 0.70);
+  --primary-focus-ring: rgba(var(--primary-rgb), 0.18);
+
+  /* ── Spacing ────────────────────────────────────────────────────── */
   --sidebar-width: 260px;
   --topbar-height: 64px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  --radius-sm:     8px;
+  --radius-md:     12px;
+  --radius-lg:     20px;
+  --radius-xl:     28px;
 
-  /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
-  --shadow-glow-red: 0 0 20px rgba(230, 57, 70, 0.4);
+  /* ── Layered Shadow System ─────────────────────────────────────── */
+  --shadow-xs:   0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-sm:   0 2px 8px rgba(0, 0, 0, 0.45);
+  --shadow-md:   0 4px 20px rgba(0, 0, 0, 0.55);
+  --shadow-lg:   0 8px 40px rgba(0, 0, 0, 0.65);
+  --shadow-glow: 0 0 24px rgba(var(--primary-rgb), 0.45);
 
-  /* Transitions */
+  --shadow-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+  /* ── Transitions ────────────────────────────────────────────────── */
   --transition-fast: 0.15s ease;
-  --transition-med: 0.3s ease;
+  --transition-med:  0.3s ease;
   --transition-slow: 0.5s ease;
 
-  /* Font */
+  /* ── Font ───────────────────────────────────────────────────────── */
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
+
+/* ── Light Theme Color Scheme Override ────────────────────────────────────────── */
+html[data-theme="light"],
+[data-theme="light"],
+body.light-theme {
+  --bg-base:        #f1f5f9 !important;
+  --bg-surface:     #ffffff !important;
+  --bg-dark:        #f8fafc !important;
+
+  --bg-card:       #ffffff !important;
+  --bg-card-hover: #f8fafc !important;
+  --glass-border:  #cbd5e1 !important;
+
+  --primary:       #0284c7 !important;
+  --primary-dark:  #0369a1 !important;
+  --primary-light: #0284c7 !important;
+  --primary-rgb:   2, 132, 199 !important;
+
+  --secondary:       #e2e8f0 !important;
+  --secondary-light: #0284c7 !important;
+
+  --text-primary:   #0f172a !important;
+  --text-secondary: #334155 !important;
+  --text-muted:     #64748b !important;
+
+  --shadow-xs:   0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-sm:   0 2px 8px rgba(15, 23, 42, 0.08);
+  --shadow-md:   0 4px 20px rgba(15, 23, 42, 0.12);
+  --shadow-lg:   0 8px 40px rgba(15, 23, 42, 0.16);
+  --shadow-glow: 0 0 24px rgba(2, 132, 199, 0.25);
+  --shadow-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+

@@ -1,0 +1,43 @@
+{
+  "disaster": "Fire",
+  "title": "Fire Safety & Evacuation Guide",
+  "summary": "Smoke inhalation is the primary hazard in fires. Stay low, get out fast, and never go back inside a burning building.",
+  "precautions": [
+    "Test closed doors with the back of your hand before opening. If hot, do NOT open; use an alternate exit.",
+    "Crawl low under smoke where air is cleaner and cooler.",
+    "Know at least two fire exit routes from every room in your building.",
+    "If your clothes catch fire: STOP, DROP, and ROLL until flames are extinguished.",
+    "Install and maintain smoke detectors and ABC dry chemical fire extinguishers on every floor."
+  ],
+  "evacuation": [
+    "Evacuate immediately via fire stairwells. Do NOT use elevators under any circumstances.",
+    "Close doors behind you as you exit to slow down the spread of fire and smoke.",
+    "Proceed to the designated assembly area outside and remain there.",
+    "Call Emergency Fire Services (101) as soon as you are safely outside."
+  ],
+  "firstAid": [
+    "Cool thermal burns with cool (not icy) running water for 10-15 minutes.",
+    "Cover burn areas with clean, non-stick sterile bandages or plastic cling wrap.",
+    "Do NOT pop burn blisters or apply butter, oil, or ointments to deep burns.",
+    "If smoke inhalation occurs, move victim to fresh air immediately and administer oxygen if available."
+  ],
+  "emergencyChecklist": [
+    "Fire extinguisher (ABC type)",
+    "Smoke masks or wet towels",
+    "Flashlight and emergency whistle",
+    "Burn gel and sterile gauze dressings",
+    "Emergency contact list with Fire Department number (101)"
+  ],
+  "dos": [
+    "DO stay low to the floor where air is fresher.",
+    "DO Stop, Drop, and Roll if clothing catches fire.",
+    "DO feel doors for heat before opening.",
+    "DO get out immediately and stay out."
+  ],
+  "donts": [
+    "DON'T use elevators during a fire.",
+    "DON'T re-enter a burning building for belongings.",
+    "DON'T open hot doors.",
+    "DON'T inhale smoke; cover your nose with a wet cloth."
+  ]
+}
