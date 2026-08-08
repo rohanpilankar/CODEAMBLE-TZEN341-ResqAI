@@ -7,30 +7,27 @@ echo  ║          ResQAI — Local Dev Start        ║
 echo  ╚══════════════════════════════════════════╝
 echo.
 
-:: ── 1. Check .venv exists ──────────────────────────────────────────
-if not exist ".venv\Scripts\python.exe" (
-  echo  [ERROR] .venv not found. Run:  python -m venv .venv  then  .venv\Scripts\pip install -r requirements.txt
-  pause
-  exit /b 1
+:: ── 1. Prefer .venv python, fallback to system python ────────────
+set PYTHON_BIN=.venv\Scripts\python.exe
+if not exist "%PYTHON_BIN%" (
+  where python >nul 2>nul
+  if %errorlevel% neq 0 (
+    echo  [ERROR] Python is not installed or not in PATH.
+    echo          Please install Python 3.11+ and try again.
+    pause
+    exit /b 1
+  )
+  set PYTHON_BIN=python
 )
 
-:: ── 2. Start FastAPI backend in a new window ───────────────────────
-echo  [1/2] Starting FastAPI backend on http://localhost:8000 ...
-start "ResQAI Backend" cmd /k ".venv\Scripts\python.exe -m uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000"
-timeout /t 2 /nobreak >nul
-
-:: ── 3. Start frontend static server in a new window ───────────────
-echo  [2/2] Starting frontend on http://localhost:3000 ...
-start "ResQAI Frontend" cmd /k "node_modules\.bin\http-server frontend -a 127.0.0.1 -p 3000 -c-1"
-timeout /t 2 /nobreak >nul
-
-:: ── 4. Open login page in default browser ─────────────────────────
+:: ── 2. Open login page in browser & start launcher ───────────────
+echo  [LAUNCH] Starting FastAPI backend on http://127.0.0.1:8000 ...
+echo  [LAUNCH] Starting frontend server on http://127.0.0.1:3000 ...
 echo.
-echo  ✓ Opening http://localhost:3000/login.html ...
-start http://localhost:3000/login.html
+echo  ✓ Opening login page after servers boot ...
+start "" http://127.0.0.1:3000/login.html
+"%PYTHON_BIN%" scripts\start_dev.py all
 
 echo.
-echo  Both servers are running in separate windows.
-echo  Close those windows to shut down the servers.
-echo.
+echo  Both servers were stopped.
 pause

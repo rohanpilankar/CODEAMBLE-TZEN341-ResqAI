@@ -26,6 +26,17 @@ class TestHealthEndpoint:
         resp = client.get("/api/docs")
         assert resp.status_code == 200
 
+    def test_ai_health_endpoint(self, client):
+        for path in ["/health/ai", "/api/health/ai", "/api/v1/health/ai", "/api/v1/ai/health"]:
+            resp = client.get(path)
+            assert resp.status_code == 200
+            body = resp.json()
+            assert body["success"] is True
+            data = body.get("data", {})
+            assert "severity_model" in data
+            assert "resource_model" in data
+            assert "yolo_model" in data
+
 
 class TestGlobalErrorHandlers:
     def test_404_not_found(self, client, auth_headers):
