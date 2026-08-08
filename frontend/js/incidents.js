@@ -291,7 +291,7 @@ export const incidentHandler = {
     try {
       address = await locationService.reverseGeocode(lat, lng);
       const addrInput = document.getElementById('incident-address-input');
-      if (addrInput && !addrInput.value) {
+      if (addrInput) {
         addrInput.value = address;
         addrInput.classList.add('field-autofilled');
       }
@@ -379,6 +379,9 @@ export const incidentHandler = {
     const container = document.getElementById('incident-preview-map');
     if (!container || !window.L) return;
 
+    // Unhide container first so Leaflet can calculate dimensions correctly
+    container.parentElement.classList.remove('d-none');
+
     // Destroy old instance
     if (this._previewMap) {
       this._previewMap.remove();
@@ -414,17 +417,30 @@ export const incidentHandler = {
     });
 
     this._previewMarker = window.L.marker([lat, lng], { icon: pulseIcon }).addTo(this._previewMap);
-    container.parentElement.classList.remove('d-none');
+
+    // Ensure Leaflet resizes correctly after unhiding
+    setTimeout(() => {
+      if (this._previewMap) {
+        this._previewMap.invalidateSize();
+      }
+    }, 150);
   },
 
   updatePreviewMap(lat, lng) {
+    document.getElementById('incident-preview-map')?.parentElement?.classList.remove('d-none');
+
     if (!this._previewMap || !this._previewMarker) {
       this.initPreviewMap(lat, lng);
       return;
     }
     this._previewMap.setView([lat, lng], 15, { animate: true });
     this._previewMarker.setLatLng([lat, lng]);
-    document.getElementById('incident-preview-map')?.parentElement?.classList.remove('d-none');
+
+    setTimeout(() => {
+      if (this._previewMap) {
+        this._previewMap.invalidateSize();
+      }
+    }, 150);
   },
 
   // ── Photo Capture Handler ─────────────────────────────────────────────────

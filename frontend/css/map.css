@@ -34,7 +34,6 @@
   align-items: center;
   gap: 8px;
   background: var(--map-control-bg);
-  backdrop-filter: blur(12px);
   padding: 6px 12px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
@@ -95,7 +94,6 @@
   border-radius: 20px;
   color: var(--text-primary);
   box-shadow: var(--shadow-xs);
-  backdrop-filter: blur(8px);
 }
 .pill-critical { background: var(--severity-critical); color: var(--text-primary); }
 .pill-high     { background: var(--severity-high); color: var(--text-primary); }
@@ -149,7 +147,6 @@
   border: 1px solid var(--border-color) !important;
   border-radius: var(--radius-md) !important;
   box-shadow: var(--shadow-lg) !important;
-  backdrop-filter: blur(16px) !important;
   padding: 4px !important;
 }
 .leaflet-popup-content {

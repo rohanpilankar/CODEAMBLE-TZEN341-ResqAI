@@ -44,23 +44,17 @@
     }
 
     /* ── Glow blobs ───────────────────────── */
-    .blob {
-      position: fixed; border-radius: 50%;
-      filter: blur(100px); pointer-events: none; z-index: 0; opacity: 0.22;
-    }
-    .blob-1 { width: 420px; height: 420px; background: var(--primary); top: -80px; left: -100px; }
-    .blob-2 { width: 320px; height: 320px; background: var(--accent); bottom: -80px; right: -60px; }
+    .blob { display: none; }
 
     /* ── Auth card ────────────────────────── */
     .auth-card {
       position: relative; z-index: 1;
       width: 100%; max-width: 440px;
-      background: var(--bg-card);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
       border-radius: 20px;
       padding: 36px 32px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+      box-shadow: var(--shadow-lg);
     }
 
     /* ── Logo ─────────────────────────────── */

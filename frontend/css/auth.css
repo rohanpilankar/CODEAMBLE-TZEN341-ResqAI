@@ -15,14 +15,8 @@
 /* ── Left Decorative Panel ───────────────────────────────────────── */
 
 .auth-left {
-
-  background: var(--topbar-bg);
-
-  backdrop-filter: blur(24px);
-
-  -webkit-backdrop-filter: blur(24px);
-
-  border-right: 1px solid var(--glass-border);
+  background: var(--bg-surface-secondary);
+  border-right: 1px solid var(--border-color);
 
   display: flex;
 
@@ -184,11 +178,7 @@
 
   padding: 60px 48px;
 
-  background: var(--topbar-bg);
-
-  backdrop-filter: blur(24px);
-
-  -webkit-backdrop-filter: blur(24px);
+  background: var(--bg-surface);
 
 }
 
