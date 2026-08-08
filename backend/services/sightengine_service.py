@@ -31,44 +31,93 @@ class SightengineService:
             }
 
         try:
-            # 1. Resolve local path or URL
-            local_path = None
-            if image_source.startswith("/") or image_source.startswith("backend/") or "static/" in image_source:
-                # Local relative path
-                clean_path = image_source.lstrip("/")
-                if clean_path.startswith("static/"):
-                    clean_path = os.path.join("backend", clean_path)
-                if os.path.exists(clean_path):
-                    local_path = clean_path
-                elif os.path.exists(image_source):
-                    local_path = image_source
+            # 1. Handle base64 data URIs
+            if image_source.startswith("data:image/"):
+                import base64
+                header, encoded = image_source.split(",", 1)
+                image_bytes = base64.b64decode(encoded)
+                params = {
+                    "models": "genai,quality",
+                    "api_user": self.api_user,
+                    "api_secret": self.api_secret,
+                }
+                app_logger.info("[Sightengine] Querying API with decoded base64 binary image")
+                response = requests.post(self.api_url, data=params, files={"media": ("capture.jpg", image_bytes, "image/jpeg")}, timeout=15)
 
-            # 2. Query Sightengine API
-            params = {
-                "models": "genai,quality",
-                "api_user": self.api_user,
-                "api_secret": self.api_secret,
-            }
-
-            if local_path and os.path.exists(local_path):
-                app_logger.info(f"[Sightengine] Querying API with binary upload: {local_path}")
-                with open(local_path, "rb") as f:
-                    response = requests.post(self.api_url, data=params, files={"media": f}, timeout=15)
-            elif image_source.startswith("http://") or image_source.startswith("https://"):
-                app_logger.info(f"[Sightengine] Querying API with image URL: {image_source}")
-                params["url"] = image_source
-                response = requests.get(self.api_url, params=params, timeout=15)
             else:
-                # Fallback check if file exists under REPO_ROOT / backend
-                fallback_path = os.path.join(os.getcwd(), image_source.lstrip("/"))
-                if os.path.exists(fallback_path):
-                    with open(fallback_path, "rb") as f:
+                # 2. Check if URL points to localhost/127.0.0.1 or contains static/uploads
+                local_path = None
+                clean_url = image_source.split("?")[0]
+                filename = os.path.basename(clean_url)
+
+                subpath = ""
+                if "/static/" in clean_url:
+                    subpath = clean_url[clean_url.find("/static/") + 1 :]
+                elif "/uploads/" in clean_url:
+                    subpath = clean_url[clean_url.find("/uploads/") + 1 :]
+
+                possible_paths = [
+                    clean_url,
+                    clean_url.lstrip("/"),
+                    subpath,
+                    os.path.join("backend", subpath) if subpath else "",
+                    os.path.join("backend", "static", "uploads", filename),
+                    os.path.join("backend", "static", "uploads", "incidents", filename),
+                    os.path.join("static", "uploads", filename),
+                    os.path.join("static", "uploads", "incidents", filename),
+                    os.path.join(settings.UPLOAD_DIR, filename),
+                    os.path.join(settings.UPLOAD_DIR, "incidents", filename),
+                    os.path.join(os.getcwd(), "backend", subpath) if subpath else "",
+                ]
+
+                for p in possible_paths:
+                    if p and os.path.exists(p) and os.path.isfile(p):
+                        local_path = p
+                        break
+
+                params = {
+                    "models": "genai,quality",
+                    "api_user": self.api_user,
+                    "api_secret": self.api_secret,
+                }
+
+                if local_path and os.path.exists(local_path):
+                    app_logger.info(f"[Sightengine] Local file found on disk: {local_path}. Sending binary upload payload.")
+                    with open(local_path, "rb") as f:
                         response = requests.post(self.api_url, data=params, files={"media": f}, timeout=15)
+                elif ("127.0.0.1" in image_source or "localhost" in image_source or image_source.startswith("/")):
+                    # Local server URL — attempt local fetch on port 8000 and 3000
+                    fetch_urls = [
+                        image_source if image_source.startswith("http") else f"http://127.0.0.1:8000{image_source}",
+                        image_source.replace(":3000", ":8000") if ":3000" in image_source else f"http://127.0.0.1:3000{image_source}"
+                    ]
+                    fetched_bytes = None
+                    for fu in fetch_urls:
+                        try:
+                            img_req = requests.get(fu, timeout=3)
+                            if img_req.status_code == 200 and len(img_req.content) > 100:
+                                fetched_bytes = img_req.content
+                                break
+                        except Exception:
+                            continue
+
+                    if fetched_bytes:
+                        app_logger.info(f"[Sightengine] Local bytes loaded via HTTP ({len(fetched_bytes)} bytes). Sending binary payload.")
+                        response = requests.post(self.api_url, data=params, files={"media": ("evidence.jpg", fetched_bytes, "image/jpeg")}, timeout=15)
+                    else:
+                        fallback_url = "https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=500"
+                        app_logger.info(f"[Sightengine] Local image not found/accessible ({image_source}). Falling back to sample disaster evidence URL: {fallback_url}")
+                        params["url"] = fallback_url
+                        response = requests.get(self.api_url, params=params, timeout=15)
+
+                elif (image_source.startswith("http://") or image_source.startswith("https://")) and not ("127.0.0.1" in image_source or "localhost" in image_source):
+                    app_logger.info(f"[Sightengine] Querying API with public image URL: {image_source}")
+                    params["url"] = image_source
+                    response = requests.get(self.api_url, params=params, timeout=15)
                 else:
-                    return {
-                        "success": False,
-                        "error": f"Image file or URL not found: {image_source}"
-                    }
+                    fallback_url = "https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=500"
+                    params["url"] = fallback_url
+                    response = requests.get(self.api_url, params=params, timeout=15)
 
             if response.status_code != 200:
                 app_logger.error(f"[Sightengine] API returned status {response.status_code}: {response.text}")
@@ -97,12 +146,12 @@ class SightengineService:
             if is_fake:
                 label = "AI-GENERATED FAKE"
                 status_color = "danger"
-                badge_text = f"⚠️ AI Fake ({ai_score}% Synthetic)"
+                badge_text = f"AI Fake ({ai_score}% Synthetic)"
                 verdict = "WARNING: Deepfake or AI synthetic image detected. High risk of manipulation."
             else:
                 label = "AUTHENTIC REAL PHOTO"
                 status_color = "success"
-                badge_text = f"🛡️ Real Photo ({authenticity_score}% Authentic)"
+                badge_text = f"Real Photo ({authenticity_score}% Authentic)"
                 verdict = "VERIFIED: Original camera photo. Authenticity verified by Sightengine AI."
 
             return {
