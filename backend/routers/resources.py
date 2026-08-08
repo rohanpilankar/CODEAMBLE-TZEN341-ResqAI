@@ -58,6 +58,17 @@ def get_resource_utilization(db: Session = Depends(get_db)):
 
     return api_response(success=True, message="Resource utilization retrieved", data=util_data)
 
+@router.get("/teams")
+@router.get("/teams/list")
+def get_rescue_teams(db: Session = Depends(get_db)):
+    service = ResourceService(db)
+    teams = service.get_rescue_teams()
+    data = [{
+        "id": t.id, "name": t.name, "leader_name": t.leader_name,
+        "contact_phone": t.contact_phone, "specialization": t.specialization,
+    } for t in teams]
+    return api_response(success=True, message=f"Retrieved {len(data)} rescue teams", data=data)
+
 @router.get("/{resource_id}")
 def get_resource(resource_id: int, db: Session = Depends(get_db)):
     service = ResourceService(db)
@@ -84,16 +95,6 @@ def update_resource(
     service = ResourceService(db)
     r = service.update_resource(resource_id, req)
     return api_response(success=True, message="Resource updated", data=_serialize_resource(r))
-
-@router.get("/teams/list")
-def get_rescue_teams(db: Session = Depends(get_db)):
-    service = ResourceService(db)
-    teams = service.get_rescue_teams()
-    data = [{
-        "id": t.id, "name": t.name, "leader_name": t.leader_name,
-        "contact_phone": t.contact_phone, "specialization": t.specialization,
-    } for t in teams]
-    return api_response(success=True, message=f"Retrieved {len(data)} rescue teams", data=data)
 
 @router.post("/assign")
 async def assign_resource(

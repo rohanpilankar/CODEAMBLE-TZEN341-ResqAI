@@ -143,7 +143,9 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
 
 
 # ─── Health Check ──────────────────────────────────────────────────────────────
+@app.get("/health")
 @app.get("/api/health")
+@app.get("/api/v1/health")
 def health_check():
     return {
         "success": True,
@@ -152,6 +154,19 @@ def health_check():
         "version": "1.0.0",
         "environment": settings.ENVIRONMENT,
         "ws_connections": ws_manager.connection_count,
+        "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
+    }
+
+
+@app.get("/health/ai")
+@app.get("/api/health/ai")
+@app.get("/api/v1/health/ai")
+def ai_health_check():
+    from backend.services.ai_service import ai_service
+    return {
+        "success": True,
+        "status": "healthy",
+        "data": ai_service.get_ai_status(),
         "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
     }
 

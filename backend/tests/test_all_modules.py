@@ -105,4 +105,36 @@ def test_user_preferences_endpoints(auth_headers):
     assert get_res.json()["success"] is True
     assert get_res.json()["data"]["theme"] == "light"
 
+def test_resources_teams_endpoints():
+    res1 = client.get("/api/v1/resources/teams")
+    assert res1.status_code == 200
+    assert res1.json()["success"] is True
+
+    res2 = client.get("/api/v1/resources/teams/list")
+    assert res2.status_code == 200
+    assert res2.json()["success"] is True
+
+def test_notifications_system_logs():
+    res = client.get("/api/v1/notifications/system-logs")
+    assert res.status_code == 200
+    assert res.json()["success"] is True
+
+def test_voice_triage_alias():
+    res = client.post("/api/v1/ai/voice-triage", json={
+        "transcript": "Flash flood building up rapidly in Dharavi area",
+        "latitude": 19.0450,
+        "longitude": 72.8545
+    })
+    assert res.status_code == 200
+    assert res.json()["success"] is True
+
+def test_health_v1_and_root_aliases():
+    res1 = client.get("/api/v1/health")
+    assert res1.status_code == 200
+    assert res1.json()["success"] is True
+
+    res2 = client.get("/health")
+    assert res2.status_code == 200
+    assert res2.json()["success"] is True
+
 

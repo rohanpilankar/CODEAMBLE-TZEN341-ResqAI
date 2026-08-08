@@ -12,6 +12,10 @@ from backend.models.resource import Resource, ResourceType, ResourceStatus, Assi
 
 router = APIRouter(prefix="/ai", tags=["AI Services"])
 
+@router.get("/health")
+def get_ai_health():
+    return api_response(success=True, data=ai_service.get_ai_status(), message="AI subsystem status")
+
 class AnalyzeIncidentRequest(BaseModel):
     title: str
     description: str
@@ -99,6 +103,7 @@ class VoiceTriageRequest(BaseModel):
     latitude: Optional[float] = 19.0760
     longitude: Optional[float] = 72.8777
 
+@router.post("/voice-triage")
 @router.post("/process-voice-triage")
 def process_voice_triage(req: VoiceTriageRequest):
     """AI Voice Triage: Parses voice transcript into structured incident fields and predicts severity."""

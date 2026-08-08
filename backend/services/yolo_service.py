@@ -9,6 +9,7 @@ import os
 import uuid
 import json
 import logging
+import threading
 import cv2
 import numpy as np
 from pathlib import Path
@@ -28,21 +29,36 @@ class YOLOService:
     def __init__(self):
         self.model = None
         self.model_loaded = False
-        self._init_model()
+        self._initialized = False
+        self._lock = threading.Lock()
 
-    def _init_model(self):
+    def _ensure_model_loaded(self):
+        if self._initialized:
+            return
+        with self._lock:
+            if self._initialized:
+                return
+            self._initialized = True
+            print("[YOLO] Loading YOLOv8 Vision model...")
+            import time
+            t0 = time.perf_counter()
+            self._init_model(t0)
+
+    def _init_model(self, t0=None):
         try:
             from ultralytics import YOLO
             if MODEL_PATH.exists():
                 self.model = YOLO(str(MODEL_PATH))
                 self.model_loaded = True
-                print(f"[YOLO] Successfully loaded YOLOv8 model from {MODEL_PATH.name}")
+                elapsed = (time.perf_counter() - t0) if t0 else 0
+                print(f"[YOLO] Successfully loaded YOLOv8 model in {elapsed:.2f}s from {MODEL_PATH.name}")
             else:
                 # Fallback to downloading or initializing default yolov8n
                 self.model = YOLO("yolov8n.pt")
                 self.model_loaded = True
                 print("[YOLO] Loaded default YOLOv8n model weights")
         except Exception as e:
+            print(f"[YOLO] Failed to load YOLOv8 model: {e}")
             logger.warning(f"Notice: Failed to initialize YOLO model: {e}")
             self.model = None
             self.model_loaded = False
@@ -52,6 +68,7 @@ class YOLOService:
 
         Returns annotated image URL and structured detection metadata.
         """
+        self._ensure_model_loaded()
         if not image_input:
             return self._empty_response("No image provided for analysis.")
 
