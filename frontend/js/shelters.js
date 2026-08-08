@@ -327,13 +327,31 @@ export const shelterHandler = {
             const userMarker = L.marker([userLat, userLng], { icon: userIcon }).addTo(shelterMap);
             userMarker.bindPopup('<b>Your Current Location</b>');
 
-            L.polyline([
-              [userLat, userLng],
-              [lat, lng]
-            ], { color: '#3b82f6', weight: 5, opacity: 0.9, dashArray: '10, 10' }).addTo(shelterMap);
+            // Fetch real road-following navigation route from OSRM via FastAPI
+            fetch(`${CONFIG.API_BASE_URL}/route?startLat=${userLat}&startLng=${userLng}&endLat=${lat}&endLng=${lng}`)
+              .then(res => res.json())
+              .then(resData => {
+                if (resData && resData.success && resData.data && resData.data.geometry) {
+                  const geoCoords = resData.data.geometry.coordinates; // [[lng, lat], ...]
+                  if (!geoCoords || geoCoords.length <= 2) {
+                    throw new Error('Routing engine returned insufficient road geometry');
+                  }
 
-            const bounds = L.latLngBounds([[userLat, userLng], [lat, lng]]);
-            shelterMap.fitBounds(bounds, { padding: [60, 60] });
+                  const leafletCoords = geoCoords.map(c => [c[1], c[0]]); // [[lat, lng], ...]
+                  console.log(`[ShelterDetailMap] Rendered ${leafletCoords.length} Leaflet OSRM road coordinates.`);
+
+                  L.polyline(leafletCoords, { color: '#0284c7', weight: 6, opacity: 0.95 }).addTo(shelterMap);
+
+                  const bounds = L.latLngBounds(leafletCoords);
+                  shelterMap.fitBounds(bounds, { padding: [60, 60] });
+                } else {
+                  throw new Error('Unable to calculate road route.');
+                }
+              })
+              .catch(err => {
+                console.warn('[ShelterDetailMap] Road routing error:', err);
+                notificationService.error('Navigation Error', 'Unable to calculate road route.');
+              });
           },
           () => {
             shelterMap.invalidateSize();

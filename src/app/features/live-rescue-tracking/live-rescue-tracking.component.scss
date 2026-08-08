@@ -196,6 +196,190 @@
   }
 }
 
+/* ── Google Maps–Style Navigation HUD Card ── */
+.navigation-hud-card {
+  position: absolute;
+  top: 90px;
+  left: 16px;
+  z-index: 15;
+  width: 380px;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .hud-turn-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(2, 132, 199, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 14px;
+    padding: 12px;
+
+    .turn-icon-wrap {
+      width: 44px;
+      height: 44px;
+      background: rgba(2, 132, 199, 0.3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .turn-details {
+      flex: 1;
+      .turn-instruction { font-weight: 700; font-size: 0.95rem; color: #fff; }
+      .turn-sub {
+        font-size: 0.78rem;
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 2px;
+        .road-name { color: #38bdf8; }
+        .turn-dist { font-weight: 700; color: #f59e0b; }
+      }
+    }
+
+    .btn-close-hud {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      cursor: pointer;
+      &:hover { color: #ef4444; }
+    }
+  }
+
+  .hud-mode-selector {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+
+    .mode-btn {
+      padding: 6px 4px;
+      border-radius: 8px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+
+      &:hover { background: rgba(51, 65, 85, 0.9); }
+      &.active {
+        background: #0284c7;
+        color: #fff;
+        border-color: #38bdf8;
+        box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
+      }
+    }
+  }
+
+  .hud-metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+
+    .metric-box {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 8px 12px;
+      .m-val { font-size: 1.1rem; font-weight: 800; }
+      .m-lbl { font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; }
+    }
+  }
+
+  .hud-safety-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.78rem;
+
+    .safety-badge-pill {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      &.LOW { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+      &.MODERATE { background: rgba(234, 179, 8, 0.15); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+      &.HIGH { background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.3); }
+      &.CRITICAL { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    }
+
+    .gps-accuracy-tag { color: #94a3b8; font-size: 0.72rem; }
+  }
+
+  .hud-simulation-bar {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 8px 12px;
+
+    .sim-label { font-size: 0.75rem; font-weight: 700; color: #f8fafc; }
+    .sim-controls {
+      display: flex;
+      gap: 6px;
+      .sim-btn {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #fff;
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        &:hover { background: #0284c7; }
+      }
+    }
+
+    .sim-progress-track {
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      margin-top: 6px;
+      overflow: hidden;
+
+      .sim-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #38bdf8, #0284c7);
+        transition: width 0.3s ease-out;
+      }
+    }
+  }
+
+  .hud-actions-footer {
+    display: flex;
+    gap: 8px;
+
+    .btn-hud-act {
+      flex: 1;
+      padding: 8px;
+      border-radius: 10px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover { background: rgba(51, 65, 85, 0.9); }
+    }
+  }
+}
+
 /* ── Left Floating Map Controls ── */
 .left-controls {
   position: absolute;
@@ -313,6 +497,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    cursor: pointer;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 
     .m-icon {
@@ -330,7 +515,7 @@
   }
 }
 
-/* ── Right Inspector Panel (Glassmorphism) ── */
+/* ── Right Inspector Panel ── */
 .inspector-panel {
   position: absolute;
   top: 90px;
@@ -395,22 +580,6 @@
     }
 
     .desc-text { font-size: 0.85rem; color: #cbd5e1; line-height: 1.4; }
-
-    .route-steps-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      background: rgba(30, 41, 59, 0.5);
-      border-radius: 10px;
-      padding: 10px;
-
-      .step-item {
-        display: flex;
-        gap: 10px;
-        font-size: 0.8rem;
-        i { color: #38bdf8; margin-top: 2px; }
-      }
-    }
 
     .action-buttons-grid {
       display: grid;

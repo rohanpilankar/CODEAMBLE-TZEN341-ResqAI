@@ -9,13 +9,14 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription, combineLatest } from 'rxjs';
-import { environment } from '../../../environments/environment';
 
 import {
   DisasterIncident,
   LayerFilterState,
   MedicalPoint,
   RescueVehicle,
+  RouteMode,
+  RouteProfile,
   RouteResult,
   SearchResultItem,
   ShelterPoint,
@@ -27,6 +28,7 @@ import {
   IncidentService,
   MapService,
   RoutingService,
+  SimulationState,
   TrackingService,
   WebSocketService
 } from '../../core/services';
@@ -42,10 +44,10 @@ import {
 export class LiveRescueTrackingComponent implements OnInit, AfterViewInit, OnDestroy {
   public mapContainerId = 'live-rescue-map-viewport';
 
-  // Subscriptions & Observables
   private subs = new Subscription();
 
   public userLocation: UserLocation | null = null;
+  public activeUserLocation: UserLocation | null = null;
   public rescueVehicles: RescueVehicle[] = [];
   public incidents: DisasterIncident[] = [];
   public shelters: ShelterPoint[] = [];
@@ -53,6 +55,23 @@ export class LiveRescueTrackingComponent implements OnInit, AfterViewInit, OnDes
 
   public activeRoute: RouteResult | null = null;
   public isCalculatingRoute = false;
+  public routingError: string | null = null;
+
+  public selectedProfile: RouteProfile = 'driving';
+  public selectedRouteMode: RouteMode = 'fastest';
+
+  public currentDestinationCoords: [number, number] | null = null;
+  public currentDestinationTitle = '';
+
+  // Simulation State
+  public simulationState: SimulationState = {
+    isPlaying: false,
+    isPaused: false,
+    progressPercent: 0,
+    currentIndex: 0,
+    totalPoints: 0,
+    currentSpeedKmh: 0
+  };
 
   public nearestShelter: ShelterPoint | null = null;
   public nearestHospital: MedicalPoint | null = null;
@@ -108,10 +127,37 @@ export class LiveRescueTrackingComponent implements OnInit, AfterViewInit, OnDes
       this.geoService.currentLocation$.subscribe((loc) => {
         if (loc) {
           this.userLocation = loc;
-          this.mapService.updateUserMarker(loc);
+          if (!this.simulationState.isPlaying) {
+            this.activeUserLocation = loc;
+            this.mapService.updateUserMarker(loc);
+
+            // Dynamic rerouting check (>25m movement)
+            if (this.currentDestinationCoords && this.routingService.shouldTriggerReroute(loc.longitude, loc.latitude)) {
+              this.navigateTo(this.currentDestinationCoords[1], this.currentDestinationCoords[0], this.currentDestinationTitle);
+            }
+          }
           this.recalculateNearestPoints();
           this.cdr.markForCheck();
         }
+      })
+    );
+
+    // Bind Simulated User Location
+    this.subs.add(
+      this.routingService.simulatedUserLocation$.subscribe((simLoc) => {
+        if (simLoc && this.simulationState.isPlaying) {
+          this.activeUserLocation = simLoc;
+          this.mapService.updateUserMarker(simLoc);
+          this.cdr.markForCheck();
+        }
+      })
+    );
+
+    // Bind Simulation State
+    this.subs.add(
+      this.routingService.simulationState$.subscribe((st) => {
+        this.simulationState = st;
+        this.cdr.markForCheck();
       })
     );
 
@@ -133,7 +179,7 @@ export class LiveRescueTrackingComponent implements OnInit, AfterViewInit, OnDes
       })
     );
 
-    // Bind Rescue Vehicles
+    // Bind Rescue Vehicles WebSocket Stream
     this.subs.add(
       this.trackingService.rescueVehicles$.subscribe((vehicles) => {
         this.rescueVehicles = vehicles;
@@ -177,6 +223,20 @@ export class LiveRescueTrackingComponent implements OnInit, AfterViewInit, OnDes
       })
     );
 
+    this.subs.add(
+      this.routingService.isCalculating$.subscribe((calc) => {
+        this.isCalculatingRoute = calc;
+        this.cdr.markForCheck();
+      })
+    );
+
+    this.subs.add(
+      this.routingService.routingError$.subscribe((err) => {
+        this.routingError = err;
+        this.cdr.markForCheck();
+      })
+    );
+
     // Bind Map Item Selection
     this.subs.add(
       this.mapService.itemSelected$.subscribe((item) => {
@@ -194,14 +254,15 @@ export class LiveRescueTrackingComponent implements OnInit, AfterViewInit, OnDes
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
+    this.routingService.stopSimulation();
     this.geoService.stopTracking();
     this.wsService.disconnect();
     this.mapService.destroy();
   }
 
   private syncMapData(): void {
-    if (this.userLocation) {
-      this.mapService.updateUserMarker(this.userLocation);
+    if (this.activeUserLocation) {
+      this.mapService.updateUserMarker(this.activeUserLocation);
     }
     this.mapService.updateRescueVehicles(this.rescueVehicles, this.filters.rescueTeams);
     this.mapService.updateIncidents(this.incidents, this.filters.disasterReports);
@@ -233,6 +294,50 @@ export class LiveRescueTrackingComponent implements OnInit, AfterViewInit, OnDes
     );
   }
 
+  // ── Route Calculation ──
+  public navigateTo(destLat: number, destLng: number, title: string = 'Destination'): void {
+    const originLat = this.userLocation?.latitude || 19.0760;
+    const originLng = this.userLocation?.longitude || 72.8777;
+
+    this.currentDestinationCoords = [destLng, destLat];
+    this.currentDestinationTitle = title;
+
+    this.routingService.calculateRoute(
+      originLng,
+      originLat,
+      destLng,
+      destLat,
+      this.selectedProfile,
+      this.selectedRouteMode
+    ).subscribe();
+  }
+
+  public setRouteMode(mode: RouteMode): void {
+    this.selectedRouteMode = mode;
+    if (this.currentDestinationCoords) {
+      this.navigateTo(this.currentDestinationCoords[1], this.currentDestinationCoords[0], this.currentDestinationTitle);
+    }
+  }
+
+  public setProfile(profile: RouteProfile): void {
+    this.selectedProfile = profile;
+    if (this.currentDestinationCoords) {
+      this.navigateTo(this.currentDestinationCoords[1], this.currentDestinationCoords[0], this.currentDestinationTitle);
+    }
+  }
+
+  // ── Simulation Controls ──
+  public playSimulation(): void { this.routingService.startSimulation(); }
+  public pauseSimulation(): void { this.routingService.pauseSimulation(); }
+  public resumeSimulation(): void { this.routingService.resumeSimulation(); }
+  public resetSimulation(): void { this.routingService.resetSimulation(); }
+
+  public clearRoute(): void {
+    this.currentDestinationCoords = null;
+    this.currentDestinationTitle = '';
+    this.routingService.clearRoute();
+  }
+
   // ── Search Handling ──
   public onSearchInput(): void {
     const q = this.searchQuery.trim().toLowerCase();
@@ -261,36 +366,33 @@ export class LiveRescueTrackingComponent implements OnInit, AfterViewInit, OnDes
       }
     });
 
+    this.rescueVehicles.forEach((v) => {
+      if (v.name.toLowerCase().includes(q) || v.vehicleType.toLowerCase().includes(q)) {
+        results.push({ id: v.id, type: 'VEHICLE', title: v.name, subtitle: `${v.vehicleType} - ${v.status}`, latitude: v.latitude, longitude: v.longitude });
+      }
+    });
+
     this.searchResults = results.slice(0, 5);
   }
 
   public selectSearchResult(item: SearchResultItem): void {
     this.searchQuery = item.title;
     this.searchResults = [];
-    this.mapService.flyTo([item.longitude, item.latitude], 16, 50);
+    this.mapService.flyTo([item.longitude, item.latitude], 16, 40);
 
     if (item.type === 'INCIDENT') {
       const inc = this.incidents.find((i) => i.id === item.id);
       if (inc) this.selectedInspectorItem = { type: 'INCIDENT', data: inc };
+    } else if (item.type === 'VEHICLE') {
+      const vec = this.rescueVehicles.find((v) => v.id === item.id);
+      if (vec) this.selectedInspectorItem = { type: 'VEHICLE', data: vec };
     }
-  }
-
-  // ── Route Calculation ──
-  public navigateTo(destLat: number, destLng: number): void {
-    const originLat = this.userLocation?.latitude || 19.0760;
-    const originLng = this.userLocation?.longitude || 72.8777;
-
-    this.routingService.calculateRoute(originLng, originLat, destLng, destLat).subscribe();
-  }
-
-  public clearRoute(): void {
-    this.routingService.clearRoute();
   }
 
   // ── Controls Actions ──
   public recenterLocation(): void {
-    if (this.userLocation) {
-      this.mapService.flyTo([this.userLocation.longitude, this.userLocation.latitude], 15, 45);
+    if (this.activeUserLocation) {
+      this.mapService.flyTo([this.activeUserLocation.longitude, this.activeUserLocation.latitude], 15, 40);
     }
   }
 

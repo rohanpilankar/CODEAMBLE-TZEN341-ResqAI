@@ -27,11 +27,16 @@ export class MapService {
   public itemSelected$ = new Subject<{ type: string; data: any }>();
 
   private userMarker: any = null;
+  private originMarker: any = null;
+  private destinationMarker: any = null;
   private vehicleMarkers: Map<string | number, any> = new Map();
   private incidentMarkers: Map<string | number, any> = new Map();
+  private shelterMarkers: Map<string | number, any> = new Map();
+  private hospitalMarkers: Map<string | number, any> = new Map();
 
   private defaultCenter: [number, number] = [72.8777, 19.0760]; // [lng, lat]
   private defaultStyle = `https://api.maptiler.com/maps/streets-v4/style.json?key=${environment.mapTilerApiKey}`;
+  private animFrameId: any = null;
 
   constructor(private ngZone: NgZone) {}
 
@@ -54,8 +59,8 @@ export class MapService {
         style: this.defaultStyle,
         center: this.defaultCenter,
         zoom: 12,
-        pitch: 45,
-        bearing: -17.6,
+        pitch: 40,
+        bearing: 0,
         antialias: true,
         attributionControl: false
       });
@@ -91,7 +96,6 @@ export class MapService {
         return;
       }
 
-      // Dynamically load MapLibre CSS & JS if missing
       const cssId = 'maplibre-css';
       if (!document.getElementById(cssId)) {
         const link = document.createElement('link');
@@ -151,7 +155,7 @@ export class MapService {
             ],
             'fill-extrusion-height': ['get', 'render_height'],
             'fill-extrusion-base': ['get', 'render_min_height'],
-            'fill-extrusion-opacity': 0.65
+            'fill-extrusion-opacity': 0.6
           }
         },
         labelLayerId
@@ -195,7 +199,7 @@ export class MapService {
       });
     }
 
-    // Safe & Danger Zone Sources
+    // Danger Zone Polygon Source & Layer
     if (!this.mapInstance.getSource('danger-zones-src')) {
       this.mapInstance.addSource('danger-zones-src', {
         type: 'geojson',
@@ -204,7 +208,7 @@ export class MapService {
           features: [
             {
               type: 'Feature',
-              properties: { name: 'Dharavi Coastal Surge Hazard Zone' },
+              properties: { name: 'Dharavi Coastal Surge Danger Zone' },
               geometry: {
                 type: 'Polygon',
                 coordinates: [[
@@ -229,52 +233,173 @@ export class MapService {
       });
     }
 
-    // Route Polyline Source & Layer
-    if (!this.mapInstance.getSource('route-line-src')) {
-      this.mapInstance.addSource('route-line-src', {
+    // ── Multi-Layer Navigation Route Sources & Layers ──
+    if (!this.mapInstance.getSource('route-source')) {
+      this.mapInstance.addSource('route-source', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] }
       });
 
+      // 1. Route Glow Layer
       this.mapInstance.addLayer({
-        id: 'route-line-layer',
+        id: 'route-glow',
         type: 'line',
-        source: 'route-line-src',
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
+        source: 'route-source',
+        layout: { 'line-join': 'round', 'line-cap': 'round' },
         paint: {
           'line-color': '#06b6d4',
-          'line-width': 6,
+          'line-width': 14,
+          'line-opacity': 0.35,
+          'line-blur': 3
+        }
+      });
+
+      // 2. Dark Blue Outer Outline Layer
+      this.mapInstance.addLayer({
+        id: 'route-outline',
+        type: 'line',
+        source: 'route-source',
+        layout: { 'line-join': 'round', 'line-cap': 'round' },
+        paint: {
+          'line-color': '#1e3a8a', // Dark Blue
+          'line-width': 10,
           'line-opacity': 0.95
+        }
+      });
+
+      // 3. Light Blue Main Navigation Route Layer
+      this.mapInstance.addLayer({
+        id: 'route-main',
+        type: 'line',
+        source: 'route-source',
+        layout: { 'line-join': 'round', 'line-cap': 'round' },
+        paint: {
+          'line-color': '#38bdf8', // Light Blue Core
+          'line-width': 6,
+          'line-opacity': 1.0
         }
       });
     }
   }
 
+  // ── Animated Multi-Layer GeoJSON Route Drawing ──
+  public drawRoute(route: RouteResult | null, animate = true): void {
+    if (!this.mapInstance) return;
+    const src = this.mapInstance.getSource('route-source');
+    if (!src) return;
+
+    if (this.animFrameId) {
+      cancelAnimationFrame(this.animFrameId);
+      this.animFrameId = null;
+    }
+
+    if (this.originMarker) { this.originMarker.remove(); this.originMarker = null; }
+    if (this.destinationMarker) { this.destinationMarker.remove(); this.destinationMarker = null; }
+
+    if (!route || !route.coordinates || route.coordinates.length <= 2) {
+      console.warn(`[MapService] Clear or reject route rendering. Geometry coordinates count: ${route?.coordinates?.length || 0}`);
+      src.setData({ type: 'FeatureCollection', features: [] });
+      return;
+    }
+
+    const fullCoords = route.coordinates;
+    console.log(`[MapService] Rendering OSRM road polyline on map with ${fullCoords.length} road coordinates.`);
+
+    // Add Origin & Destination Pulse Markers
+    const originCoords = fullCoords[0];
+    const destCoords = fullCoords[fullCoords.length - 1];
+
+    const originEl = document.createElement('div');
+    originEl.className = 'route-origin-pulse-pin';
+    originEl.innerHTML = `<div class="pulse-ring-green"></div><div class="core-dot-green"></div>`;
+    this.originMarker = new maplibregl.Marker({ element: originEl })
+      .setLngLat(originCoords)
+      .addTo(this.mapInstance);
+
+    const destEl = document.createElement('div');
+    destEl.className = 'route-dest-pulse-pin';
+    destEl.innerHTML = `<div class="pulse-ring-red"></div><div class="core-dot-red"></div>`;
+    this.destinationMarker = new maplibregl.Marker({ element: destEl })
+      .setLngLat(destCoords)
+      .addTo(this.mapInstance);
+
+    if (animate && fullCoords.length > 3) {
+      let currentStep = 2; // minimum 2 points for valid LineString GeoJSON
+      const totalSteps = fullCoords.length;
+
+      const animateStep = () => {
+        if (currentStep <= totalSteps) {
+          const slice = fullCoords.slice(0, currentStep);
+          src.setData({
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                properties: {},
+                geometry: { type: 'LineString', coordinates: slice }
+              }
+            ]
+          });
+          currentStep += Math.max(1, Math.floor(totalSteps / 30));
+          this.animFrameId = requestAnimationFrame(animateStep);
+        } else {
+          src.setData({
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                properties: {},
+                geometry: { type: 'LineString', coordinates: fullCoords }
+              }
+            ]
+          });
+        }
+      };
+      this.animFrameId = requestAnimationFrame(animateStep);
+    } else {
+      src.setData({
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            properties: {},
+            geometry: { type: 'LineString', coordinates: fullCoords }
+          }
+        ]
+      });
+    }
+
+    // Fit camera bounds smoothly around route
+    const bounds = new maplibregl.LngLatBounds();
+    fullCoords.forEach((c) => bounds.extend(c));
+    this.mapInstance.fitBounds(bounds, { padding: 80, maxZoom: 16, duration: 1200 });
+  }
+
   // ── Animated User Location Marker ──
   public updateUserMarker(userLoc: UserLocation): void {
-    if (!this.mapInstance || !typeof maplibregl) return;
-
-    const el = document.createElement('div');
-    el.className = 'citizen-user-marker';
-    el.innerHTML = `
-      <div class="user-pulse-ring"></div>
-      <div class="user-core-dot"></div>
-      ${userLoc.heading ? `<div class="user-heading-arrow" style="transform: rotate(${userLoc.heading}deg);">▲</div>` : ''}
-    `;
+    if (!this.mapInstance || typeof maplibregl === 'undefined') return;
 
     if (this.userMarker) {
       this.userMarker.setLngLat([userLoc.longitude, userLoc.latitude]);
+      if (userLoc.heading !== null) {
+        const arrow = this.userMarker.getElement().querySelector('.user-heading-arrow');
+        if (arrow) arrow.style.transform = `rotate(${userLoc.heading}deg)`;
+      }
     } else {
+      const el = document.createElement('div');
+      el.className = 'citizen-user-marker';
+      el.innerHTML = `
+        <div class="user-pulse-ring"></div>
+        <div class="user-core-dot"></div>
+        ${userLoc.heading ? `<div class="user-heading-arrow" style="transform: rotate(${userLoc.heading}deg);">▲</div>` : ''}
+      `;
       this.userMarker = new maplibregl.Marker({ element: el })
         .setLngLat([userLoc.longitude, userLoc.latitude])
         .addTo(this.mapInstance);
     }
   }
 
-  // ── Rescue Vehicles Markers ──
+  // ── Smooth Non-Flickering Rescue Vehicles Markers ──
   public updateRescueVehicles(vehicles: RescueVehicle[], visible: boolean = true): void {
     if (!this.mapInstance) return;
 
@@ -285,8 +410,6 @@ export class MapService {
     }
 
     const currentIds = new Set(vehicles.map((v) => v.id));
-
-    // Remove stale vehicle markers
     this.vehicleMarkers.forEach((marker, id) => {
       if (!currentIds.has(id)) {
         marker.remove();
@@ -348,7 +471,6 @@ export class MapService {
       }
     });
 
-    // Heatmap GeoJSON features
     const heatmapFeatures = incidents.map((inc) => ({
       type: 'Feature',
       properties: {
@@ -398,37 +520,6 @@ export class MapService {
     });
   }
 
-  // ── Render OSRM Route ──
-  public drawRoute(route: RouteResult | null): void {
-    if (!this.mapInstance) return;
-    const src = this.mapInstance.getSource('route-line-src');
-    if (!src) return;
-
-    if (!route || !route.coordinates.length) {
-      src.setData({ type: 'FeatureCollection', features: [] });
-      return;
-    }
-
-    src.setData({
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'LineString',
-            coordinates: route.coordinates
-          }
-        }
-      ]
-    });
-
-    // Fit map bounds smoothly around route
-    const bounds = new maplibregl.LngLatBounds();
-    route.coordinates.forEach((coord) => bounds.extend(coord));
-    this.mapInstance.fitBounds(bounds, { padding: 90, maxZoom: 16 });
-  }
-
   // ── Layer Toggles ──
   public updateLayerFilters(filters: LayerFilterState): void {
     if (!this.mapInstance) return;
@@ -458,15 +549,15 @@ export class MapService {
     }
   }
 
-  // ── Controls & Actions ──
-  public flyTo(center: [number, number], zoom: number = 15, pitch: number = 45): void {
+  // ── Camera Controls ──
+  public flyTo(center: [number, number], zoom: number = 15, pitch: number = 40): void {
     if (this.mapInstance) {
       this.mapInstance.flyTo({
         center,
         zoom,
         pitch,
         essential: true,
-        duration: 1800
+        duration: 1600
       });
     }
   }
@@ -490,15 +581,22 @@ export class MapService {
   }
 
   public destroy(): void {
+    if (this.animFrameId) {
+      cancelAnimationFrame(this.animFrameId);
+      this.animFrameId = null;
+    }
     this.vehicleMarkers.forEach((m) => m.remove());
     this.vehicleMarkers.clear();
     this.incidentMarkers.forEach((m) => m.remove());
     this.incidentMarkers.clear();
+    this.shelterMarkers.forEach((m) => m.remove());
+    this.shelterMarkers.clear();
+    this.hospitalMarkers.forEach((m) => m.remove());
+    this.hospitalMarkers.clear();
 
-    if (this.userMarker) {
-      this.userMarker.remove();
-      this.userMarker = null;
-    }
+    if (this.userMarker) { this.userMarker.remove(); this.userMarker = null; }
+    if (this.originMarker) { this.originMarker.remove(); this.originMarker = null; }
+    if (this.destinationMarker) { this.destinationMarker.remove(); this.destinationMarker = null; }
 
     if (this.mapInstance) {
       this.mapInstance.remove();
