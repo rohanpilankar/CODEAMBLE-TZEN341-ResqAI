@@ -57,15 +57,10 @@ def get_incidents(
 @router.get("/priority-queue")
 def get_priority_queue(db: Session = Depends(get_db)):
     service = IncidentService(db)
-    all_incidents = service.get_incidents(limit=200)
-    # Exclude RESOLVED incidents from priority dispatch queue
-    active_incidents = [i for i in all_incidents if str(i.status.value if hasattr(i.status, 'value') else i.status).upper() != "RESOLVED"]
+    sorted_incidents = service.repo.get_priority_queue(limit=10)
 
-    severity_order = {"CRITICAL": 4, "HIGH": 3, "MEDIUM": 2, "LOW": 1}
-    sorted_incidents = sorted(active_incidents, key=lambda i: severity_order.get(str(i.severity.value if hasattr(i.severity, 'value') else i.severity).upper(), 0), reverse=True)
-    
     queue = []
-    for inc in sorted_incidents[:10]:
+    for inc in sorted_incidents:
         queue.append({
             "id": inc.id,
             "title": inc.title,
@@ -80,12 +75,10 @@ def get_priority_queue(db: Session = Depends(get_db)):
 @router.get("/feed")
 def get_citizen_feed(db: Session = Depends(get_db)):
     service = IncidentService(db)
-    all_incidents = service.get_incidents(limit=200)
-    # Exclude RESOLVED incidents from active citizen priority feed
-    active_incidents = [i for i in all_incidents if str(i.status.value if hasattr(i.status, 'value') else i.status).upper() != "RESOLVED"]
+    active_incidents = service.repo.get_citizen_feed(limit=15)
 
     feed = []
-    for inc in active_incidents[:15]:
+    for inc in active_incidents:
         feed.append({
             "id": inc.id,
             "title": inc.title,

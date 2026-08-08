@@ -188,11 +188,11 @@ export const rescueHandler = {
 
         <!-- Map & Priority Queue Section -->
         <div class="rd-row rd-row-map mb-4">
-          <!-- Left: Tactical Live Map -->
+          <!-- Left: MapTiler Live Map -->
           <div class="rd-card">
             <div class="rd-card-header">
               <div class="rd-card-title">
-                <i class="fa fa-map-marked-alt text-danger"></i> Tactical Mission Live Map
+                <i class="fa fa-map-location-dot text-primary"></i> MapTiler Live Emergency Map
               </div>
               <div class="d-flex gap-2 align-items-center">
                 <span class="badge bg-danger bg-opacity-20 text-danger border border-danger border-opacity-30" style="font-size:0.7rem;">
@@ -326,6 +326,12 @@ export const rescueHandler = {
 
       rescueMapCtrl = new MapController('rescue-live-map');
       rescueMapCtrl.init();
+
+      setTimeout(() => {
+        if (rescueMapCtrl && rescueMapCtrl.map) {
+          rescueMapCtrl.map.invalidateSize();
+        }
+      }, 300);
 
       const missions = [
         { id: 104, title: 'Sector 4 Flash Flood Evacuation', severity: 'CRITICAL', status: 'IN_PROGRESS', latitude: 19.0760, longitude: 72.8777 },

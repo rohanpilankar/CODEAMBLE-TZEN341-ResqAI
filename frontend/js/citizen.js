@@ -5,6 +5,7 @@ import { notificationService } from './services/notificationService.js';
 import { incidentHandler } from './incidents.js';
 import { citizenChatbot } from './components/chatbotWidget.js';
 import { resolveMediaUrl, pickMediaUrl } from './utils/helpers.js';
+import { MapController } from './maps.js';
 
 
 
@@ -243,37 +244,84 @@ export const citizenHandler = {
   // ── 5. Live Tracking ───────────────────────────────────────────────────────
   async renderLiveTracking(area) {
     area.innerHTML = `
-      <div class="section-header mb-4">
-        <h2><i class="fa fa-satellite-dish text-info me-2"></i> Live Rescue Tracking</h2>
+      <div class="section-header mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <h2 class="m-0"><i class="fa fa-satellite-dish text-info me-2"></i> Live Rescue Tracking</h2>
+          <div class="text-muted font-size-sm">Real-time GPS tracking for assigned rescue teams, nearby shelters, and active distress signals</div>
+        </div>
+        <span class="badge bg-danger bg-opacity-20 text-danger border border-danger border-opacity-30 py-2 px-3">
+          <i class="fa fa-satellite-dish fa-spin me-1"></i> Live Satellite Stream
+        </span>
       </div>
       <div class="card p-0 overflow-hidden" style="height: 600px; position: relative;">
-        <!-- Mock Map Area -->
-        <div style="width:100%;height:100%;background:url('https://cdn.discordapp.com/attachments/111/111/mock-map.jpg') center/cover; background-color:#1a2235; display:flex;align-items:center;justify-content:center;">
-          <div class="text-center">
-            <i class="fa fa-map-marked-alt text-muted mb-3" style="font-size:4rem;opacity:0.2;"></i>
-            <h3 class="text-muted">Map Engine Initializing...</h3>
-          </div>
-        </div>
+        <!-- Interactive Map Element -->
+        <div id="citizen-live-map" style="width: 100%; height: 100%;"></div>
 
-        <!-- Overlay Card -->
-        <div class="card position-absolute bottom-0 start-50 translate-middle-x mb-4 p-3 shadow" style="width: 90%; max-width: 400px; border: 1px solid var(--glass-border); background: rgba(15,22,41,0.95); backdrop-filter: blur(10px);">
+        <!-- Live Unit Tracking Status Overlay Card -->
+        <div class="card position-absolute bottom-0 start-50 translate-middle-x mb-4 p-3 shadow" style="width: 90%; max-width: 440px; border: 1px solid var(--glass-border); background: rgba(15,22,41,0.95); backdrop-filter: blur(12px); z-index: 1000;">
           <div class="d-flex justify-content-between align-items-center border-bottom border-glass pb-2 mb-2">
             <div>
-              <div class="fw-bold text-primary">Alpha Response Unit 4</div>
-              <div class="font-size-sm text-muted">Swift Water Rescue Team</div>
+              <div class="fw-bold text-primary font-size-md" id="tracking-unit-name">Alpha Response Unit 4</div>
+              <div class="font-size-sm text-muted" id="tracking-unit-type">Swift Water Rescue Team · NDRF</div>
             </div>
             <div class="text-end">
-              <div class="fs-4 fw-bold text-success">12 min</div>
-              <div class="font-size-sm text-muted">2.4 km away</div>
+              <div class="fs-4 fw-bold text-success" id="tracking-eta">12 min</div>
+              <div class="font-size-sm text-muted" id="tracking-dist">2.4 km away</div>
             </div>
           </div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-outline-secondary w-100 btn-sm"><i class="fa fa-phone me-1"></i> Contact Team</button>
-            <button class="btn btn-outline-danger w-100 btn-sm"><i class="fa fa-times me-1"></i> Cancel Request</button>
+          <div class="d-flex gap-2 mt-2">
+            <button class="btn btn-outline-secondary w-100 btn-sm" id="btn-call-team"><i class="fa fa-phone me-1"></i> Contact Team</button>
+            <button class="btn btn-outline-danger w-100 btn-sm" id="btn-cancel-request"><i class="fa fa-times me-1"></i> Cancel Request</button>
           </div>
         </div>
       </div>
     `;
+
+    setTimeout(async () => {
+      try {
+        const mapCtrl = new MapController('citizen-live-map');
+        mapCtrl.init();
+
+        setTimeout(() => {
+          if (mapCtrl.map) mapCtrl.map.invalidateSize();
+        }, 250);
+
+        // Fetch active incidents to plot
+        const rawInc = await incidentApi.getIncidents();
+        const incidents = Array.isArray(rawInc) ? rawInc : (rawInc.data || []);
+        if (incidents.length > 0) {
+          mapCtrl.renderIncidents(incidents);
+        } else {
+          mapCtrl.renderIncidents([
+            { id: 101, title: 'Sector 4 Flood Evacuation', severity: 'CRITICAL', status: 'IN_PROGRESS', latitude: 19.0760, longitude: 72.8777 },
+            { id: 102, title: 'Medical Emergency Drop', severity: 'HIGH', status: 'VERIFIED', latitude: 19.0850, longitude: 72.8900 }
+          ]);
+        }
+
+        // Plot Rescue Vehicle
+        if (typeof L !== 'undefined' && mapCtrl.map) {
+          const vehicleIcon = L.divIcon({
+            className: 'vehicle-live-marker',
+            html: `<div style="background:#0284c7; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; border:3px solid white; box-shadow:0 0 16px rgba(2,132,199,0.8);"><i class="fa fa-truck-medical" style="font-size:18px;"></i></div>`,
+            iconSize: [40, 40],
+            iconAnchor: [20, 20]
+          });
+          L.marker([19.0790, 72.8850], { icon: vehicleIcon })
+            .addTo(mapCtrl.map)
+            .bindPopup(`<strong>Alpha Response Unit 4</strong><br>NDRF Rescue Team<br>ETA: 12 mins`);
+        }
+      } catch (err) {
+        console.warn('Citizen live tracking map notice:', err);
+      }
+    }, 50);
+
+    document.getElementById('btn-call-team')?.addEventListener('click', () => {
+      notificationService.info('Connecting Call...', 'Dialing Alpha Response Unit 4 Team Lead (+91-1800-RESQAI).');
+    });
+
+    document.getElementById('btn-cancel-request')?.addEventListener('click', () => {
+      notificationService.warning('Request Notice', 'Please contact Command Center directly to modify active rescue dispatches.');
+    });
   },
 
   // ── 6. Emergency SOS ───────────────────────────────────────────────────────

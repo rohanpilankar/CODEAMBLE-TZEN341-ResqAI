@@ -6,13 +6,18 @@ from backend.models import (
     Notification, SystemLog, AuditLog,
     EmergencyContact, RouteHistory, Settings
 )
+from backend.models.public import NewsArticle
 from backend.auth.jwt import hash_password
 from backend.utils.logger import app_logger
 
 def init_db():
     """Create all tables and seed demo data."""
-    Base.metadata.create_all(bind=engine)
-    app_logger.info("Database tables created.")
+    try:
+        Base.metadata.create_all(bind=engine)
+        app_logger.info("Database tables created.")
+    except Exception as e:
+        app_logger.error(f"Failed to create database tables: {e}", exc_info=True)
+        raise
     seed_data()
 
 def seed_data():
@@ -123,20 +128,22 @@ def seed_data():
             db.add(s)
 
         # ─── News Articles ────────────────────────────────────────────────
-        articles = [
-            NewsArticle(title="ResQAI v2.0 Released: Blockchain Donations are Live!", content="We are thrilled to announce that our new smart-contract based donation system is now live on mainnet. Citizens can donate directly to verified NGOs with full on-chain transparency.", author="System Admin", is_published=1),
-            NewsArticle(title="AI Duplicate Detection Accuracy Reaches 98%", content="Our NLP models have been updated to better process multi-lingual text and voice inputs. In the latest drill, the system successfully merged 1,400 duplicate reports down to 43 unique events in under 2 seconds.", author="ResQAI AI Lab", is_published=1),
-            NewsArticle(title="Monsoon Preparedness & Relief Center Guidance", content="State authorities and emergency units have set up 15 high-capacity relief hubs equipped with medical kits, clean water, and satellite communications.", author="Disaster Management Authority", is_published=1),
-        ]
-        for a in articles:
-            db.add(a)
+        try:
+            articles = [
+                NewsArticle(title="ResQAI v2.0 Released: Blockchain Donations are Live!", content="We are thrilled to announce that our new smart-contract based donation system is now live on mainnet. Citizens can donate directly to verified NGOs with full on-chain transparency.", author="System Admin", is_published=1),
+                NewsArticle(title="AI Duplicate Detection Accuracy Reaches 98%", content="Our NLP models have been updated to better process multi-lingual text and voice inputs. In the latest drill, the system successfully merged 1,400 duplicate reports down to 43 unique events in under 2 seconds.", author="ResQAI AI Lab", is_published=1),
+                NewsArticle(title="Monsoon Preparedness & Relief Center Guidance", content="State authorities and emergency units have set up 15 high-capacity relief hubs equipped with medical kits, clean water, and satellite communications.", author="Disaster Management Authority", is_published=1),
+            ]
+            for a in articles:
+                db.add(a)
+        except Exception as e:
+            app_logger.warning(f"Could not seed news articles: {e}")
 
         db.commit()
         app_logger.info("Demo seed data inserted successfully.")
 
     except Exception as e:
         db.rollback()
-        app_logger.error(f"Seed data error: {e}")
+        app_logger.error(f"Seed data error: {e}", exc_info=True)
     finally:
         db.close()
-

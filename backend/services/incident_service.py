@@ -3,6 +3,7 @@ from typing import List, Optional
 from fastapi import HTTPException, status
 from backend.repositories.incident_repository import IncidentRepository
 from backend.models.incident import Incident, IncidentImage, IncidentStatus
+from backend.models.resource import Resource, ResourceStatus
 from backend.schemas.incident import IncidentCreate, IncidentUpdate
 from backend.services.ai_service import ai_service
 from backend.websocket.manager import ws_manager
@@ -100,6 +101,19 @@ class IncidentService:
             incident.media_url = req.media_url
 
         updated = self.repo.update(incident)
+
+        # Auto-release assigned resources when incident is resolved or closed
+        if req.status in (IncidentStatus.RESOLVED, IncidentStatus.CLOSED):
+            for assignment in updated.assignments:
+                if assignment.status == "ACTIVE":
+                    if assignment.resource_id:
+                        resource = self.repo.db.query(Resource).filter(
+                            Resource.id == assignment.resource_id
+                        ).first()
+                        if resource and resource.status == ResourceStatus.ASSIGNED:
+                            resource.status = ResourceStatus.AVAILABLE
+                    assignment.status = "COMPLETED"
+            self.repo.db.commit()
 
         # Broadcast update
         event = WSEvent(

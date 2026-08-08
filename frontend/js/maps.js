@@ -9,7 +9,7 @@ export class MapController {
     this.shelterLayer = null;
     this.teamLayer = null;
     this.userLayer = null;
-    this.currentPreset = 'VOYAGER';
+    this.currentPreset = 'STREETS';
     this.isFullscreen = false;
   }
 
@@ -34,6 +34,11 @@ export class MapController {
     }).addTo(this.map);
 
     L.control.zoom({ position: 'topright' }).addTo(this.map);
+
+    // Ensure map tiles align perfectly within container box
+    setTimeout(() => {
+      if (this.map) this.map.invalidateSize();
+    }, 200);
 
     // Use MarkerCluster if available, otherwise plain LayerGroup
     if (typeof L.markerClusterGroup === 'function') {
@@ -85,10 +90,10 @@ export class MapController {
     overlay.innerHTML = `
       <div class="map-controls-group">
         <select class="map-layer-select" id="map-style-select-${this.containerId}" title="Change Map Style" aria-label="Map style">
-          <option value="VOYAGER" ${this.currentPreset === 'VOYAGER' ? 'selected' : ''}>🗺️ Map: Voyager (Vibrant)</option>
+          <option value="STREETS" ${this.currentPreset === 'STREETS' ? 'selected' : ''}>🌐 Map: MapTiler Streets (Default)</option>
+          <option value="VOYAGER" ${this.currentPreset === 'VOYAGER' ? 'selected' : ''}>🗺️ Map: Carto Voyager</option>
           <option value="LIGHT" ${this.currentPreset === 'LIGHT' ? 'selected' : ''}>☀️ Map: Positron (Light)</option>
-          <option value="STREETS" ${this.currentPreset === 'STREETS' ? 'selected' : ''}>🌐 Map: OpenStreetMap</option>
-          <option value="DARK" ${this.currentPreset === 'DARK' ? 'selected' : ''}>🌙 Map: Carto Dark</option>
+          <option value="DARK" ${this.currentPreset === 'DARK' ? 'selected' : ''}>🌙 Map: MapTiler Dark</option>
         </select>
         <button type="button" class="map-ctrl-btn" id="map-recenter-btn-${this.containerId}" title="Recenter Map">
           <i class="fa fa-crosshairs me-1"></i> Recenter

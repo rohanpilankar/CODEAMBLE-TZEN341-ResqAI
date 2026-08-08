@@ -51,6 +51,13 @@ class TestShelterCRUD:
         body = resp.json()
         assert all(k in body for k in ("success", "message", "data"))
 
+    def test_shelter_occupancy_exceeds_capacity(self, client, admin_headers):
+        create = client.post("/api/v1/shelters", json=SAMPLE_SHELTER, headers=admin_headers)
+        shelter_id = create.json()["data"]["id"]
+        resp = client.put(f"/api/v1/shelters/{shelter_id}", json={"current_occupancy": 150}, headers=admin_headers)
+        assert resp.status_code == 400
+        assert "cannot exceed total capacity" in resp.json()["message"]
+
 
 class TestResourceCRUD:
     def test_create_resource(self, client, admin_headers):

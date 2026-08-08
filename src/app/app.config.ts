@@ -1,5 +1,6 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 
 // AngularFire Modern Standalone Initialization Imports
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -12,7 +13,17 @@ import { environment } from '../environments/environment';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter([]),
+    provideHttpClient(),
+    provideRouter([
+      {
+        path: 'live-tracking',
+        loadComponent: () =>
+          import('./features/live-rescue-tracking/live-rescue-tracking.component').then(
+            (m) => m.LiveRescueTrackingComponent
+          )
+      },
+      { path: '', redirectTo: 'live-tracking', pathMatch: 'full' }
+    ]),
 
     // ── ResQAI Firebase Standalone Providers (Project: "ResqAI") ───────────
     provideFirebaseApp(() => initializeApp(environment.firebase)),
