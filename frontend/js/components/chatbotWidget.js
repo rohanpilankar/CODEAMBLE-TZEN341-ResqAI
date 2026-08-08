@@ -263,8 +263,8 @@ class CitizenChatbot {
                 <h6 class="m-0 fw-bold" style="font-size: 0.95rem;">ResQ Bot</h6>
                 <span class="status-dot-green"></span>
               </div>
-              <span id="chatbot-provider-badge" class="badge bg-info bg-opacity-20 text-info border border-info border-opacity-30" style="font-size:0.65rem;">
-                Grok AI Active
+              <span id="chatbot-provider-badge" class="badge bg-success text-white" style="font-size:0.65rem;">
+                ResQAI AI Engine (Online)
               </span>
             </div>
           </div>
@@ -327,8 +327,8 @@ class CitizenChatbot {
             </div>
             <div>
               <h4 class="m-0 fw-bold">ResQ Bot</h4>
-              <span id="fullpage-provider-badge" class="badge bg-success bg-opacity-20 text-success border border-success border-opacity-50">
-                Grok AI Active
+              <span id="fullpage-provider-badge" class="badge bg-success text-white">
+                ResQAI AI Engine (Online)
               </span>
             </div>
           </div>
@@ -548,8 +548,8 @@ class CitizenChatbot {
     msgDiv.innerHTML = `
       <div class="chat-bubble bot-bubble bg-dark border border-secondary p-3 text-white shadow-sm" style="border-radius: 18px 18px 18px 2px; max-width: 90%;">
         <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-1 mb-2">
-          <span class="badge ${data.provider === 'grok' ? 'bg-info' : 'bg-secondary'} bg-opacity-20 text-info" style="font-size: 0.7rem;">
-            <i class="fa ${data.provider === 'grok' ? 'fa-bolt' : 'fa-database'} me-1"></i> ${data.provider === 'grok' ? 'Grok AI' : 'Offline Knowledge Engine'}
+          <span class="badge ${data.provider === 'grok' ? 'bg-info text-dark' : 'bg-primary text-white'}" style="font-size: 0.7rem;">
+            <i class="fa ${data.provider === 'grok' ? 'fa-bolt' : 'fa-robot'} me-1"></i> ${data.provider === 'grok' ? 'Grok AI (xAI)' : 'ResQAI AI Engine'}
           </span>
           <div class="d-flex gap-1">
             <button class="btn btn-sm btn-link text-muted p-0 me-1" onclick="window.citizenChatbot.speakText(\`${text.replace(/`/g, "'")}\`)" title="Read Aloud"><i class="fa fa-volume-high"></i></button>
@@ -600,8 +600,17 @@ class CitizenChatbot {
   updateProviderBadge(provider) {
     const b1 = document.getElementById('chatbot-provider-badge');
     const b2 = document.getElementById('fullpage-provider-badge');
-    const label = provider === 'grok' ? 'Grok AI Active' : 'Offline Knowledge Engine';
-    const cls = provider === 'grok' ? 'badge bg-info text-dark' : 'badge bg-secondary text-white';
+    let label = 'ResQAI AI Engine (Online)';
+    let cls = 'badge bg-success text-white';
+
+    if (provider === 'grok') {
+      label = 'Grok AI (xAI) Active';
+      cls = 'badge bg-info text-dark';
+    } else if (provider === 'offline' || provider === 'error') {
+      label = 'Offline Mode';
+      cls = 'badge bg-warning text-dark';
+    }
+
     if (b1) { b1.className = cls; b1.innerText = label; }
     if (b2) { b2.className = cls; b2.innerText = label; }
   }
