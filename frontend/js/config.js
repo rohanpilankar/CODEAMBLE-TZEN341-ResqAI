@@ -31,6 +31,15 @@ export const CONFIG = {
     }
   },
 
+  // MapTiler Configuration
+  MAPTILER: {
+    API_KEY: 'nBebKavNM7a4x0NeaxFl',
+    TILE_URL: 'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=nBebKavNM7a4x0NeaxFl',
+    SATELLITE_URL: 'https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=nBebKavNM7a4x0NeaxFl',
+    DARK_URL: 'https://api.maptiler.com/maps/dataviz-dark/{z}/{x}/{y}.png?key=nBebKavNM7a4x0NeaxFl',
+    ATTRIBUTION: '&copy; <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
+  },
+
   // Session
   ACCESS_TOKEN_KEY: 'resqai_access_token',
   REFRESH_TOKEN_KEY: 'resqai_refresh_token',
