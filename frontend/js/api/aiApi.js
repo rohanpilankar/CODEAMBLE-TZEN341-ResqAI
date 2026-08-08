@@ -31,6 +31,9 @@ export const aiApi = {
   getIncidentYoloAnalysis(incidentId) {
     return apiClient.get(`/ai/incidents/${incidentId}/yolo-analysis`);
   },
+  verifyAuthenticity(imageUrl, incidentId = null) {
+    return apiClient.post('/ai/verify-authenticity', { image_url: imageUrl, incident_id: incidentId });
+  },
 };
 
 

@@ -24,6 +24,10 @@ class Settings(BaseSettings):
     GROK_TIMEOUT: int = int(os.getenv("GROK_TIMEOUT", "20"))
     MAX_CHAT_HISTORY: int = int(os.getenv("MAX_CHAT_HISTORY", "8"))
 
+    SIGHTENGINE_API_USER: str = os.getenv("SIGHTENGINE_API_USER", "121382188")
+    SIGHTENGINE_API_SECRET: str = os.getenv("SIGHTENGINE_API_SECRET", "dJDhgU2pLEkb8tFPbTD3JwKhuqGfTWxU")
+    SIGHTENGINE_API_URL: str = os.getenv("SIGHTENGINE_API_URL", "https://api.sightengine.com/1.0/check.json")
+
     OPEN_METEO_API_KEY: str = os.getenv("OPEN_METEO_API_KEY", "979ab1e38db18f596c7da16d60721135")
     OPEN_METEO_BASE_URL: str = os.getenv("OPEN_METEO_BASE_URL", "https://api.open-meteo.com/v1")
 
