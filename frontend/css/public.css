@@ -5,33 +5,17 @@
 /* ── Public Navbar ──────────────────────────────────────────────────────────── */
 
 .pub-nav {
-
   position: sticky;
-
   top: 0;
-
   z-index: 1000;
-
   background: var(--topbar-bg);
-
-  backdrop-filter: blur(20px);
-
-  -webkit-backdrop-filter: blur(20px);
-
-  border-bottom: 1px solid var(--glass-border);
-
+  border-bottom: 1px solid var(--topbar-border);
   padding: 0 32px;
-
   height: 64px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   gap: 24px;
-
 }
 
 
