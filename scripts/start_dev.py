@@ -18,6 +18,9 @@ import time
 import urllib.request
 import secrets
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -39,7 +42,7 @@ def ensure_env_file():
             content = content.replace("your_refresh_secret_key_here", secrets.token_urlsafe(48))
             with open(env_path, "w", encoding="utf-8") as f:
                 f.write(content)
-            print("[launcher] ✓ Created .env file successfully.")
+            print("[launcher] [OK] Created .env file successfully.")
 
 
 def pick_python() -> str:
@@ -72,7 +75,7 @@ def ensure_virtualenv(python: str) -> str:
         print(f"[launcher] Creating virtual environment at {venv_dir}...")
         try:
             subprocess.run([sys.executable, "-m", "venv", venv_dir], check=True)
-            print("[launcher] ✓ Created virtual environment.")
+            print("[launcher] [OK] Created virtual environment.")
         except Exception as e:
             print(f"[launcher] Warning: Failed to create venv automatically: {e}")
             return python
@@ -85,7 +88,7 @@ def ensure_virtualenv(python: str) -> str:
             if res.returncode != 0:
                 print("[launcher] Installing missing dependencies from requirements.txt...")
                 subprocess.run([venv_py, "-m", "pip", "install", "-r", req_file], check=True)
-                print("[launcher] ✓ Dependencies installed.")
+                print("[launcher] [OK] Dependencies installed.")
             return venv_py
         except Exception as e:
             print(f"[launcher] Dependency check notice: {e}")
@@ -207,7 +210,7 @@ def main():
             health_url = f"http://127.0.0.1:{BACKEND_PORT}/api/health"
             print(f"[launcher] Polling backend health at {health_url}...")
             if wait_for_health(health_url, timeout_seconds=8):
-                print(f"[launcher] ✓ Backend operational: {health_url}")
+                print(f"[launcher] [OK] Backend operational: {health_url}")
             else:
                 print(f"[launcher] Notice: Backend health polling timed out (starting up in background).")
 

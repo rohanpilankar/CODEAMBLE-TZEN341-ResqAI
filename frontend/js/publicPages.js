@@ -1,6 +1,7 @@
 import { publicApi } from './api/publicApi.js';
 import { notificationService } from './services/notificationService.js';
 import { themeService } from './services/themeService.js';
+import { CONFIG } from './config.js';
 
 export const publicPagesHandler = {
   async init() {
@@ -254,9 +255,9 @@ export const publicPagesHandler = {
     if (!mapEl || typeof L === 'undefined') return;
 
     this.map = L.map('public-shelters-map').setView([19.0760, 72.8777], 11);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer(CONFIG.MAPTILER.TILE_URL, {
       maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors'
+      attribution: CONFIG.MAPTILER.ATTRIBUTION
     }).addTo(this.map);
 
     this.markersGroup = L.layerGroup().addTo(this.map);

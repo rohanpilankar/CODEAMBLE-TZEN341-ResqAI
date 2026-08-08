@@ -45,6 +45,12 @@ class ShelterService:
         if req.total_capacity is not None:
             shelter.total_capacity = req.total_capacity
         if req.current_occupancy is not None:
+            effective_capacity = req.total_capacity if req.total_capacity is not None else shelter.total_capacity
+            if req.current_occupancy > effective_capacity:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Current occupancy ({req.current_occupancy}) cannot exceed total capacity ({effective_capacity})"
+                )
             shelter.current_occupancy = req.current_occupancy
         if req.medical_available is not None:
             shelter.medical_available = req.medical_available

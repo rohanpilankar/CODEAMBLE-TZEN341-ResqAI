@@ -72,3 +72,45 @@ class TestIncidentCRUD:
         resp = client.get("/api/v1/incidents?page=1&limit=5", headers=auth_headers)
         assert resp.status_code == 200
         assert isinstance(resp.json()["data"], list)
+
+    def test_priority_queue_and_feed(self, client, auth_headers):
+        pq = client.get("/api/v1/incidents/priority-queue", headers=auth_headers)
+        assert pq.status_code == 200
+        assert isinstance(pq.json()["data"], list)
+
+        feed = client.get("/api/v1/incidents/feed", headers=auth_headers)
+        assert feed.status_code == 200
+        assert isinstance(feed.json()["data"], list)
+
+    def test_resource_deallocation_on_resolve(self, client, admin_headers):
+        # Create incident
+        inc_res = client.post("/api/v1/incidents", json=SAMPLE_INCIDENT, headers=admin_headers)
+        inc_id = inc_res.json()["data"]["id"]
+
+        # Create resource
+        res_res = client.post("/api/v1/resources", json={
+            "name": "Deallocation Boat",
+            "resource_type": "RESCUE_BOAT",
+            "quantity": 1,
+            "status": "AVAILABLE"
+        }, headers=admin_headers)
+        resource_id = res_res.json()["data"]["id"]
+
+        # Assign resource
+        assign_res = client.post("/api/v1/resources/assign", json={
+            "incident_id": inc_id,
+            "resource_id": resource_id
+        }, headers=admin_headers)
+        assert assign_res.status_code == 200
+
+        # Check resource status is ASSIGNED
+        res_check = client.get(f"/api/v1/resources/{resource_id}", headers=admin_headers)
+        assert res_check.json()["data"]["status"] == "ASSIGNED"
+
+        # Resolve incident
+        resolve_res = client.put(f"/api/v1/incidents/{inc_id}", json={"status": "RESOLVED"}, headers=admin_headers)
+        assert resolve_res.status_code == 200
+
+        # Check resource status returned to AVAILABLE
+        res_after = client.get(f"/api/v1/resources/{resource_id}", headers=admin_headers)
+        assert res_after.json()["data"]["status"] == "AVAILABLE"

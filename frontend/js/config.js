@@ -21,22 +21,22 @@ export const CONFIG = {
     DEFAULT_LAT: 19.0760,
     DEFAULT_LNG: 72.8777,
     DEFAULT_ZOOM: 11,
-    TILE_URL: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-    TILE_ATTRIBUTION: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    TILE_URL: 'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=ldasQ9G5fINrzvKswfXk',
+    TILE_ATTRIBUTION: '&copy; <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
     PRESETS: {
+      STREETS: 'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=ldasQ9G5fINrzvKswfXk',
       VOYAGER: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
       LIGHT: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-      STREETS: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      DARK: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+      DARK: 'https://api.maptiler.com/maps/dataviz-dark/{z}/{x}/{y}.png?key=ldasQ9G5fINrzvKswfXk',
     }
   },
 
   // MapTiler Configuration
   MAPTILER: {
-    API_KEY: 'nBebKavNM7a4x0NeaxFl',
-    TILE_URL: 'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=nBebKavNM7a4x0NeaxFl',
-    SATELLITE_URL: 'https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=nBebKavNM7a4x0NeaxFl',
-    DARK_URL: 'https://api.maptiler.com/maps/dataviz-dark/{z}/{x}/{y}.png?key=nBebKavNM7a4x0NeaxFl',
+    API_KEY: 'ldasQ9G5fINrzvKswfXk',
+    TILE_URL: 'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=ldasQ9G5fINrzvKswfXk',
+    SATELLITE_URL: 'https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=ldasQ9G5fINrzvKswfXk',
+    DARK_URL: 'https://api.maptiler.com/maps/dataviz-dark/{z}/{x}/{y}.png?key=ldasQ9G5fINrzvKswfXk',
     ATTRIBUTION: '&copy; <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
   },
 

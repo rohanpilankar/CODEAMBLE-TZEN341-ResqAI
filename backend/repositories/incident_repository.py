@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import case
 from typing import Optional, List
 from backend.models.incident import Incident, IncidentImage, SeverityLevel, IncidentStatus
 
@@ -37,3 +38,23 @@ class IncidentRepository:
         self.db.commit()
         self.db.refresh(image)
         return image
+
+    def get_priority_queue(self, limit: int = 10) -> List[Incident]:
+        """Fetch active incidents ordered by severity DESC for dispatch queue (SQL-level)."""
+        severity_order = case(
+            (Incident.severity == SeverityLevel.CRITICAL, 4),
+            (Incident.severity == SeverityLevel.HIGH, 3),
+            (Incident.severity == SeverityLevel.MEDIUM, 2),
+            else_=1
+        )
+        return self.db.query(Incident)\
+            .filter(Incident.status.notin_([IncidentStatus.RESOLVED, IncidentStatus.CLOSED]))\
+            .order_by(severity_order.desc())\
+            .limit(limit).all()
+
+    def get_citizen_feed(self, limit: int = 15) -> List[Incident]:
+        """Fetch active incidents ordered by most recent first for citizen feed (SQL-level)."""
+        return self.db.query(Incident)\
+            .filter(Incident.status.notin_([IncidentStatus.RESOLVED, IncidentStatus.CLOSED]))\
+            .order_by(Incident.created_at.desc())\
+            .limit(limit).all()

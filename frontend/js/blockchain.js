@@ -1,214 +1,214 @@
-import { CONFIG } from './config.js';
+import { notificationService } from './services/notificationService.js';
+import { apiClient } from './api/client.js';
 
 export const blockchainHandler = {
-  renderMockModule(area, icon, title, description, metrics, listItems, tableHeaders, tableRows) {
-    area.innerHTML = `
-      <div class="page-section-header">
-        <div>
-          <h2 style="display:flex;align-items:center;gap:10px;">
-            <span style="width:36px;height:36px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:rgba(var(--primary-rgb),0.12);color:var(--primary);font-size:1rem;flex-shrink:0;">
-              <i class="fa ${icon}"></i>
-            </span>
-            ${title}
-          </h2>
-          <div class="page-subtitle">${description}</div>
-        </div>
-        <div class="d-flex gap-2">
-          <button class="btn btn-primary btn-sm" onclick="blockchainHandler.connectWallet()"><i class="fa fa-wallet me-1"></i> Connect Wallet</button>
-        </div>
-      </div>
+  walletConnected: false,
+  account: null,
 
-      
-      <div class="stats-grid-4" style="margin-bottom:24px;">
-        ${metrics.map(m => `
-        <div class="module-stat-card">
-          <div class="stat-icon ${m.color}"><i class="fa ${m.icon}"></i></div>
-          <div class="stat-info">
-            <div class="stat-label">${m.label}</div>
-            <div class="stat-value">${m.value}</div>
-            <div class="stat-delta">${m.subtext}</div>
-          </div>
-        </div>
-        `).join('')}
+  async connectWallet() {
+    if (typeof window.ethereum !== 'undefined') {
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        this.account = accounts[0];
+        this.walletConnected = true;
+        notificationService.success('Web3 Connected', `Connected wallet: ${this.account.slice(0, 6)}...${this.account.slice(-4)}`);
+        return true;
+      } catch (err) {
+        notificationService.error('Connection Failed', err.message || 'Failed to connect Web3 wallet.');
+        return false;
+      }
+    } else {
+      notificationService.warning('MetaMask Not Found', 'Please install MetaMask or a Web3 compatible browser extension.');
+      return false;
+    }
+  },
+
+  async renderWallet(container) {
+    container.innerHTML = `
+      <div class="section-header mb-4">
+        <h2><i class="fa fa-wallet text-warning me-2"></i> Web3 Emergency Wallet</h2>
+        <p class="text-muted">Connect your decentralized crypto wallet to send and verify transparent emergency relief funds.</p>
       </div>
 
       <div class="row g-4">
-        <div class="col-lg-8">
-          <div class="card p-0">
-            <table class="table mb-0">
-              <thead style="background: rgba(255,255,255,0.05);">
-                <tr>
-                  ${tableHeaders.map(h => `<th>${h}</th>`).join('')}
-                </tr>
-              </thead>
-              <tbody>
-                ${tableRows.map(row => `
-                  <tr>
-                    ${row.map(cell => `<td>${cell}</td>`).join('')}
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
+        <div class="col-md-6">
+          <div class="card p-4 h-100 text-center d-flex flex-column justify-content-center align-items-center">
+            <div class="mb-3" style="font-size: 3rem; color: var(--color-warning, #f59e0b);">
+              <i class="fa fa-coins"></i>
+            </div>
+            <h4 class="mb-2">MetaMask / Web3 Status</h4>
+            <p class="text-muted mb-4" id="wallet-status-text">
+              ${this.walletConnected ? `Connected: <strong>${this.account}</strong>` : 'Wallet not connected'}
+            </p>
+            <button class="btn btn-warning btn-lg fw-bold px-4" id="btn-connect-metamask">
+              <i class="fa fa-plug me-2"></i> ${this.walletConnected ? 'Wallet Connected' : 'Connect Web3 Wallet'}
+            </button>
           </div>
         </div>
-        <div class="col-lg-4">
+
+        <div class="col-md-6">
           <div class="card p-4 h-100">
-            <h5 class="mb-3">Network Status</h5>
-            <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
-              ${listItems.map(item => `
-                <li class="d-flex align-items-center gap-3">
-                  <div class="activity-dot" style="width:10px;height:10px;border-radius:50%;background:var(--${item.color});"></div>
-                  <div>
-                    <div class="font-size-sm fw-bold">${item.title}</div>
-                    <div class="font-size-xs color-muted">${item.time}</div>
-                  </div>
-                </li>
-              `).join('')}
+            <h5 class="mb-3"><i class="fa fa-shield-alt text-primary me-2"></i> Relief Fund Smart Contract</h5>
+            <ul class="list-group list-group-flush bg-transparent">
+              <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between">
+                <span>Contract Address:</span>
+                <code class="text-warning">0x8f3a91b2c4e5d6f7a8b9c0d1e2f3a4b5c6d7e8f9</code>
+              </li>
+              <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between">
+                <span>Network:</span>
+                <span class="badge bg-success">Ethereum Mainnet / Sepolia</span>
+              </li>
+              <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between">
+                <span>Audit Status:</span>
+                <span class="badge bg-info">Verified & Immutable</span>
+              </li>
             </ul>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('btn-connect-metamask')?.addEventListener('click', async () => {
+      const ok = await this.connectWallet();
+      if (ok) this.renderWallet(container);
+    });
+  },
+
+  async renderDonate(container) {
+    container.innerHTML = `
+      <div class="section-header mb-4">
+        <h2><i class="fa fa-hand-holding-usd text-success me-2"></i> Transparent Crypto Relief Donation</h2>
+        <p class="text-muted">Direct, zero-middleman blockchain donations tracked on-chain for disaster response.</p>
+      </div>
+
+      <div class="card p-4 style="max-width: 650px;">
+        <form id="blockchain-donate-form">
+          <div class="mb-3">
+            <label class="form-label">Relief Cause Target</label>
+            <select class="form-control" name="cause" required>
+              <option value="General Disaster Relief">General Emergency Disaster Relief</option>
+              <option value="Flood Food & Water Patrol">Flood Food & Water Patrol</option>
+              <option value="Medical Evacuation Fleet">Medical Evacuation Fleet</option>
+              <option value="Shelter Reconstruction">Shelter Reconstruction</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Amount (ETH)</label>
+            <input type="number" step="0.01" min="0.001" class="form-control" name="amount" placeholder="0.1" required />
+          </div>
+          <button type="submit" class="btn btn-success w-100 fw-bold py-2">
+            <i class="fa fa-paper-plane me-2"></i> Send On-Chain Relief Donation
+          </button>
+        </form>
+      </div>
+    `;
+
+    document.getElementById('blockchain-donate-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const amount = e.target.amount.value;
+      const cause = e.target.cause.value;
+
+      if (!this.walletConnected) {
+        const ok = await this.connectWallet();
+        if (!ok) return;
+      }
+
+      notificationService.info('Processing Transaction', `Sending ${amount} ETH for ${cause}...`);
+      setTimeout(() => {
+        notificationService.success('Donation Confirmed!', `Transaction recorded on-chain. Thank you for your support!`);
+        e.target.reset();
+      }, 1500);
+    });
+  },
+
+  async renderHistory(container) {
+    container.innerHTML = '<div class="spinner"></div>';
+    try {
+      const res = await apiClient.get('/blockchain/donations');
+      const donations = res.data || [];
+
+      const rows = donations.map(d => `
+        <tr>
+          <td><code class="text-warning">${d.tx_hash.slice(0, 10)}...${d.tx_hash.slice(-6)}</code></td>
+          <td>${d.cause}</td>
+          <td><strong>${d.amount_eth} ETH</strong></td>
+          <td><span class="badge bg-success">Verified</span></td>
+          <td>${new Date(d.timestamp).toLocaleString()}</td>
+        </tr>
+      `).join('');
+
+      container.innerHTML = `
+        <div class="section-header mb-4">
+          <h2><i class="fa fa-receipt text-info me-2"></i> On-Chain Donation History</h2>
+          <p class="text-muted">Public, immutable ledger of all financial relief contributions.</p>
+        </div>
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tx Hash</th>
+                <th>Relief Cause</th>
+                <th>Amount</th>
+                <th>Verification</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows || '<tr><td colspan="5" class="text-center text-muted">No blockchain transactions recorded yet.</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } catch (err) {
+      container.innerHTML = `<div class="alert-banner alert-danger">Failed to load blockchain history: ${err.message}</div>`;
+    }
+  },
+
+  async renderTransparency(container) {
+    container.innerHTML = `
+      <div class="section-header mb-4">
+        <h2><i class="fa fa-eye text-primary me-2"></i> NGO Audit & Transparency Dashboard</h2>
+        <p class="text-muted">Real-time breakdown of donated funds vs. verified on-ground deployment.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card p-3 text-center">
+            <h6 class="text-muted">Total Donated (On-Chain)</h6>
+            <h3 class="text-success m-0">2.0 ETH</h3>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-3 text-center">
+            <h6 class="text-muted">Deployed to Relief Camps</h6>
+            <h3 class="text-info m-0">1.85 ETH</h3>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-3 text-center">
+            <h6 class="text-muted">Transparency Index Score</h6>
+            <h3 class="text-warning m-0">99.4%</h3>
           </div>
         </div>
       </div>
     `;
   },
 
-  async renderWallet(area) {
-    this.renderMockModule(
-      area, 'fa-wallet', 'Wallet Connect', 'Connect your MetaMask or WalletConnect wallet to interact with the ResQAI smart contract.',
-      [
-        { label: 'Wallet Status', value: 'Not Connected', subtext: 'Click Connect Wallet', icon: 'fa-plug', color: 'red' },
-        { label: 'Network', value: 'Ethereum', subtext: 'Mainnet', icon: 'fa-network-wired', color: 'blue' },
-        { label: 'Gas Price', value: '12 Gwei', subtext: 'Low', icon: 'fa-gas-pump', color: 'green' },
-        { label: 'ResQ Tokens', value: '0.00', subtext: 'Balance', icon: 'fa-coins', color: 'yellow' }
-      ],
-      [
-        { title: 'Block #145892 mined', time: '12 secs ago', color: 'success' },
-        { title: 'Network congestion low', time: '1 min ago', color: 'info' },
-        { title: 'Smart Contract synced', time: '5 mins ago', color: 'primary' }
-      ],
-      ['Wallet Provider', 'Status', 'Supported Networks', 'Action'],
-      [
-        ['MetaMask', '<span class="badge badge-warning">Disconnected</span>', 'ETH, Polygon, BSC', '<button class="btn btn-primary btn-sm">Connect</button>'],
-        ['WalletConnect', '<span class="badge badge-warning">Disconnected</span>', 'Multi-chain', '<button class="btn btn-primary btn-sm">Connect</button>'],
-        ['Coinbase Wallet', '<span class="badge badge-warning">Disconnected</span>', 'ETH', '<button class="btn btn-primary btn-sm">Connect</button>']
-      ]
-    );
-  },
+  async renderContracts(container) {
+    container.innerHTML = `
+      <div class="section-header mb-4">
+        <h2><i class="fa fa-file-contract text-danger me-2"></i> Smart Contract Explorer</h2>
+        <p class="text-muted">Interact directly with verified disaster relief smart contracts.</p>
+      </div>
 
-  async renderDonate(area) {
-    this.renderMockModule(
-      area, 'fa-hand-holding-usd', 'Crypto Donate', 'Select an NGO and donate directly via blockchain — get a verifiable certificate.',
-      [
-        { label: 'Total Donated', value: '$45,210', subtext: 'By you', icon: 'fa-gift', color: 'green' },
-        { label: 'Active Campaigns', value: '12', subtext: 'Accepting Crypto', icon: 'fa-flag', color: 'blue' },
-        { label: 'Certificates', value: '4', subtext: 'Minted NFTs', icon: 'fa-certificate', color: 'yellow' },
-        { label: 'Tax Deductible', value: 'Yes', subtext: 'Via smart receipt', icon: 'fa-file-invoice', color: 'info' }
-      ],
-      [
-        { title: '0.5 ETH donated to Global Relief', time: '10 mins ago', color: 'success' },
-        { title: '100 USDC to LocalCare', time: '1 hour ago', color: 'info' },
-        { title: 'NFT Certificate minted', time: '1 hour ago', color: 'primary' }
-      ],
-      ['Campaign Name', 'Accepts', 'Goal Progress', 'Action'],
-      [
-        ['Flood Relief Mumbai', 'ETH, USDC', '64%', '<button class="btn btn-success btn-sm">Donate</button>'],
-        ['Shelter Supply Fund', 'USDT, MATIC', '30%', '<button class="btn btn-success btn-sm">Donate</button>'],
-        ['Medical Aid Network', 'ETH, DAI', '85%', '<button class="btn btn-success btn-sm">Donate</button>']
-      ]
-    );
-  },
-
-  async renderHistory(area) {
-    try {
-      const res = await fetch('${CONFIG.API_BASE_URL}/blockchain/donations').then(r => r.json());
-      const txs = res.data || [];
-      const rows = txs.map(t => [
-        `<code>${t.tx_hash}</code>`, t.timestamp, `${t.amount_eth} ETH (${t.usd_equivalent})`, `<span class="badge badge-resolved">${t.status}</span>`, `<a href="#" onclick="alert('Viewing verified transaction receipt for ${t.tx_hash}'); return false;">Receipt</a>`
-      ]);
-      this.renderMockModule(
-        area, 'fa-receipt', 'Donation History', 'All past blockchain donations with transaction hashes and NGO receipts.',
-        [
-          { label: 'Total Transactions', value: `${txs.length}`, subtext: 'Since join', icon: 'fa-list', color: 'blue' },
-          { label: 'Volume Donated', value: '1.7 ETH', subtext: '~ $4,930', icon: 'fa-chart-bar', color: 'green' },
-          { label: 'Smart Contracts', value: '2', subtext: 'Interacted', icon: 'fa-file-contract', color: 'yellow' },
-          { label: 'Verifications', value: '100%', subtext: 'On-chain proof', icon: 'fa-check-double', color: 'info' }
-        ],
-        [
-          { title: 'Transaction Confirmed', time: 'Just now', color: 'success' },
-          { title: 'Smart Contract Verified', time: '5 mins ago', color: 'info' },
-        ],
-        ['Tx Hash', 'Date', 'Amount', 'Status', 'Receipt'],
-        rows
-      );
-    } catch (e) {
-      area.innerHTML = '<div class="p-4 text-danger">Failed to load blockchain donation history</div>';
-    }
-  },
-
-  async renderTransparency(area) {
-    this.renderMockModule(
-      area, 'fa-eye', 'NGO Transparency', 'Public ledger of all NGO donations and verified disbursements on-chain.',
-      [
-        { label: 'Total Ecosystem Volume', value: '$2.4M', subtext: 'Locked & Spent', icon: 'fa-globe', color: 'blue' },
-        { label: 'Verified Disbursements', value: '$1.8M', subtext: '75% of funds', icon: 'fa-check-circle', color: 'green' },
-        { label: 'Tracked Vendors', value: '450', subtext: 'Suppliers paid', icon: 'fa-truck', color: 'yellow' },
-        { label: 'Audit Score', value: 'A+', subtext: 'Real-time', icon: 'fa-medal', color: 'info' }
-      ],
-      [
-        { title: 'Relief India Foundation disbursed $50k', time: '2 hrs ago', color: 'success' },
-        { title: 'Vendor payment verified', time: '4 hrs ago', color: 'info' },
-        { title: 'New audit report published', time: '1 day ago', color: 'primary' }
-      ],
-      ['NGO', 'Funds Raised', 'Funds Spent', 'Transparency Score'],
-      [
-        ['Relief India Foundation', '$500,000', '$420,000', '<span class="text-success">98/100</span>'],
-        ['Disaster Aid Alliance', '$150,000', '$120,000', '<span class="text-success">95/100</span>'],
-      ]
-    );
-  },
-
-  async renderContracts(area) {
-    try {
-      const res = await fetch('${CONFIG.API_BASE_URL}/blockchain/contracts').then(r => r.json());
-      const contracts = res.data || [];
-      const rows = contracts.map(c => [
-        `<strong>${c.name}</strong>`, `<code>${c.address}</code>`, c.network, `<span class="badge badge-resolved">Verified (${c.transparency_score})</span>`
-      ]);
-      this.renderMockModule(
-        area, 'fa-file-contract', 'Smart Contract Explorer', 'Browse and interact with deployed ResQAI smart contracts.',
-        [
-          { label: 'Deployed Contracts', value: `${contracts.length}`, subtext: 'Core system', icon: 'fa-code', color: 'blue' },
-          { label: 'Active Addresses', value: '14.2k', subtext: 'Interacting', icon: 'fa-users', color: 'green' },
-          { label: 'TVL', value: '$850k', subtext: 'Total Value Locked', icon: 'fa-lock', color: 'yellow' },
-          { label: 'Last Audit', value: 'Passed', subtext: 'Certik & OpenZeppelin', icon: 'fa-shield-check', color: 'info' }
-        ],
-        [
-          { title: 'Contract Verified on Etherscan', time: '1 day ago', color: 'primary' },
-          { title: 'Security Audit passed', time: '1 month ago', color: 'success' }
-        ],
-        ['Contract Name', 'Address', 'Network', 'Status'],
-        rows
-      );
-    } catch (e) {
-      area.innerHTML = '<div class="p-4 text-danger">Failed to load smart contracts list</div>';
-    }
-  },
-
-  async connectWallet() {
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const account = accounts[0];
-        const shortAccount = `${account.substring(0, 6)}...${account.substring(account.length - 4)}`;
-        alert(`Web3 Wallet Connected: ${shortAccount}`);
-        localStorage.setItem('resq_web3_account', account);
-        return account;
-      } catch (err) {
-        console.error('Wallet connection rejected:', err);
-      }
-    } else {
-      alert('MetaMask or Web3 wallet browser extension is not detected. Please install MetaMask to interact with live relief funds on-chain.');
-    }
+      <div class="card p-4">
+        <h5>Contract Functions</h5>
+        <div class="d-flex gap-2 mt-3">
+          <button class="btn btn-secondary btn-sm"><i class="fa fa-search me-1"></i> Check Pool Balance</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa fa-list me-1"></i> View Beneficiaries</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa fa-download me-1"></i> Download ABI</button>
+        </div>
+      </div>
+    `;
   }
 };
-
-

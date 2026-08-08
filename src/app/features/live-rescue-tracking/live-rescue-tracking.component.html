@@ -1,0 +1,264 @@
+<!-- ── Skeleton Loading Screen ── -->
+<div class="skeleton-overlay" *ngIf="!isMapLoaded && !mapError">
+  <div class="sk-spinner"></div>
+  <h4 class="text-white font-weight-bold">Initializing MapTiler Streets v4 Engine...</h4>
+  <p class="text-muted fs-6">Loading 3D buildings, real-time rescue streams & disaster layers</p>
+</div>
+
+<!-- ── Offline / Error Notice Banner ── -->
+<div class="position-absolute top-0 start-50 translate-middle-x z-3 mt-3" *ngIf="mapError || isOffline">
+  <div class="alert alert-danger shadow-lg border-0 rounded-4 px-4 py-2 d-flex align-items-center gap-3">
+    <i class="fa fa-triangle-exclamation fs-5"></i>
+    <div>
+      <strong>System Notice:</strong> {{ mapError || 'Offline mode active. Using cached maps and fallback location.' }}
+    </div>
+  </div>
+</div>
+
+<!-- ── Main Map Viewport ── -->
+<div [id]="mapContainerId" class="map-viewport"></div>
+
+<!-- ── Top Header Glassmorphism Bar ── -->
+<div class="header-bar">
+  <div class="brand-group">
+    <div class="brand-icon"><i class="fa fa-shield-halved text-white"></i></div>
+    <div class="brand-title">ResQ<span>AI</span></div>
+    <span class="status-badge"><i class="fa fa-circle-dot me-1"></i> Live Tracker</span>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-wrap">
+    <div class="search-input-group">
+      <i class="fa fa-magnifying-glass"></i>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="onSearchInput()"
+        placeholder="Search hospitals, shelters, disaster reports..."
+      />
+    </div>
+    <div class="search-results-dropdown" *ngIf="searchResults.length">
+      <div
+        class="search-item"
+        *ngFor="let item of searchResults"
+        (click)="selectSearchResult(item)"
+      >
+        <i class="fa fa-location-dot item-icon"></i>
+        <div>
+          <div class="item-title">{{ item.title }}</div>
+          <div class="item-sub">{{ item.subtitle }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions-group">
+    <button class="btn-sos" (click)="triggerEmergencySOS()">
+      <i class="fa fa-bell-slash me-1"></i> Emergency SOS
+    </button>
+    <div class="icon-btn" title="Notifications">
+      <i class="fa fa-bell"></i>
+      <div class="badge-dot"></div>
+    </div>
+    <div class="user-pill">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="User Avatar" />
+      <span>Citizen User</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Left Floating Controls ── -->
+<div class="left-controls">
+  <button class="ctrl-btn" (click)="recenterLocation()" title="My Location">
+    <i class="fa fa-crosshairs"></i>
+  </button>
+  <button class="ctrl-btn" (click)="zoomIn()" title="Zoom In">
+    <i class="fa fa-plus"></i>
+  </button>
+  <button class="ctrl-btn" (click)="zoomOut()" title="Zoom Out">
+    <i class="fa fa-minus"></i>
+  </button>
+  <button class="ctrl-btn" (click)="resetNorth()" title="Reset Compass">
+    <i class="fa fa-compass"></i>
+  </button>
+  <button
+    class="ctrl-btn"
+    [class.active]="filters.buildings3D"
+    (click)="toggleFilter('buildings3D')"
+    title="Toggle 3D Buildings"
+  >
+    <i class="fa fa-building"></i>
+  </button>
+</div>
+
+<!-- ── Right Floating Layer Filters ── -->
+<div class="right-filters-card" *ngIf="isFilterPanelOpen">
+  <div class="filter-title">
+    <span>Map Layers & Filters</span>
+    <i class="fa fa-layer-group text-primary"></i>
+  </div>
+  <div class="filter-list">
+    <div class="filter-item" (click)="toggleFilter('disasterReports')">
+      <div class="label-group"><i class="fa fa-triangle-exclamation text-danger"></i> Disaster Reports</div>
+      <input type="checkbox" [checked]="filters.disasterReports" readonly />
+    </div>
+    <div class="filter-item" (click)="toggleFilter('rescueTeams')">
+      <div class="label-group"><i class="fa fa-truck-medical text-primary"></i> Rescue Vehicles</div>
+      <input type="checkbox" [checked]="filters.rescueTeams" readonly />
+    </div>
+    <div class="filter-item" (click)="toggleFilter('hospitals')">
+      <div class="label-group"><i class="fa fa-hospital text-info"></i> Hospitals</div>
+      <input type="checkbox" [checked]="filters.hospitals" readonly />
+    </div>
+    <div class="filter-item" (click)="toggleFilter('shelters')">
+      <div class="label-group"><i class="fa fa-campground text-success"></i> Shelters</div>
+      <input type="checkbox" [checked]="filters.shelters" readonly />
+    </div>
+    <div class="filter-item" (click)="toggleFilter('dangerZones')">
+      <div class="label-group"><i class="fa fa-biohazard text-warning"></i> Danger Zones</div>
+      <input type="checkbox" [checked]="filters.dangerZones" readonly />
+    </div>
+    <div class="filter-item" (click)="toggleFilter('heatmapLayer')">
+      <div class="label-group"><i class="fa fa-fire text-danger"></i> Incident Heatmap</div>
+      <input type="checkbox" [checked]="filters.heatmapLayer" readonly />
+    </div>
+    <div class="filter-item" (click)="toggleFilter('buildings3D')">
+      <div class="label-group"><i class="fa fa-cubes text-secondary"></i> 3D Extrusion</div>
+      <input type="checkbox" [checked]="filters.buildings3D" readonly />
+    </div>
+  </div>
+</div>
+
+<!-- ── Bottom Metrics Info Bar ── -->
+<div class="bottom-metrics-bar">
+  <div class="metric-card">
+    <div class="m-icon bg-danger bg-opacity-20 text-danger"><i class="fa fa-circle-exclamation"></i></div>
+    <div>
+      <div class="m-val">{{ incidents.length }}</div>
+      <div class="m-lbl">Active Incidents</div>
+    </div>
+  </div>
+
+  <div class="metric-card">
+    <div class="m-icon bg-primary bg-opacity-20 text-primary"><i class="fa fa-truck-medical"></i></div>
+    <div>
+      <div class="m-val">{{ rescueVehicles.length }}</div>
+      <div class="m-lbl">Live Rescue Teams</div>
+    </div>
+  </div>
+
+  <div class="metric-card" *ngIf="nearestShelter">
+    <div class="m-icon bg-success bg-opacity-20 text-success"><i class="fa fa-campground"></i></div>
+    <div>
+      <div class="m-val">{{ nearestShelter.distanceKm }} km</div>
+      <div class="m-lbl">Nearest Shelter</div>
+    </div>
+  </div>
+
+  <div class="metric-card" *ngIf="nearestHospital">
+    <div class="m-icon bg-info bg-opacity-20 text-info"><i class="fa fa-hospital"></i></div>
+    <div>
+      <div class="m-val">{{ nearestHospital.distanceKm }} km</div>
+      <div class="m-lbl">Nearest Hospital</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Floating Marker Legend Bar ── -->
+<div class="legend-pill-bar">
+  <div class="leg-item"><div class="dot dot-red"></div> Critical</div>
+  <div class="leg-item"><div class="dot dot-orange"></div> High</div>
+  <div class="leg-item"><div class="dot dot-yellow"></div> Medium</div>
+  <div class="leg-item"><div class="dot dot-blue"></div> User / Vehicle</div>
+  <div class="leg-item"><div class="dot dot-green"></div> Shelter / Hospital</div>
+</div>
+
+<!-- ── Right Inspector Panel (Glassmorphism) ── -->
+<div class="inspector-panel" *ngIf="selectedInspectorItem">
+  <div class="panel-header">
+    <h4>
+      <i class="fa fa-circle-info me-2 text-primary"></i>
+      {{ selectedInspectorItem.type === 'INCIDENT' ? 'Incident Inspector' : 'Vehicle Details' }}
+    </h4>
+    <button class="close-btn" (click)="closeInspector()"><i class="fa fa-xmark"></i></button>
+  </div>
+
+  <div class="panel-body">
+    <!-- Incident Details -->
+    <ng-container *ngIf="selectedInspectorItem.type === 'INCIDENT'">
+      <div class="img-preview-wrap" *ngIf="selectedInspectorItem.data.mediaUrl">
+        <img [src]="selectedInspectorItem.data.mediaUrl" alt="Incident Media" />
+        <span class="badge-sev" [ngClass]="selectedInspectorItem.data.severity">
+          {{ selectedInspectorItem.data.severity }}
+        </span>
+      </div>
+
+      <h5 class="fw-bold mb-1">{{ selectedInspectorItem.data.title }}</h5>
+      <p class="desc-text">{{ selectedInspectorItem.data.description }}</p>
+
+      <div class="bg-dark bg-opacity-50 p-2 rounded-3 text-white-50 font-size-xs">
+        <div><i class="fa fa-location-dot text-danger me-1"></i> {{ selectedInspectorItem.data.address }}</div>
+        <div class="mt-1"><i class="fa fa-users text-warning me-1"></i> Affected: {{ selectedInspectorItem.data.peopleAffected }} people</div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons-grid mt-2">
+        <button
+          class="btn-act"
+          (click)="navigateTo(selectedInspectorItem.data.latitude, selectedInspectorItem.data.longitude)"
+        >
+          <i class="fa fa-route text-cyan"></i> Safe Route
+        </button>
+        <button class="btn-act" (click)="triggerEmergencySOS()">
+          <i class="fa fa-phone text-success"></i> Call Dispatch
+        </button>
+      </div>
+    </ng-container>
+
+    <!-- Vehicle Details -->
+    <ng-container *ngIf="selectedInspectorItem.type === 'VEHICLE'">
+      <div class="p-3 bg-dark bg-opacity-50 rounded-3 text-white">
+        <h5 class="fw-bold mb-1 text-primary">{{ selectedInspectorItem.data.name }}</h5>
+        <div class="badge bg-primary mb-3">{{ selectedInspectorItem.data.vehicleType }}</div>
+
+        <div class="d-flex justify-content-between font-size-xs mb-2">
+          <span>Status:</span>
+          <strong class="text-success">{{ selectedInspectorItem.data.status }}</strong>
+        </div>
+        <div class="d-flex justify-content-between font-size-xs mb-2">
+          <span>Speed:</span>
+          <strong>{{ selectedInspectorItem.data.speedKmh }} km/h</strong>
+        </div>
+        <div class="d-flex justify-content-between font-size-xs mb-2">
+          <span>ETA:</span>
+          <strong class="text-warning">{{ selectedInspectorItem.data.etaMinutes }} mins</strong>
+        </div>
+        <div class="d-flex justify-content-between font-size-xs">
+          <span>Destination:</span>
+          <span class="text-truncate" style="max-width: 150px;">{{ selectedInspectorItem.data.destination }}</span>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Active Route Navigation Turn Steps -->
+    <ng-container *ngIf="activeRoute">
+      <div class="mt-3">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h6 class="fw-bold m-0 text-cyan"><i class="fa fa-diamond-turn-right me-1"></i> Active Navigation Corridor</h6>
+          <button class="btn btn-sm btn-outline-danger py-0 px-2" (click)="clearRoute()">Clear</button>
+        </div>
+        <div class="p-2 bg-info bg-opacity-10 border border-info border-opacity-20 rounded-3 mb-2 font-size-xs">
+          <strong>Distance:</strong> {{ activeRoute.distanceKm }} km &nbsp;|&nbsp;
+          <strong>Est. Time:</strong> {{ activeRoute.durationMinutes }} mins
+        </div>
+        <div class="route-steps-list">
+          <div class="step-item" *ngFor="let step of activeRoute.steps">
+            <i class="fa fa-arrow-up-right"></i>
+            <div>{{ step.instruction }} ({{ step.distance }}m)</div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

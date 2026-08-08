@@ -3,6 +3,7 @@
 
 export const environment = {
   production: false,
+  mapTilerApiKey: "ldasQ9G5fINrzvKswfXk",
 
   firebase: {
     apiKey: "AIzaSyBcLN3QFBCulL9ZCr2aKkbrS-kGV49NWnA",
