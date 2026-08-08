@@ -1,45 +1,105 @@
 :root {
-  /* ── ResQ AI — Fresh Rescue + AI Theme ─────────────────────────── */
-  --bg-base:    #080d1a;
-  --bg-surface: #0f1629;
-  --bg-dark:    #080d1a;
+  /* ── ResQ AI — Centralized Enterprise Theme Tokens ────────────────────────────── */
+  
+  /* ── Core Backgrounds & Surfaces (Dark Theme Default) ── */
+  --bg-base:               #080d1a;
+  --bg-surface:            #0f1629;
+  --bg-surface-secondary:  #182238;
+  --bg-surface-hover:      #1e2d4a;
+  --bg-dark:               #080d1a;
+  --surface-elevated:      #131c31;
+  --surface-overlay:       rgba(8, 13, 26, 0.85);
+  --surface-disabled:      #101828;
+  
+  /* ── Glass & Cards ── */
+  --bg-card:              rgba(15, 22, 41, 0.85);
+  --bg-card-hover:        rgba(22, 33, 60, 0.95);
+  --glass-border:         rgba(255, 255, 255, 0.09);
 
-  /* ── Glass Card Tokens ──────────────────────────────────────────── */
-  --bg-card:       rgba(15, 22, 41, 0.82);
-  --bg-card-hover: rgba(15, 22, 41, 0.96);
-  --glass-border:  rgba(255, 255, 255, 0.09);
+  /* ── Layout Panels ── */
+  --sidebar-bg:            #0b1120;
+  --sidebar-border:        rgba(255, 255, 255, 0.08);
+  --topbar-bg:             rgba(11, 17, 32, 0.92);
+  --topbar-border:         rgba(255, 255, 255, 0.08);
+  --modal-bg:              #0f1629;
+  --dropdown-bg:           #0f1629;
+  --dropdown-hover:        #182238;
 
-  /* ── Brand — AI Cyan + Rescue Coral ───────────────────────────── */
-  --primary:       #06b6d4;
-  --primary-dark:  #0891b2;
-  --primary-light: #67e8f9;
-  --primary-rgb:   6, 182, 212;
+  /* ── Typography & Hierarchy ── */
+  --text-primary:          #f8fafc;
+  --text-secondary:        #cbd5e1;
+  --text-muted:            #94a3b8;
+  --text-inverse:          #0f172a;
+  --text-link:             #67e8f9;
+  --text-link-hover:       #f43f5e;
+  --heading-color:         #f8fafc;
+  --icon-color:            #94a3b8;
 
-  --secondary:       #1e3a5f;
-  --secondary-light: #7dd3fc;
+  /* ── Borders, Dividers & Inputs ── */
+  --border-color:          rgba(255, 255, 255, 0.10);
+  --border-subtle:         rgba(255, 255, 255, 0.05);
+  --divider:               rgba(255, 255, 255, 0.08);
+  --input-bg:              rgba(15, 23, 42, 0.85);
+  --input-border:          rgba(255, 255, 255, 0.15);
+  --input-text:            #f8fafc;
+  --input-placeholder:     #94a3b8;
 
-  --accent:      #f43f5e;
-  --accent-dark: #e11d48;
-  --accent-rgb:  244, 63, 94;
+  /* ── Brand Colors ── */
+  --primary:               #06b6d4;
+  --primary-dark:          #0891b2;
+  --primary-light:         #67e8f9;
+  --primary-rgb:           6, 182, 212;
 
-  /* ── Semantic Status Colors ────────────────────────────────────── */
-  --success: #22c55e;
-  --warning: #eab308;
-  --danger:  #ef4444;
-  --info:    #38bdf8;
+  --secondary:             #1e3a5f;
+  --secondary-light:       #7dd3fc;
 
-  /* ── Text Hierarchy ────────────────────────────────────────────── */
-  --text-primary:   #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted:     #94a3b8;
+  --accent:                #f43f5e;
+  --accent-dark:           #e11d48;
+  --accent-rgb:            244, 63, 94;
 
-  /* ── Severity Colors (safety-critical — keep fully saturated) ─── */
-  --severity-critical: #ff2d55;
-  --severity-high:     #ff7f32;
-  --severity-medium:   #fbbf24;
-  --severity-low:      #34d399;
+  /* ── Semantic Status & Backgrounds ── */
+  --success:               #22c55e;
+  --success-bg:            rgba(34, 197, 94, 0.15);
+  --success-text:          #4ade80;
 
-  /* ── Primary alpha helpers (use: rgba(var(--primary-rgb), X)) ─── */
+  --warning:               #eab308;
+  --warning-bg:            rgba(234, 179, 8, 0.15);
+  --warning-text:          #fde047;
+
+  --danger:                #ef4444;
+  --danger-bg:             rgba(239, 68, 68, 0.15);
+  --danger-text:           #f87171;
+
+  --info:                  #38bdf8;
+  --info-bg:               rgba(56, 189, 248, 0.15);
+  --info-text:             #7dd3fc;
+
+  /* ── Severity Tokens ── */
+  --severity-low:          #22c55e;
+  --severity-medium:       #eab308;
+  --severity-high:         #ff7f32;
+  --severity-critical:     #ff2d55;
+
+  /* ── Interactive Buttons ── */
+  --button-primary:        #06b6d4;
+  --button-primary-hover:  #0891b2;
+  --button-secondary:      #1e3a5f;
+  --button-secondary-hover:#2a4d7d;
+
+  /* ── Chart & Map Tokens ── */
+  --chart-grid:            rgba(255, 255, 255, 0.08);
+  --chart-axis:            #94a3b8;
+  --chart-label:           #cbd5e1;
+  --map-popup-bg:          #0f1629;
+  --map-popup-text:        #f8fafc;
+  --map-control-bg:        #0b1120;
+
+  /* ── Custom Scrollbars ── */
+  --scrollbar-track:       rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb:       rgba(255, 255, 255, 0.15);
+  --scrollbar-thumb-hover: #06b6d4;
+
+  /* ── Alpha Helpers ── */
   --primary-alpha-05: rgba(var(--primary-rgb), 0.05);
   --primary-alpha-15: rgba(var(--primary-rgb), 0.15);
   --primary-alpha-18: rgba(var(--primary-rgb), 0.18);
@@ -54,7 +114,7 @@
   --primary-alpha-70: rgba(var(--primary-rgb), 0.70);
   --primary-focus-ring: rgba(var(--primary-rgb), 0.18);
 
-  /* ── Spacing ────────────────────────────────────────────────────── */
+  /* ── Dimensions & Radius ── */
   --sidebar-width: 260px;
   --topbar-height: 64px;
   --radius-sm:     8px;
@@ -62,48 +122,121 @@
   --radius-lg:     20px;
   --radius-xl:     28px;
 
-  /* ── Layered Shadow System ─────────────────────────────────────── */
+  /* ── Shadows ── */
   --shadow-xs:   0 1px 3px rgba(0, 0, 0, 0.4);
   --shadow-sm:   0 2px 8px rgba(0, 0, 0, 0.45);
   --shadow-md:   0 4px 20px rgba(0, 0, 0, 0.55);
   --shadow-lg:   0 8px 40px rgba(0, 0, 0, 0.65);
   --shadow-glow: 0 0 24px rgba(var(--primary-rgb), 0.45);
-
   --shadow-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.07);
 
-  /* ── Transitions ────────────────────────────────────────────────── */
+  /* ── Transitions ── */
   --transition-fast: 0.15s ease;
   --transition-med:  0.3s ease;
   --transition-slow: 0.5s ease;
 
-  /* ── Font ───────────────────────────────────────────────────────── */
+  /* ── Fonts ── */
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* ── Light Theme Color Scheme Override ────────────────────────────────────────── */
+/* ── Light Theme Semantic Overrides ───────────────────────────────────────────── */
 html[data-theme="light"],
-[data-theme="light"],
-body.light-theme {
-  --bg-base:        #f1f5f9 !important;
-  --bg-surface:     #ffffff !important;
-  --bg-dark:        #f8fafc !important;
+[data-theme="light"] {
+  /* ── Core Backgrounds & Surfaces ── */
+  --bg-base:               #f1f5f9;
+  --bg-surface:            #ffffff;
+  --bg-surface-secondary:  #f8fafc;
+  --bg-surface-hover:      #e2e8f0;
+  --bg-dark:               #f8fafc;
+  --surface-elevated:      #ffffff;
+  --surface-overlay:       rgba(255, 255, 255, 0.90);
+  --surface-disabled:      #e2e8f0;
 
-  --bg-card:       #ffffff !important;
-  --bg-card-hover: #f8fafc !important;
-  --glass-border:  #cbd5e1 !important;
+  /* ── Glass & Cards ── */
+  --bg-card:              #ffffff;
+  --bg-card-hover:        #f8fafc;
+  --glass-border:         #cbd5e1;
 
-  --primary:       #0284c7 !important;
-  --primary-dark:  #0369a1 !important;
-  --primary-light: #0284c7 !important;
-  --primary-rgb:   2, 132, 199 !important;
+  /* ── Layout Panels ── */
+  --sidebar-bg:            #ffffff;
+  --sidebar-border:        #e2e8f0;
+  --topbar-bg:             #ffffff;
+  --topbar-border:         #cbd5e1;
+  --modal-bg:              #ffffff;
+  --dropdown-bg:           #ffffff;
+  --dropdown-hover:        #f1f5f9;
 
-  --secondary:       #e2e8f0 !important;
-  --secondary-light: #0284c7 !important;
+  /* ── Typography & Hierarchy ── */
+  --text-primary:          #0f172a;
+  --text-secondary:        #334155;
+  --text-muted:            #64748b;
+  --text-inverse:          #f8fafc;
+  --text-link:             #0284c7;
+  --text-link-hover:       #e11d48;
+  --heading-color:         #0f172a;
+  --icon-color:            #475569;
 
-  --text-primary:   #0f172a !important;
-  --text-secondary: #334155 !important;
-  --text-muted:     #64748b !important;
+  /* ── Borders, Dividers & Inputs ── */
+  --border-color:          #cbd5e1;
+  --border-subtle:         #e2e8f0;
+  --divider:               #e2e8f0;
+  --input-bg:              #ffffff;
+  --input-border:          #cbd5e1;
+  --input-text:            #0f172a;
+  --input-placeholder:     #64748b;
 
+  /* ── Brand Colors ── */
+  --primary:               #0284c7;
+  --primary-dark:          #0369a1;
+  --primary-light:         #0284c7;
+  --primary-rgb:           2, 132, 199;
+
+  --secondary:             #e2e8f0;
+  --secondary-light:       #0284c7;
+
+  /* ── Semantic Status & Backgrounds ── */
+  --success:               #16a34a;
+  --success-bg:            #dcfce7;
+  --success-text:          #15803d;
+
+  --warning:               #d97706;
+  --warning-bg:            #fef3c7;
+  --warning-text:          #b45309;
+
+  --danger:                #dc2626;
+  --danger-bg:             #fee2e2;
+  --danger-text:           #b91c1c;
+
+  --info:                  #0284c7;
+  --info-bg:               #e0f2fe;
+  --info-text:             #0369a1;
+
+  /* ── Severity Tokens ── */
+  --severity-low:          #16a34a;
+  --severity-medium:       #d97706;
+  --severity-high:         #ea580c;
+  --severity-critical:     #dc2626;
+
+  /* ── Interactive Buttons ── */
+  --button-primary:        #0284c7;
+  --button-primary-hover:  #0369a1;
+  --button-secondary:      #e2e8f0;
+  --button-secondary-hover:#cbd5e1;
+
+  /* ── Chart & Map Tokens ── */
+  --chart-grid:            #e2e8f0;
+  --chart-axis:            #64748b;
+  --chart-label:           #334155;
+  --map-popup-bg:          #ffffff;
+  --map-popup-text:        #0f172a;
+  --map-control-bg:        #ffffff;
+
+  /* ── Custom Scrollbars ── */
+  --scrollbar-track:       #f1f5f9;
+  --scrollbar-thumb:       #cbd5e1;
+  --scrollbar-thumb-hover: #0284c7;
+
+  /* ── Shadows ── */
   --shadow-xs:   0 1px 3px rgba(15, 23, 42, 0.06);
   --shadow-sm:   0 2px 8px rgba(15, 23, 42, 0.08);
   --shadow-md:   0 4px 20px rgba(15, 23, 42, 0.12);
@@ -111,5 +244,3 @@ body.light-theme {
   --shadow-glow: 0 0 24px rgba(2, 132, 199, 0.25);
   --shadow-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-
-

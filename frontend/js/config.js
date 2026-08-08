@@ -107,15 +107,15 @@ export const CONFIG = {
     'Gas Leak', 'Power Outage', 'Building Collapse', 'Road Accident', 'Other',
   ],
 
-  // Firebase Configuration
+  // Firebase Configuration for project "resqai1" (Account: pilankarrohan@gmail.com)
   FIREBASE: {
-    apiKey: "AIzaSyDEBS6epmc8ulbT7zHu-hdMyNv2uI0qhGk",
-    authDomain: "resqai-68e0d.firebaseapp.com",
-    databaseURL: "https://resqai-68e0d-default-rtdb.firebaseio.com",
-    projectId: "resqai-68e0d",
-    storageBucket: "resqai-68e0d.firebasestorage.app",
-    messagingSenderId: "1002198829104",
-    appId: "1:1002198829104:web:dc3eedb3ae913b244505f5",
-    measurementId: "G-KWHYQMK1SS"
+    apiKey: "AIzaSyBcLN3QFBCulL9ZCr2aKkbrS-kGV49NWnA",
+    authDomain: "resqai1.firebaseapp.com",
+    databaseURL: "https://resqai1-default-rtdb.firebaseio.com",
+    projectId: "resqai1",
+    storageBucket: "resqai1.firebasestorage.app",
+    messagingSenderId: "781424970444",
+    appId: "1:781424970444:web:cc1fedacbc3d910dcdd069",
+    measurementId: "G-6VJJMGKLCW"
   },
 };

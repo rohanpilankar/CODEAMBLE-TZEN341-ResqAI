@@ -1,4 +1,4 @@
-// ── Theme Service ────────────────────────────────────────────────────────────
+// ── Enterprise Theme Controller ───────────────────────────────────────────────
 export const themeService = {
   THEME_KEY: 'resq_app_theme',
   _isBound: false,
@@ -11,47 +11,15 @@ export const themeService = {
   },
 
   setTheme(theme, syncBackend = true) {
-    const isLight = theme === 'light';
-    const root = document.documentElement;
-    const body = document.body;
-
-    root.setAttribute('data-theme', theme);
-    body.setAttribute('data-theme', theme);
-
-    if (isLight) {
-      root.classList.add('light-theme');
-      root.classList.remove('dark-theme');
-      body.classList.add('light-theme');
-      body.classList.remove('dark-theme');
-
-      root.style.setProperty('--bg-base', '#f1f5f9', 'important');
-      root.style.setProperty('--bg-surface', '#ffffff', 'important');
-      root.style.setProperty('--bg-dark', '#f8fafc', 'important');
-      root.style.setProperty('--bg-card', '#ffffff', 'important');
-      root.style.setProperty('--glass-border', '#cbd5e1', 'important');
-      root.style.setProperty('--text-primary', '#0f172a', 'important');
-      root.style.setProperty('--text-secondary', '#334155', 'important');
-      root.style.setProperty('--text-muted', '#64748b', 'important');
-    } else {
-      root.classList.add('dark-theme');
-      root.classList.remove('light-theme');
-      body.classList.add('dark-theme');
-      body.classList.remove('light-theme');
-
-      root.style.removeProperty('--bg-base');
-      root.style.removeProperty('--bg-surface');
-      root.style.removeProperty('--bg-dark');
-      root.style.removeProperty('--bg-card');
-      root.style.removeProperty('--glass-border');
-      root.style.removeProperty('--text-primary');
-      root.style.removeProperty('--text-secondary');
-      root.style.removeProperty('--text-muted');
-    }
-
-    localStorage.setItem(this.THEME_KEY, theme);
+    const validTheme = theme === 'light' ? 'light' : 'dark';
+    
+    // Enterprise Zero-DOM-Traversal rule: set data-theme attribute on root element only
+    document.documentElement.setAttribute('data-theme', validTheme);
+    document.body.setAttribute('data-theme', validTheme);
+    localStorage.setItem(this.THEME_KEY, validTheme);
 
     if (syncBackend) {
-      this.saveToBackend(theme);
+      this.saveToBackend(validTheme);
     }
   },
 
@@ -115,8 +83,9 @@ export const themeService = {
 if (typeof window !== 'undefined') {
   window.themeService = themeService;
   window.toggleTheme = () => themeService.toggle();
-  // Bind the toggle listener eagerly so it works on every page, even before init()
   themeService.bindToggleButtons();
-  // Apply saved theme as soon as the module loads (DOM not required for attribs)
-  try { themeService.setTheme(localStorage.getItem(themeService.THEME_KEY) || 'dark', false); } catch (e) {}
+  try {
+    const initialTheme = localStorage.getItem(themeService.THEME_KEY) || 'dark';
+    themeService.setTheme(initialTheme, false);
+  } catch (e) {}
 }

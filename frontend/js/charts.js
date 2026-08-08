@@ -1,7 +1,24 @@
 export class ChartController {
+  static getChartColors() {
+    const style = getComputedStyle(document.documentElement);
+    return {
+      labelColor: style.getPropertyValue('--chart-label').trim() || '#cbd5e1',
+      axisColor: style.getPropertyValue('--chart-axis').trim() || '#94a3b8',
+      gridColor: style.getPropertyValue('--chart-grid').trim() || 'rgba(255, 255, 255, 0.08)',
+      critical: style.getPropertyValue('--severity-critical').trim() || '#ef4444',
+      high: style.getPropertyValue('--severity-high').trim() || '#f97316',
+      medium: style.getPropertyValue('--severity-medium').trim() || '#eab308',
+      low: style.getPropertyValue('--severity-low').trim() || '#22c55e',
+      primary: style.getPropertyValue('--primary').trim() || '#06b6d4',
+      success: style.getPropertyValue('--success').trim() || '#22c55e'
+    };
+  }
+
   static renderSeverityPie(canvasId, severityData = {}) {
     const ctx = document.getElementById(canvasId);
     if (!ctx) return;
+
+    const colors = this.getChartColors();
 
     new Chart(ctx, {
       type: 'doughnut',
@@ -14,7 +31,7 @@ export class ChartController {
             severityData.MEDIUM || 0,
             severityData.LOW || 0
           ],
-          backgroundColor: ['#ff0038', '#ff6b00', '#f59e0b', '#10b981'],
+          backgroundColor: [colors.critical, colors.high, colors.medium, colors.low],
           borderWidth: 0
         }]
       },
@@ -22,7 +39,7 @@ export class ChartController {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: 'bottom', labels: { color: '#94a3b8' } }
+          legend: { position: 'bottom', labels: { color: colors.labelColor } }
         }
       }
     });
@@ -32,6 +49,7 @@ export class ChartController {
     const ctx = document.getElementById(canvasId);
     if (!ctx) return;
 
+    const colors = this.getChartColors();
     const labels = trends.map(t => t.day);
     const incidents = trends.map(t => t.incidents);
     const resolved = trends.map(t => t.resolved);
@@ -44,13 +62,13 @@ export class ChartController {
           {
             label: 'Reported',
             data: incidents,
-            backgroundColor: '#0d9488',
+            backgroundColor: colors.primary,
             borderRadius: 6
           },
           {
             label: 'Resolved',
             data: resolved,
-            backgroundColor: '#10b981',
+            backgroundColor: colors.success,
             borderRadius: 6
           }
         ]
@@ -59,11 +77,11 @@ export class ChartController {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
-          y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { ticks: { color: colors.labelColor }, grid: { display: false } },
+          y: { ticks: { color: colors.labelColor }, grid: { color: colors.gridColor } }
         },
         plugins: {
-          legend: { position: 'bottom', labels: { color: '#94a3b8' } }
+          legend: { position: 'bottom', labels: { color: colors.labelColor } }
         }
       }
     });

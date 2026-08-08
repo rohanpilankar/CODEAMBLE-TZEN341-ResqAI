@@ -1,19 +1,20 @@
 {
   "name": "resq-ai",
   "version": "1.0.0",
+  "description": "Smart Disaster Response & Emergency Coordination Platform",
   "scripts": {
-    "backend": "python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000",
-
-    "frontend": "http-server frontend -a 127.0.0.1 -p 3000 -o /index.html -c-1",
-    "dev": "concurrently --kill-others \"npm:backend\" \"npm:frontend\"",
-    "start": "npm run dev"
-
+    "backend": "python scripts/start_dev.py backend",
+    "frontend": "python scripts/start_dev.py frontend",
+    "dev": "python scripts/start_dev.py all",
+    "start": "python scripts/start_dev.py all",
+    "setup": "python -m pip install -r requirements.txt"
   },
-  "private": true,
   "dependencies": {
-    "http-server": "^14.1.1"
+    "@angular/core": "^18.0.0",
+    "@angular/common": "^18.0.0",
+    "@angular/fire": "^18.0.0",
+    "firebase": "^10.12.0",
+    "rxjs": "^7.8.0"
   },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
+  "private": true
 }
