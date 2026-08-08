@@ -1,377 +1,754 @@
 /* =========================================================================
+
    citizen.css - Citizen Module Specific Styles
+
    ========================================================================= */
 
+
+
 /* ── Incident Cards ─────────────────────────────────────────────────────── */
+
 .incident-card {
+
   background: var(--bg-card);
+
   border: 1px solid var(--glass-border);
+
   border-radius: var(--radius-md);
+
   padding: 1.25rem;
+
   transition: all 0.2s ease;
+
   margin-bottom: 1rem;
+
 }
+
+
 
 .incident-card:hover {
+
   transform: translateY(-2px);
-  border-color: rgba(6,182,212,0.3);
+
+  border-color: var(--primary-alpha-30);
+
   box-shadow: var(--shadow-glow);
+
 }
+
+
 
 .incident-card-header {
+
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
   margin-bottom: 0.75rem;
+
 }
+
+
 
 .incident-card-title {
+
   font-size: 1.1rem;
+
   font-weight: 700;
+
   color: var(--text-primary);
+
   margin: 0;
+
 }
+
+
 
 .incident-card-meta {
+
   display: flex;
+
   gap: 1rem;
+
   font-size: 0.85rem;
+
   color: var(--text-muted);
+
   margin-bottom: 1rem;
+
 }
+
+
 
 .incident-card-meta i {
+
   color: var(--text-secondary);
+
 }
+
+
 
 /* ── Vertical Timeline ──────────────────────────────────────────────────── */
+
 .timeline {
+
   position: relative;
+
   padding-left: 2.5rem;
+
   margin: 2rem 0;
+
 }
+
+
 
 .timeline::before {
+
   content: '';
+
   position: absolute;
+
   top: 0;
+
   bottom: 0;
+
   left: 0.75rem;
+
   width: 2px;
+
   background: var(--glass-border);
+
 }
+
+
 
 .timeline-item {
+
   position: relative;
+
   margin-bottom: 2rem;
+
 }
+
+
 
 .timeline-item:last-child {
+
   margin-bottom: 0;
+
 }
+
+
 
 .timeline-icon {
+
   position: absolute;
+
   left: -2.5rem;
+
   width: 1.5rem;
+
   height: 1.5rem;
+
   border-radius: 50%;
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   font-size: 0.7rem;
-  color: #fff;
+
+  color: var(--text-primary);
+
   background: var(--bg-panel);
+
   border: 2px solid var(--glass-border);
+
   z-index: 1;
+
 }
+
+
 
 .timeline-item.active .timeline-icon {
+
   background: var(--primary);
+
   border-color: var(--primary-light);
-  box-shadow: 0 0 10px rgba(6,182,212,0.5);
+
+  box-shadow: 0 0 10px var(--primary-alpha-50);
+
 }
+
+
 
 .timeline-item.completed .timeline-icon {
+
   background: var(--success);
-  border-color: rgba(16,185,129,0.5);
+
+  border-color: var(--success);
+
 }
+
+
 
 .timeline-content {
-  background: rgba(255,255,255,0.02);
+
+  background: var(--border-subtle);
+
   border: 1px solid var(--glass-border);
+
   border-radius: var(--radius-sm);
+
   padding: 1rem;
+
 }
+
+
 
 .timeline-title {
+
   font-size: 1rem;
+
   font-weight: 600;
+
   color: var(--text-primary);
+
   margin: 0 0 0.25rem 0;
+
 }
+
+
 
 .timeline-time {
+
   font-size: 0.8rem;
+
   color: var(--text-muted);
+
   margin-bottom: 0.5rem;
+
 }
+
+
 
 .timeline-desc {
+
   font-size: 0.9rem;
+
   color: var(--text-secondary);
+
   margin: 0;
+
 }
+
+
 
 /* ── SOS Slider ─────────────────────────────────────────────────────────── */
+
 .sos-container {
+
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
+
   min-height: 400px;
+
   text-align: center;
+
 }
+
+
 
 .sos-button-wrapper {
+
   position: relative;
+
   width: 200px;
+
   height: 200px;
+
   margin: 2rem auto;
+
 }
+
+
 
 .sos-pulse-ring {
+
   position: absolute;
+
   top: 50%;
+
   left: 50%;
+
   transform: translate(-50%, -50%);
+
   width: 200px;
+
   height: 200px;
+
   border-radius: 50%;
-  background: rgba(239, 68, 68, 0.2);
+
+  background: var(--danger-bg);
+
   animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+
   z-index: 0;
+
 }
+
+
 
 .sos-pulse-ring:nth-child(2) {
+
   animation-delay: 1s;
+
 }
+
+
 
 @keyframes pulse-ring {
+
   0% { transform: translate(-50%, -50%) scale(0.95); opacity: 1; }
+
   100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+
 }
+
+
 
 .sos-button {
+
   position: absolute;
+
   top: 50%;
+
   left: 50%;
+
   transform: translate(-50%, -50%);
+
   width: 140px;
+
   height: 140px;
+
   border-radius: 50%;
-  background: linear-gradient(135deg, #ef4444, #b91c1c);
-  border: 4px solid rgba(255,255,255,0.1);
-  color: #fff;
+
+  background: linear-gradient(135deg, var(--danger), var(--danger-text));
+
+  border: 4px solid var(--border-color);
+
+  color: var(--text-primary);
+
   font-size: 2.5rem;
+
   font-weight: 900;
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   cursor: pointer;
-  box-shadow: 0 0 30px rgba(239,68,68,0.6), inset 0 0 20px rgba(0,0,0,0.3);
+
+  box-shadow: 0 0 30px var(--shadow-glow), inset 0 0 20px var(--shadow-sm);
+
   z-index: 1;
+
   transition: transform 0.1s;
+
 }
+
+
 
 .sos-button:active {
+
   transform: translate(-50%, -50%) scale(0.95);
+
 }
+
+
 
 .sos-warning {
+
   color: var(--text-muted);
+
   font-size: 0.85rem;
+
   max-width: 400px;
+
   margin: 0 auto;
+
 }
+
+
 
 /* ── Family Safe Check ──────────────────────────────────────────────────── */
+
 .family-member-card {
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   background: var(--bg-card);
+
   border: 1px solid var(--glass-border);
+
   border-radius: var(--radius-md);
+
   padding: 1rem;
+
   margin-bottom: 0.75rem;
+
 }
+
+
 
 .fm-info {
+
   display: flex;
+
   align-items: center;
+
   gap: 1rem;
+
 }
+
+
 
 .fm-avatar {
+
   width: 40px;
+
   height: 40px;
+
   border-radius: 50%;
+
   background: var(--bg-panel);
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   font-size: 1.2rem;
+
   color: var(--text-muted);
+
 }
+
+
 
 .fm-name {
+
   font-weight: 600;
+
   color: var(--text-primary);
+
   margin: 0 0 0.2rem 0;
+
 }
+
+
 
 .fm-relation {
+
   font-size: 0.8rem;
+
   color: var(--text-secondary);
+
 }
+
+
 
 .fm-status-select {
-  background: rgba(255,255,255,0.05);
+
+  background: var(--border-subtle);
+
   border: 1px solid var(--glass-border);
+
   color: var(--text-primary);
+
   padding: 0.4rem 0.8rem;
+
   border-radius: var(--radius-sm);
+
   font-size: 0.85rem;
+
   outline: none;
+
 }
+
+
 
 .fm-status-select:focus {
+
   border-color: var(--primary);
+
 }
+
+
 
 /* ── Citizen AI Chatbot Floating Widget & Drawer ────────────────────────── */
+
 #resqai-chatbot-widget {
+
   position: fixed;
+
   bottom: 24px;
+
   right: 24px;
+
   z-index: 9999;
+
   font-family: inherit;
+
 }
+
+
 
 #chatbot-toggle-btn {
+
   width: 58px;
+
   height: 58px;
+
   border-radius: 50%;
-  background: linear-gradient(135deg, #0ea5e9, #2563eb);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+
+  background: linear-gradient(135deg, var(--primary), var(--button-primary-hover));
+
+  border: 2px solid var(--border-color);
+
+  color: var(--text-primary);
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
+
+  box-shadow: 0 8px 24px var(--shadow-glow);
+
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
 }
+
+
 
 #chatbot-toggle-btn:hover {
+
   transform: scale(1.08);
-  box-shadow: 0 12px 28px rgba(14, 165, 233, 0.6);
+
+  box-shadow: 0 12px 28px var(--shadow-glow);
+
 }
+
+
 
 #chatbot-drawer {
+
   position: absolute;
+
   bottom: 72px;
+
   right: 0;
+
   width: 380px;
+
   height: 550px;
-  background: #111827;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  background: var(--bg-base);
+
+  border: 1px solid var(--border-color);
+
   border-radius: 16px;
+
   display: flex;
+
   flex-direction: column;
+
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+
+  box-shadow: var(--shadow-lg);
+
   animation: slideUp 0.25s ease-out;
+
 }
+
+
 
 @keyframes slideUp {
+
   from { opacity: 0; transform: translateY(20px); }
+
   to { opacity: 1; transform: translateY(0); }
+
 }
+
+
 
 .chatbot-header {
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  background: linear-gradient(135deg, var(--bg-surface-secondary), var(--bg-surface));
+
+  border-bottom: 1px solid var(--border-color);
+
 }
+
+
 
 .chatbot-body {
+
   flex: 1;
-  background: #0b0f19;
+
+  background: var(--bg-base);
+
 }
+
+
 
 .chat-bubble {
+
   max-width: 88%;
+
   font-size: 0.88rem;
+
   line-height: 1.5;
+
   word-wrap: break-word;
+
 }
+
+
 
 .bot-bubble {
-  background: #1f2937;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #f3f4f6;
+
+  background: var(--bg-surface-secondary);
+
+  border: 1px solid var(--border-color);
+
+  color: var(--text-primary);
+
   border-radius: 16px 16px 16px 2px;
+
 }
+
+
 
 .user-bubble {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  color: #ffffff;
+
+  background: linear-gradient(135deg, var(--button-primary-hover), var(--primary-dark));
+
+  color: var(--text-primary);
+
   border-radius: 16px 16px 2px 16px;
+
 }
+
+
 
 @media (max-width: 576px) {
+
   #chatbot-drawer {
+
     width: calc(100vw - 32px);
+
     right: -8px;
+
     height: 80vh;
+
   }
+
 }
+
+
 
 .chip-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #e2e8f0;
+
+  background: var(--border-color);
+
+  border: 1px solid var(--border-color);
+
+  color: var(--text-secondary);
+
   border-radius: 20px;
+
   padding: 3px 10px;
+
   font-size: 0.73rem;
+
   white-space: nowrap;
+
   cursor: pointer;
+
   transition: all 0.2s ease;
+
 }
+
+
 
 .chip-btn:hover {
-  background: rgba(14, 165, 233, 0.2);
-  border-color: #0ea5e9;
-  color: #38bdf8;
+
+  background: var(--info-bg);
+
+  border-color: var(--primary);
+
+  color: var(--info-text);
+
 }
+
+
 
 .status-dot-green {
+
   width: 8px;
+
   height: 8px;
-  background-color: #22c55e;
+
+  background-color: var(--success-text);
+
   border-radius: 50%;
+
   display: inline-block;
-  box-shadow: 0 0 6px #22c55e;
+
+  box-shadow: 0 0 6px var(--success);
+
 }
 
+
+
 .online-indicator {
+
   position: absolute;
+
   top: 2px;
+
   right: 2px;
+
   width: 12px;
+
   height: 12px;
-  background-color: #22c55e;
-  border: 2px solid #111827;
+
+  background-color: var(--success-text);
+
+  border: 2px solid var(--bg-base);
+
   border-radius: 50%;
+
 }
+

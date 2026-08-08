@@ -44,6 +44,7 @@ Thumbs.db
 
 # Uploads (generated at runtime)
 backend/static/uploads/
+backend/static/yolo_output/
 
 # Node (Angular scaffolding was removed)
 node_modules/

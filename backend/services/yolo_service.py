@@ -10,6 +10,7 @@ import uuid
 import json
 import logging
 import threading
+import time
 import cv2
 import numpy as np
 from pathlib import Path
@@ -40,7 +41,6 @@ class YOLOService:
                 return
             self._initialized = True
             print("[YOLO] Loading YOLOv8 Vision model...")
-            import time
             t0 = time.perf_counter()
             self._init_model(t0)
 

@@ -66,12 +66,22 @@ class TextHarvester:
 
     def severity_score(self) -> float:
         t = self.text
-        if any(w in t for w in ["critical", "collapse", "drowning", "casualty", "explosion",
-                                "trapped", "life-threatening", "dying", "emergency"]):
+        if any(w in t for w in [
+            "critical", "collapse", "drowning", "casualty", "explosion",
+            "trapped", "life-threatening", "dying", "emergency", "gir gaya",
+            "fasse", "phase", "marooned", "bachao", "dub gaya", "doob", "stranded",
+            "building collapse", "roof collapse", "death", "unconscious"
+        ]):
             return 0.95
-        if any(w in t for w in ["fire", "flood", "storm", "severe", "injured", "urgent",
-                                "rising water", "heavy", "burn", "blood"]):
-            return 0.82
+        if any(w in t for w in [
+            "fire", "flood", "storm", "severe", "injured", "urgent",
+            "rising water", "heavy", "burn", "blood", "aa gayi", "aa gaya",
+            "paani", "pani", "submerged", "overflow", "bhad", "baadh",
+            "waterlogging", "water logged", "water level", "fast flow", "sailab",
+            "cyclone", "landslide", "tsunami", "earthquake", "flooding", "chest deep",
+            "waist deep", "deep water", "evacuat"
+        ]):
+            return 0.88
         if any(w in t for w in ["leak", "blocked", "power outage", "minor", "crack", "small"]):
             return 0.58
         return 0.45
@@ -107,9 +117,9 @@ class TextHarvester:
     def road_accessibility(self) -> str:
         t = self.text + " " + self.addr
         if any(w in t for w in ["not accessible", "blocked", "cut off", "debris", "landslide",
-                                "impassable", "cannot reach", "no road"]):
+                                "impassable", "cannot reach", "no road", "flooded road"]):
             return "Not Accessible"
-        if any(w in t for w in ["partial", "difficult", "slow", "damaged road"]):
+        if any(w in t for w in ["partial", "difficult", "slow", "damaged road", "flood", "flooding", "paani", "water"]):
             return "Partially Accessible"
         return "Accessible"
 
@@ -142,9 +152,9 @@ class TextHarvester:
     def infrastructure_damage(self) -> str:
         t = self.text
         if any(w in t for w in ["collapse", "destroyed", "wreck", "demolished", "heavy damage",
-                                "leveled", "flattened"]):
+                                "leveled", "flattened", "gir gaya"]):
             return "High"
-        if any(w in t for w in ["damage", "crack", "partial", "broken", "shattered"]):
+        if any(w in t for w in ["damage", "crack", "partial", "broken", "shattered", "flooded", "submerged", "paani"]):
             return "Medium"
         return "Low"
 
@@ -152,8 +162,11 @@ class TextHarvester:
         return "Yes"
 
     def evacuation_required(self) -> str:
-        if any(w in self.text for w in ["trapped", "stuck", "rescue", "evacuat", "marooned",
-                                        "stranded", "save", "help us", "sos"]):
+        if any(w in self.text for w in [
+            "trapped", "stuck", "rescue", "evacuat", "marooned", "stranded",
+            "save", "help us", "sos", "aa gayi", "aa gaya", "paani bhar",
+            "flooding", "flood", "submerged", "waterlogging", "dub", "doob", "bachao"
+        ]):
             return "Yes"
         return "No"
 
@@ -328,7 +341,7 @@ class SeverityPredictor:
                 self._model_loaded = True
 
     def predict(self, title: str, description: str, disaster_type: str,
-                people_affected: int = 1, address: str = "") -> Dict[str, Any]:
+                people_affected: int = 1, address: str = "", image_input: str = None) -> Dict[str, Any]:
         self._ensure_model_loaded()
         ctx = TextHarvester(title, description, disaster_type, people_affected, address).context()
 
@@ -341,6 +354,13 @@ class SeverityPredictor:
                 classes = list(getattr(self.encoder, "classes_", getattr(self.model, "classes_", [])))
                 label = classes[idx] if idx < len(classes) else "Medium"
                 confidence = round(float(proba[idx]), 4)
+
+                # Ensure critical / high emergency safety overrides when severe indicators are present
+                if ctx["severity"] >= 0.95 and label.upper() in ["LOW", "MEDIUM"]:
+                    label = "Critical"
+                elif (ctx["severity"] >= 0.85 or ctx["evacuation"] == "Yes") and label.upper() in ["LOW", "MEDIUM"]:
+                    label = "High"
+
                 return {
                     "predicted_severity": label.upper(),
                     "confidence_score": confidence,
@@ -358,9 +378,9 @@ class SeverityPredictor:
     def _heuristic(self, title: str, description: str, disaster_type: str,
                    ctx: Dict[str, Any]) -> Dict[str, Any]:
         text = f"{title} {description}".lower()
-        if any(w in text for w in ["trapped", "collapse", "drowning", "casualty", "fire", "explosion", "critical"]):
+        if any(w in text for w in ["trapped", "collapse", "drowning", "casualty", "fire", "explosion", "critical", "gir gaya", "bachao", "dub gaya"]):
             severity, confidence = "CRITICAL", 0.96
-        elif any(w in text for w in ["flood", "rising water", "damage", "severe", "urgent"]):
+        elif any(w in text for w in ["flood", "rising water", "damage", "severe", "urgent", "aa gayi", "aa gaya", "paani", "submerged", "flooding"]):
             severity, confidence = "HIGH", 0.89
         elif any(w in text for w in ["blocked", "minor", "leak", "power outage"]):
             severity, confidence = "MEDIUM", 0.84
