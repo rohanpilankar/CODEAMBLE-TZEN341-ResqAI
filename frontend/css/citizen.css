@@ -752,3 +752,1015 @@
 
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SMART GEO-TAGGED CAMERA REPORT FORM
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Smart Report Card ──────────────────────────────────────────────────── */
+
+.smart-report-card {
+  max-width: 760px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+.smart-report-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.smart-report-icon {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--danger), #b91c1c);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #fff;
+  box-shadow: 0 0 24px rgba(239, 68, 68, 0.4);
+}
+
+.smart-report-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.3rem 0;
+  letter-spacing: -0.02em;
+}
+
+.smart-report-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Step Labels ────────────────────────────────────────────────────────── */
+
+.capture-step {
+  animation: fadeSlideIn 0.35s ease both;
+}
+
+.step-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 1rem;
+}
+
+.step-badge {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Photo Capture Zone ─────────────────────────────────────────────────── */
+
+.photo-capture-zone {
+  background: var(--bg-surface-secondary);
+  border: 2px dashed rgba(6, 182, 212, 0.25);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.photo-capture-zone.drag-over {
+  border-color: var(--primary);
+  background: rgba(6, 182, 212, 0.06);
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.12);
+}
+
+.capture-buttons-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.capture-divider {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ── Camera / Upload Buttons ────────────────────────────────────────────── */
+
+.capture-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 12px;
+  outline: none;
+}
+
+.capture-btn:hover {
+  transform: translateY(-3px);
+}
+
+.capture-btn:active {
+  transform: translateY(0);
+}
+
+.capture-btn-inner {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.capture-btn-icon {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+  transition: box-shadow 0.3s ease;
+}
+
+.capture-btn-camera .capture-btn-icon {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  box-shadow: 0 0 24px rgba(6, 182, 212, 0.45);
+}
+
+.capture-btn-camera:hover .capture-btn-icon {
+  box-shadow: 0 0 40px rgba(6, 182, 212, 0.7);
+}
+
+.capture-btn-upload .capture-btn-icon {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  box-shadow: 0 0 24px rgba(99, 102, 241, 0.35);
+}
+
+.capture-btn-upload:hover .capture-btn-icon {
+  box-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+}
+
+/* Pulsing ring for camera button */
+.capture-btn-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 2px solid rgba(6, 182, 212, 0.4);
+  animation: capture-pulse 2s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes capture-pulse {
+  0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.7; }
+  70%  { transform: translate(-50%, -50%) scale(1.35); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1.35); opacity: 0; }
+}
+
+.capture-btn-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.capture-btn-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* Drag hint */
+.drop-hint {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+/* Photo preview thumbnail */
+.media-preview-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--glass-border);
+  position: relative;
+}
+
+.media-preview-wrapper img,
+.media-preview-wrapper video {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Auto-fill Field Highlight ──────────────────────────────────────────── */
+
+.gps-autofilled,
+.field-autofilled {
+  border-color: var(--primary) !important;
+  background-color: rgba(6, 182, 212, 0.06) !important;
+  color: var(--primary-light) !important;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15) !important;
+  transition: all 0.4s ease;
+}
+
+/* ── Metadata Panel ─────────────────────────────────────────────────────── */
+
+.incident-metadata-panel {
+  margin-top: 1rem;
+  background: rgba(6, 182, 212, 0.04);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  animation: fadeSlideIn 0.4s ease both;
+}
+
+.metadata-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(6, 182, 212, 0.08);
+  border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.metadata-badge {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+
+.metadata-content {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* ── Metadata Chips ─────────────────────────────────────────────────────── */
+
+.meta-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 0.45rem 0.75rem;
+  min-width: 160px;
+  flex: 1;
+  transition: border-color 0.2s;
+}
+
+.meta-chip-ok {
+  border-color: rgba(6, 182, 212, 0.25);
+}
+
+.meta-chip-warn {
+  border-color: rgba(234, 179, 8, 0.25);
+}
+
+.meta-chip-icon {
+  font-size: 0.95rem;
+  color: var(--primary);
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+}
+
+.meta-chip-warn .meta-chip-icon {
+  color: var(--warning);
+}
+
+.meta-chip-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.meta-chip-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.meta-chip-source {
+  background: var(--bg-surface-secondary);
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.meta-chip-value {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta-chip-check {
+  color: var(--success-text);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.meta-chip-warn-icon {
+  color: var(--warning-text);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* ── Map Preview ────────────────────────────────────────────────────────── */
+
+.map-preview-wrapper {
+  margin-top: 1rem;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  animation: fadeSlideIn 0.5s ease both;
+}
+
+.map-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  background: rgba(6, 182, 212, 0.07);
+  border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.map-badge {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+
+.incident-preview-map {
+  height: 280px;
+  width: 100%;
+  background: var(--bg-surface);
+}
+
+/* ── Custom Pulsing Map Marker ──────────────────────────────────────────── */
+
+.incident-map-pin {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.pin-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.6);
+  z-index: 2;
+}
+
+.pin-pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.25);
+  animation: map-pin-pulse 1.8s ease-out infinite;
+  z-index: 1;
+}
+
+.pin-pulse-ring.delay {
+  animation-delay: 0.9s;
+}
+
+@keyframes map-pin-pulse {
+  0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(2);   opacity: 0;   }
+}
+
+/* ── Entry Animations ───────────────────────────────────────────────────── */
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .smart-report-card {
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+
+  .capture-buttons-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .capture-divider {
+    display: none;
+  }
+
+  .capture-btn-inner {
+    width: 72px;
+    height: 72px;
+  }
+
+  .capture-btn-icon {
+    width: 72px;
+    height: 72px;
+    font-size: 1.5rem;
+  }
+
+  gap: 0.55rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 0.45rem 0.75rem;
+  min-width: 160px;
+  flex: 1;
+  transition: border-color 0.2s;
+}
+
+.meta-chip-ok {
+  border-color: rgba(6, 182, 212, 0.25);
+}
+
+.meta-chip-warn {
+  border-color: rgba(234, 179, 8, 0.25);
+}
+
+.meta-chip-icon {
+  font-size: 0.95rem;
+  color: var(--primary);
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+}
+
+.meta-chip-warn .meta-chip-icon {
+  color: var(--warning);
+}
+
+.meta-chip-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.meta-chip-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.meta-chip-source {
+  background: var(--bg-surface-secondary);
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.meta-chip-value {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta-chip-check {
+  color: var(--success-text);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.meta-chip-warn-icon {
+  color: var(--warning-text);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* ── Map Preview ────────────────────────────────────────────────────────── */
+
+.map-preview-wrapper {
+  margin-top: 1rem;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  animation: fadeSlideIn 0.5s ease both;
+}
+
+.map-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  background: rgba(6, 182, 212, 0.07);
+  border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.map-badge {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+
+.incident-preview-map {
+  height: 280px;
+  width: 100%;
+  background: var(--bg-surface);
+}
+
+/* ── Custom Pulsing Map Marker ──────────────────────────────────────────── */
+
+.incident-map-pin {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.pin-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.6);
+  z-index: 2;
+}
+
+.pin-pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.25);
+  animation: map-pin-pulse 1.8s ease-out infinite;
+  z-index: 1;
+}
+
+.pin-pulse-ring.delay {
+  animation-delay: 0.9s;
+}
+
+@keyframes map-pin-pulse {
+  0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(2);   opacity: 0;   }
+}
+
+/* ── Entry Animations ───────────────────────────────────────────────────── */
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .smart-report-card {
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+
+  .capture-buttons-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .capture-divider {
+    display: none;
+  }
+
+  .capture-btn-inner {
+    width: 72px;
+    height: 72px;
+  }
+
+  .capture-btn-icon {
+    width: 72px;
+    height: 72px;
+    font-size: 1.5rem;
+  }
+
+  .meta-chip {
+    min-width: 100%;
+  }
+
+  .incident-preview-map {
+    height: 200px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESQAI GEO-TAGGED CAMERA MODAL
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Overlay ────────────────────────────────────────────────────────────── */
+
+.resqai-camera-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.resqai-camera-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Dialog ─────────────────────────────────────────────────────────────── */
+
+.resqai-camera-dialog {
+  display: flex;
+  flex-direction: column;
+  background: #0a0f1a;
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: 20px;
+  overflow: hidden;
+  width: min(640px, 96vw);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(6, 182, 212, 0.15);
+  animation: cameraDialogIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes cameraDialogIn {
+  from { transform: scale(0.88) translateY(20px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+
+.camera-dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  background: rgba(6, 182, 212, 0.07);
+  border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+}
+
+.camera-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary, #06b6d4);
+  letter-spacing: 0.02em;
+}
+
+.camera-title i {
+  font-size: 1.1rem;
+}
+
+.camera-header-meta {
+  margin-left: auto;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #a5f3fc;
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.camera-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.camera-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+/* ── Viewfinder ─────────────────────────────────────────────────────────── */
+
+.camera-viewfinder-wrap {
+  position: relative;
+  background: #000;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Corner brackets overlay */
+.camera-viewfinder-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.camera-corner {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: rgba(6, 182, 212, 0.85);
+  border-style: solid;
+}
+
+.camera-corner.tl { top: 16px;    left: 16px;    border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
+.camera-corner.tr { top: 16px;    right: 16px;   border-width: 3px 3px 0 0; border-radius: 0 4px 0 0; }
+.camera-corner.bl { bottom: 16px; left: 16px;    border-width: 0 0 3px 3px; border-radius: 0 0 0 4px; }
+.camera-corner.br { bottom: 16px; right: 16px;   border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
+
+/* Scan line */
+.camera-viewfinder-overlay::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.5), transparent);
+  animation: scanLine 3s ease-in-out infinite;
+  top: 20%;
+}
+
+@keyframes scanLine {
+  0%   { top: 20%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 80%; opacity: 0; }
+}
+
+/* Flash effect */
+.camera-flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.08s ease;
+}
+
+.camera-flash.flash-active {
+  opacity: 0.85;
+  transition: opacity 0s;
+}
+
+/* ── Camera Controls ────────────────────────────────────────────────────── */
+
+.camera-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  background: #0a0f1a;
+}
+
+/* Switch camera button */
+.camera-switch-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.camera-switch-btn:hover {
+  background: rgba(6, 182, 212, 0.15);
+  border-color: rgba(6, 182, 212, 0.5);
+  color: #06b6d4;
+  transform: rotate(180deg);
+}
+
+/* Shutter button */
+.camera-shutter-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.15s ease;
+}
+
+.camera-shutter-btn:active {
+  transform: scale(0.92);
+}
+
+.shutter-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  opacity: 0.9;
+}
+
+.shutter-core {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #fff;
+  transition: background 0.15s ease;
+}
+
+.camera-shutter-btn:hover .shutter-core {
+  background: #ef4444;
+}
+
+.camera-shutter-btn:active .shutter-core {
+  background: #dc2626;
+}
+
+/* GPS mini badge */
+.camera-gps-mini {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 48px;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.65rem;
+  color: #a5f3fc;
+  text-align: center;
+  word-break: break-all;
+}
+
+.camera-gps-mini i {
+  font-size: 1.1rem;
+  color: #06b6d4;
+}
+
+/* ── Camera Info Bar ────────────────────────────────────────────────────── */
+
+.camera-info-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1.25rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: monospace;
+  letter-spacing: 0.04em;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .resqai-camera-dialog {
+    border-radius: 14px;
+  }
+
+  .camera-controls {
+    padding: 1rem 1.25rem;
+  }
+
+  .camera-shutter-btn {
+    width: 60px;
+    height: 60px;
+  }
+
+  .shutter-core {
+    width: 46px;
+    height: 46px;
+  }
+}
