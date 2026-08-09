@@ -4,16 +4,16 @@ export const CONFIG = {
   APP_TAGLINE: 'Smart Disaster Response & Emergency Coordination Platform',
 
   // API
-  API_BASE_URL: (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')
-    ? `${window.location.origin}/api/v1`
-    : 'http://localhost:8000/api/v1',
+  API_BASE_URL: (typeof window !== 'undefined' && window.location.port === '3000')
+    ? `${window.location.protocol}//${window.location.hostname}:8000/api/v1`
+    : (typeof window !== 'undefined' && window.location.origin ? `${window.location.origin}/api/v1` : 'http://localhost:8000/api/v1'),
   API_TIMEOUT: 15000,
   API_RETRY_ATTEMPTS: 2,
 
   // WebSocket
-  WS_BASE_URL: (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')
-    ? `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws`
-    : 'ws://localhost:8000/ws',
+  WS_BASE_URL: (typeof window !== 'undefined' && window.location.port === '3000')
+    ? `ws://${window.location.hostname}:8000/ws`
+    : (typeof window !== 'undefined' && window.location.origin ? `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws` : 'ws://localhost:8000/ws'),
   WS_RECONNECT_DELAY: 3000,
 
   // Weather API Configuration

@@ -26,7 +26,7 @@ async function initApp() {
     if (params.get('autologin') === 'true' && storageService.isLoggedIn()) {
       window.location.href = 'dashboard.html';
     }
-  } else if (path.endsWith('dashboard.html')) {
+  } else if (document.getElementById('app-root') || path.includes('dashboard')) {
     // Guard: ensure a logged‑in session exists before loading the dashboard
     if (!storageService.isLoggedIn()) {
       window.location.href = 'login.html';
