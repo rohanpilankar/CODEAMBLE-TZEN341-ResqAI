@@ -1,18 +1,18 @@
 export type SeverityLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 export type VehicleType = 'AMBULANCE' | 'POLICE' | 'FIRE_BRIGADE' | 'NDRF' | 'MEDICAL_TEAM';
 export type VehicleStatus = 'AVAILABLE' | 'EN_ROUTE' | 'ON_SCENE' | 'RETURNING';
+export type RouteProfile = 'driving' | 'emergency' | 'walking' | 'cycling';
+export type RouteMode = 'fastest' | 'shortest' | 'safest' | 'emergency';
+export type RiskLevel = 'LOW' | 'MODERATE' | 'HIGH' | 'CRITICAL';
 
 export interface UserLocation {
-  latitude: float;
-  longitude: float;
+  latitude: number;
+  longitude: number;
   accuracy: number;
   heading: number | null;
   speed: number | null;
   timestamp: number;
 }
-
-// Ensure compatibility with TS number type
-export type float = number;
 
 export interface RescueVehicle {
   id: number | string;
@@ -20,6 +20,7 @@ export interface RescueVehicle {
   vehicleType: VehicleType;
   latitude: number;
   longitude: number;
+  heading?: number;
   status: VehicleStatus;
   etaMinutes: number;
   speedKmh: number;
@@ -27,6 +28,9 @@ export interface RescueVehicle {
   assignedIncidentId?: number | string;
   contactPhone?: string;
   lastUpdated: string;
+  onlineStatus?: 'ONLINE' | 'OFFLINE';
+  currentRoad?: string;
+  routeStatus?: 'ON_ROUTE' | 'REROUTED' | 'ARRIVED';
 }
 
 export interface DisasterIncident {
@@ -78,6 +82,17 @@ export interface MedicalPoint {
   distanceKm?: number;
 }
 
+export interface RoadClosure {
+  id: string | number;
+  roadName: string;
+  latitude: number;
+  longitude: number;
+  radius: number;
+  closureReason: string;
+  severity: SeverityLevel;
+  status: 'ACTIVE' | 'CLEARED';
+}
+
 export interface LayerFilterState {
   disasterReports: boolean;
   rescueTeams: boolean;
@@ -96,19 +111,50 @@ export interface LayerFilterState {
 export interface RouteStep {
   instruction: string;
   distance: number; // in meters
+  duration: number; // in seconds
   name: string;
+  modifier?: string;
+  type?: string;
+  location?: [number, number];
+}
+
+export interface AlternativeRoute {
+  distanceMeters: number;
+  distanceKm: number;
+  durationSeconds: number;
+  durationMinutes: number;
+  geometry: {
+    type: 'LineString';
+    coordinates: [number, number][];
+  };
+  safetyScore: number;
+  riskLevel: RiskLevel;
 }
 
 export interface RouteResult {
   distanceKm: number;
+  distanceMeters: number;
   durationMinutes: number;
+  durationSeconds: number;
+  profile?: RouteProfile;
+  routeMode?: RouteMode;
+  safetyScore: number;
+  riskLevel: RiskLevel;
+  hazardWarnings: string[];
+  isSafe: boolean;
   coordinates: [number, number][]; // [lng, lat]
   steps: RouteStep[];
+  alternativeRoutes?: AlternativeRoute[];
+  etaArrivalTime?: string; // e.g. "14:25 PM"
+  currentSpeedKmh?: number;
+  currentRoadName?: string;
+  nextInstruction?: string;
+  nextInstructionDistance?: number; // in meters
 }
 
 export interface SearchResultItem {
   id: string | number;
-  type: 'HOSPITAL' | 'SHELTER' | 'INCIDENT' | 'PLACE';
+  type: 'HOSPITAL' | 'SHELTER' | 'INCIDENT' | 'VEHICLE' | 'PLACE';
   title: string;
   subtitle: string;
   latitude: number;

@@ -6,11 +6,11 @@
 </div>
 
 <!-- ── Offline / Error Notice Banner ── -->
-<div class="position-absolute top-0 start-50 translate-middle-x z-3 mt-3" *ngIf="mapError || isOffline">
-  <div class="alert alert-danger shadow-lg border-0 rounded-4 px-4 py-2 d-flex align-items-center gap-3">
-    <i class="fa fa-triangle-exclamation fs-5"></i>
+<div class="position-absolute top-0 start-50 translate-middle-x z-3 mt-3" *ngIf="mapError || isOffline || routingError">
+  <div class="alert alert-warning shadow-lg border-0 rounded-4 px-4 py-2 d-flex align-items-center gap-3">
+    <i class="fa fa-triangle-exclamation fs-5 text-warning"></i>
     <div>
-      <strong>System Notice:</strong> {{ mapError || 'Offline mode active. Using cached maps and fallback location.' }}
+      <strong>System Notice:</strong> {{ routingError || mapError || 'Offline mode active. Using cached maps and fallback location.' }}
     </div>
   </div>
 </div>
@@ -23,7 +23,7 @@
   <div class="brand-group">
     <div class="brand-icon"><i class="fa fa-shield-halved text-white"></i></div>
     <div class="brand-title">ResQ<span>AI</span></div>
-    <span class="status-badge"><i class="fa fa-circle-dot me-1"></i> Live Tracker</span>
+    <span class="status-badge"><i class="fa fa-circle-dot me-1 text-success"></i> Live Tracker</span>
   </div>
 
   <!-- Search Bar -->
@@ -34,7 +34,7 @@
         type="text"
         [(ngModel)]="searchQuery"
         (input)="onSearchInput()"
-        placeholder="Search hospitals, shelters, disaster reports..."
+        placeholder="Search hospitals, shelters, rescue teams, disaster reports..."
       />
     </div>
     <div class="search-results-dropdown" *ngIf="searchResults.length">
@@ -65,6 +65,123 @@
       <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="User Avatar" />
       <span>Citizen User</span>
     </div>
+  </div>
+</div>
+
+<!-- ── Google Maps–Style Navigation HUD & Route Simulation Card ── -->
+<div class="navigation-hud-card" *ngIf="activeRoute">
+  <!-- 1. Large Next Turn Banner -->
+  <div class="hud-turn-banner">
+    <div class="turn-icon-wrap">
+      <i class="fa fa-arrow-turn-up text-cyan fs-3"></i>
+    </div>
+    <div class="turn-details">
+      <div class="turn-instruction">{{ activeRoute.nextInstruction || 'Follow safe road corridor' }}</div>
+      <div class="turn-sub">
+        <span class="road-name"><i class="fa fa-road me-1"></i> {{ activeRoute.currentRoadName || 'OpenStreetMap Road' }}</span>
+        <span class="turn-dist" *ngIf="activeRoute.nextInstructionDistance">in {{ activeRoute.nextInstructionDistance }}m</span>
+      </div>
+    </div>
+    <button class="btn-close-hud" (click)="clearRoute()" title="Clear Navigation">
+      <i class="fa fa-xmark"></i>
+    </button>
+  </div>
+
+  <!-- 2. Route Mode Selector Toolbar -->
+  <div class="hud-mode-selector">
+    <button
+      class="mode-btn"
+      [class.active]="selectedRouteMode === 'fastest'"
+      (click)="setRouteMode('fastest')"
+    >
+      <i class="fa fa-bolt me-1"></i> Fastest
+    </button>
+    <button
+      class="mode-btn"
+      [class.active]="selectedRouteMode === 'shortest'"
+      (click)="setRouteMode('shortest')"
+    >
+      <i class="fa fa-ruler me-1"></i> Shortest
+    </button>
+    <button
+      class="mode-btn"
+      [class.active]="selectedRouteMode === 'safest'"
+      (click)="setRouteMode('safest')"
+    >
+      <i class="fa fa-shield-cat me-1"></i> Safest (AI)
+    </button>
+    <button
+      class="mode-btn"
+      [class.active]="selectedRouteMode === 'emergency'"
+      (click)="setRouteMode('emergency')"
+    >
+      <i class="fa fa-truck-medical me-1"></i> Emergency
+    </button>
+  </div>
+
+  <!-- 3. Metrics Grid -->
+  <div class="hud-metrics-grid">
+    <div class="metric-box">
+      <div class="m-val text-cyan">{{ activeRoute.durationMinutes }} <span class="fs-6">min</span></div>
+      <div class="m-lbl">Travel Time</div>
+    </div>
+    <div class="metric-box">
+      <div class="m-val text-success">{{ activeRoute.distanceKm }} <span class="fs-6">km</span></div>
+      <div class="m-lbl">Distance</div>
+    </div>
+    <div class="metric-box">
+      <div class="m-val text-warning">{{ activeRoute.etaArrivalTime || '14:25 PM' }}</div>
+      <div class="m-lbl">Est. Arrival (ETA)</div>
+    </div>
+    <div class="metric-box">
+      <div class="m-val text-info">{{ simulationState.currentSpeedKmh || 45 }} <span class="fs-6">km/h</span></div>
+      <div class="m-lbl">Current Speed</div>
+    </div>
+  </div>
+
+  <!-- 4. Safety Score & Risk Level Badge -->
+  <div class="hud-safety-row">
+    <div class="safety-badge-pill" [ngClass]="activeRoute.riskLevel">
+      <i class="fa fa-shield-heart me-1"></i>
+      Safety Score: <strong>{{ activeRoute.safetyScore }}/100</strong> ({{ activeRoute.riskLevel }} Risk)
+    </div>
+    <div class="gps-accuracy-tag">
+      <i class="fa fa-location-crosshairs text-success me-1"></i> GPS: ±5m
+    </div>
+  </div>
+
+  <!-- 5. Interactive Route Simulation Bar -->
+  <div class="hud-simulation-bar">
+    <div class="d-flex align-items-center justify-content-between mb-1">
+      <div class="sim-label"><i class="fa fa-route me-1 text-primary"></i> Route Demo Simulation</div>
+      <div class="sim-controls">
+        <button class="sim-btn" *ngIf="!simulationState.isPlaying" (click)="playSimulation()" title="Play Simulation">
+          <i class="fa fa-play text-success"></i> Play
+        </button>
+        <button class="sim-btn" *ngIf="simulationState.isPlaying && !simulationState.isPaused" (click)="pauseSimulation()" title="Pause Simulation">
+          <i class="fa fa-pause text-warning"></i> Pause
+        </button>
+        <button class="sim-btn" *ngIf="simulationState.isPaused" (click)="resumeSimulation()" title="Resume Simulation">
+          <i class="fa fa-play text-info"></i> Resume
+        </button>
+        <button class="sim-btn" (click)="resetSimulation()" title="Reset Simulation">
+          <i class="fa fa-rotate-left"></i> Reset
+        </button>
+      </div>
+    </div>
+    <div class="sim-progress-track">
+      <div class="sim-progress-fill" [style.width.%]="simulationState.progressPercent"></div>
+    </div>
+  </div>
+
+  <!-- 6. Action Footer Toolbar -->
+  <div class="hud-actions-footer">
+    <button class="btn-hud-act" (click)="recenterLocation()">
+      <i class="fa fa-crosshairs me-1 text-info"></i> Recenter
+    </button>
+    <button class="btn-hud-act" (click)="clearRoute()">
+      <i class="fa fa-trash-can me-1 text-danger"></i> End Route
+    </button>
   </div>
 </div>
 
@@ -148,19 +265,19 @@
     </div>
   </div>
 
-  <div class="metric-card" *ngIf="nearestShelter">
+  <div class="metric-card" *ngIf="nearestShelter" (click)="navigateTo(nearestShelter.latitude, nearestShelter.longitude, nearestShelter.name)">
     <div class="m-icon bg-success bg-opacity-20 text-success"><i class="fa fa-campground"></i></div>
     <div>
       <div class="m-val">{{ nearestShelter.distanceKm }} km</div>
-      <div class="m-lbl">Nearest Shelter</div>
+      <div class="m-lbl">Nearest Shelter (Route)</div>
     </div>
   </div>
 
-  <div class="metric-card" *ngIf="nearestHospital">
+  <div class="metric-card" *ngIf="nearestHospital" (click)="navigateTo(nearestHospital.latitude, nearestHospital.longitude, nearestHospital.name)">
     <div class="m-icon bg-info bg-opacity-20 text-info"><i class="fa fa-hospital"></i></div>
     <div>
       <div class="m-val">{{ nearestHospital.distanceKm }} km</div>
-      <div class="m-lbl">Nearest Hospital</div>
+      <div class="m-lbl">Nearest Hospital (Route)</div>
     </div>
   </div>
 </div>
@@ -170,8 +287,8 @@
   <div class="leg-item"><div class="dot dot-red"></div> Critical</div>
   <div class="leg-item"><div class="dot dot-orange"></div> High</div>
   <div class="leg-item"><div class="dot dot-yellow"></div> Medium</div>
-  <div class="leg-item"><div class="dot dot-blue"></div> User / Vehicle</div>
-  <div class="leg-item"><div class="dot dot-green"></div> Shelter / Hospital</div>
+  <div class="leg-item"><div class="dot dot-blue"></div> Citizen / User</div>
+  <div class="leg-item"><div class="dot dot-green"></div> Rescue / Shelter</div>
 </div>
 
 <!-- ── Right Inspector Panel (Glassmorphism) ── -->
@@ -202,13 +319,12 @@
         <div class="mt-1"><i class="fa fa-users text-warning me-1"></i> Affected: {{ selectedInspectorItem.data.peopleAffected }} people</div>
       </div>
 
-      <!-- Action Buttons -->
       <div class="action-buttons-grid mt-2">
         <button
           class="btn-act"
-          (click)="navigateTo(selectedInspectorItem.data.latitude, selectedInspectorItem.data.longitude)"
+          (click)="navigateTo(selectedInspectorItem.data.latitude, selectedInspectorItem.data.longitude, selectedInspectorItem.data.title)"
         >
-          <i class="fa fa-route text-cyan"></i> Safe Route
+          <i class="fa fa-route text-cyan"></i> Real Safe Route
         </button>
         <button class="btn-act" (click)="triggerEmergencySOS()">
           <i class="fa fa-phone text-success"></i> Call Dispatch
@@ -234,30 +350,17 @@
           <span>ETA:</span>
           <strong class="text-warning">{{ selectedInspectorItem.data.etaMinutes }} mins</strong>
         </div>
-        <div class="d-flex justify-content-between font-size-xs">
+        <div class="d-flex justify-content-between font-size-xs mb-3">
           <span>Destination:</span>
           <span class="text-truncate" style="max-width: 150px;">{{ selectedInspectorItem.data.destination }}</span>
         </div>
-      </div>
-    </ng-container>
 
-    <!-- Active Route Navigation Turn Steps -->
-    <ng-container *ngIf="activeRoute">
-      <div class="mt-3">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-          <h6 class="fw-bold m-0 text-cyan"><i class="fa fa-diamond-turn-right me-1"></i> Active Navigation Corridor</h6>
-          <button class="btn btn-sm btn-outline-danger py-0 px-2" (click)="clearRoute()">Clear</button>
-        </div>
-        <div class="p-2 bg-info bg-opacity-10 border border-info border-opacity-20 rounded-3 mb-2 font-size-xs">
-          <strong>Distance:</strong> {{ activeRoute.distanceKm }} km &nbsp;|&nbsp;
-          <strong>Est. Time:</strong> {{ activeRoute.durationMinutes }} mins
-        </div>
-        <div class="route-steps-list">
-          <div class="step-item" *ngFor="let step of activeRoute.steps">
-            <i class="fa fa-arrow-up-right"></i>
-            <div>{{ step.instruction }} ({{ step.distance }}m)</div>
-          </div>
-        </div>
+        <button
+          class="btn btn-sm btn-primary w-100"
+          (click)="navigateTo(selectedInspectorItem.data.latitude, selectedInspectorItem.data.longitude, selectedInspectorItem.data.name)"
+        >
+          <i class="fa fa-route me-1"></i> Route to Rescue Unit
+        </button>
       </div>
     </ng-container>
   </div>

@@ -16,7 +16,7 @@ from backend.utils.logger import app_logger
 from backend.routers import (
     auth, users, incidents, shelters, resources, notifications,
     analytics, ai, public, fleet, logistics, medical, reports,
-    comms, volunteers, ngo, audit, citizen, blockchain
+    comms, volunteers, ngo, audit, citizen, blockchain, routing
 )
 
 
@@ -120,6 +120,7 @@ app.include_router(ngo.router, prefix=prefix)
 app.include_router(audit.router, prefix=prefix)
 app.include_router(citizen.router, prefix=prefix)
 app.include_router(blockchain.router, prefix=prefix)
+app.include_router(routing.router, prefix=prefix)
 
 
 # ─── WebSocket Endpoint (JWT Authenticated) ────────────────────────────────────
