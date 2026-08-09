@@ -1,6 +1,10 @@
 # Dockerfile for ResQAI FastAPI Backend & Web Server
 FROM python:3.11-slim
 
+# Set non-interactive mode for Debian apt-get
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
 # Install system dependencies
