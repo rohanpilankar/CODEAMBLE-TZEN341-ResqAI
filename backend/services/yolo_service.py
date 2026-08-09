@@ -13,7 +13,11 @@ import threading
 import time
 import base64
 import urllib.request
-import cv2
+try:
+    import cv2
+except Exception as _cv_err:
+    cv2 = None
+    logger.warning(f"cv2 (OpenCV) failed to load: {_cv_err}")
 import numpy as np
 from pathlib import Path
 from typing import Dict, Any, List, Optional
