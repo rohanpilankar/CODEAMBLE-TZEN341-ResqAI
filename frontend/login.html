@@ -505,7 +505,14 @@
     //  All auth logic is inline; no module imports that can silently fail.
     // ═══════════════════════════════════════════════════════════════════
 
-    const API = 'http://localhost:8000/api/v1';
+    const API = (() => {
+      if (typeof window === 'undefined') return 'http://localhost:8000/api/v1';
+      if (window.location.port === '3000') return `${window.location.protocol}//${window.location.hostname}:8000/api/v1`;
+      if (window.location.hostname.includes('firebaseapp.com') || window.location.hostname.includes('web.app')) {
+        return 'https://codeamble-tzen341-resqai-1.onrender.com/api/v1';
+      }
+      return `${window.location.origin}/api/v1`;
+    })();
     const KEYS = { token: 'resqai_access_token', refresh: 'resqai_refresh_token', user: 'resqai_user' };
 
     // ── Check session state ──────────────────────────────────────────
@@ -587,19 +594,17 @@
       const el   = document.getElementById('backend-status');
       const text = document.getElementById('backend-status-text');
       const hint = document.getElementById('server-hint');
-      const urls = ['http://localhost:8000/api/health', 'http://127.0.0.1:8000/api/health'];
+      const healthUrl = `${API}/health`;
       
-      for (const url of urls) {
-        try {
-          const res = await fetch(url, { signal: AbortSignal.timeout(4000) });
-          if (res.ok) {
-            el.className = 'online';
-            text.textContent = 'Backend server online';
-            hint.style.display = 'none';
-            return;
-          }
-        } catch (e) {}
-      }
+      try {
+        const res = await fetch(healthUrl, { signal: AbortSignal.timeout(6000) });
+        if (res.ok) {
+          el.className = 'online';
+          text.textContent = 'Backend server online';
+          hint.style.display = 'none';
+          return;
+        }
+      } catch (e) {}
 
       el.className = 'offline';
       text.textContent = 'Backend server offline — see instructions below';

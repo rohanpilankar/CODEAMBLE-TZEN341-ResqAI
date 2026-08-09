@@ -45,8 +45,8 @@ export const publicPagesHandler = {
       alertsContainer.innerHTML = `<div class="text-center py-5"><div class="spinner-border text-danger"></div><p class="mt-2 text-muted">Connecting to real-time emergency feed...</p></div>`;
       
       const [weatherRes, incidentsRes] = await Promise.allSettled([
-        fetch('http://localhost:8000/api/v1/public/weather').then(r => r.json()),
-        fetch('http://localhost:8000/api/v1/incidents').then(r => r.json())
+        fetch(`${CONFIG.API_BASE_URL}/public/weather`).then(r => r.json()),
+        fetch(`${CONFIG.API_BASE_URL}/incidents`).then(r => r.json())
       ]);
 
       const weather = weatherRes.status === 'fulfilled' ? weatherRes.value.data : null;
