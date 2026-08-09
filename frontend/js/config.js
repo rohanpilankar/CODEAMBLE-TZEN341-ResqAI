@@ -3,17 +3,27 @@ export const CONFIG = {
   APP_NAME: 'ResQAI',
   APP_TAGLINE: 'Smart Disaster Response & Emergency Coordination Platform',
 
-  // API
-  API_BASE_URL: (typeof window !== 'undefined' && window.location.port === '3000')
-    ? `${window.location.protocol}//${window.location.hostname}:8000/api/v1`
-    : (typeof window !== 'undefined' && window.location.origin ? `${window.location.origin}/api/v1` : 'http://localhost:8000/api/v1'),
+  // API Base URL - auto-detect local dev server, unified deployment, or Firebase -> Render
+  API_BASE_URL: (() => {
+    if (typeof window === 'undefined') return 'http://localhost:8000/api/v1';
+    if (window.location.port === '3000') return `${window.location.protocol}//${window.location.hostname}:8000/api/v1`;
+    if (window.location.hostname.includes('firebaseapp.com') || window.location.hostname.includes('web.app')) {
+      return 'https://codeamble-tzen341-resqai-1.onrender.com/api/v1';
+    }
+    return `${window.location.origin}/api/v1`;
+  })(),
   API_TIMEOUT: 15000,
   API_RETRY_ATTEMPTS: 2,
 
-  // WebSocket
-  WS_BASE_URL: (typeof window !== 'undefined' && window.location.port === '3000')
-    ? `ws://${window.location.hostname}:8000/ws`
-    : (typeof window !== 'undefined' && window.location.origin ? `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws` : 'ws://localhost:8000/ws'),
+  // WebSocket Base URL
+  WS_BASE_URL: (() => {
+    if (typeof window === 'undefined') return 'ws://localhost:8000/ws';
+    if (window.location.port === '3000') return `ws://${window.location.hostname}:8000/ws`;
+    if (window.location.hostname.includes('firebaseapp.com') || window.location.hostname.includes('web.app')) {
+      return 'wss://codeamble-tzen341-resqai-1.onrender.com/ws';
+    }
+    return `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws`;
+  })(),
   WS_RECONNECT_DELAY: 3000,
 
   // Weather API Configuration
