@@ -8378,3 +8378,1080 @@ fastapi.exceptions.HTTPException: 404: Resource not found
 2026-08-09 05:55:23,345 INFO app: Seed data already exists, skipping.
 2026-08-09 05:55:47,274 INFO app: WebSocket connected: user_3 (User #3, Role: Rescue Team)
 2026-08-09 05:57:44,052 INFO app: [Sightengine] Local file found on disk: backend\static/uploads/incidents/inc_295_c251f276.jpg. Sending binary upload payload.
+2026-08-09 08:52:27,697 INFO app: Starting ResQAI v1.0.0 ...
+2026-08-09 08:52:27,701 INFO app: Database tables created.
+2026-08-09 08:52:27,739 INFO app: Seed data already exists, skipping.
+2026-08-09 08:52:28,883 INFO app: WebSocket connected: user_4 (User #4, Role: Citizen)
+2026-08-09 08:52:33,209 INFO app: WebSocket connected: user_4 (User #4, Role: Citizen)
+2026-08-09 08:52:33,316 INFO app: WebSocket connected: user_4 (User #4, Role: Citizen)
+2026-08-09 08:53:02,940 INFO app: WebSocket connected: user_3 (User #3, Role: Rescue Team)
+2026-08-09 09:04:48,685 INFO app: Starting ResQAI v1.0.0 ...
+2026-08-09 09:04:48,688 INFO app: Database tables created.
+2026-08-09 09:04:48,690 INFO app: Seed data already exists, skipping.
+2026-08-09 09:04:48,898 ERROR app: Database session error: 400: Email address is already registered
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\auth.py", line 31, in register
+    result = service.register(req)
+  File "D:\n1\backend\services\auth_service.py", line 51, in register
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 400: Email address is already registered
+2026-08-09 09:04:48,909 ERROR app: Database session error: 400: Email address is already registered
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\auth.py", line 31, in register
+    result = service.register(req)
+  File "D:\n1\backend\services\auth_service.py", line 51, in register
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 400: Email address is already registered
+2026-08-09 09:04:48,915 ERROR app: Database session error: 2 validation errors:
+  {'type': 'missing', 'loc': ('body', 'password'), 'msg': 'Field required', 'input': {'email': 'only@email.com'}}
+  {'type': 'missing', 'loc': ('body', 'full_name'), 'msg': 'Field required', 'input': {'email': 'only@email.com'}}
+
+  File "D:\n1\backend\routers\auth.py", line 28, in register
+    POST /api/v1/auth/register
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 732, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 2 validation errors:
+  {'type': 'missing', 'loc': ('body', 'password'), 'msg': 'Field required', 'input': {'email': 'only@email.com'}}
+  {'type': 'missing', 'loc': ('body', 'full_name'), 'msg': 'Field required', 'input': {'email': 'only@email.com'}}
+
+  File "D:\n1\backend\routers\auth.py", line 28, in register
+    POST /api/v1/auth/register
+2026-08-09 09:04:48,937 ERROR app: Database session error: 401: Invalid email or password
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\auth.py", line 16, in login
+    result = service.login(req)
+  File "D:\n1\backend\services\auth_service.py", line 15, in login
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 401: Invalid email or password
+2026-08-09 09:04:48,944 ERROR app: Database session error: 401: Invalid email or password
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\auth.py", line 16, in login
+    result = service.login(req)
+  File "D:\n1\backend\services\auth_service.py", line 15, in login
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 401: Invalid email or password
+2026-08-09 09:04:48,971 ERROR app: Database session error: 401: Not authenticated
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 466, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 649, in solve_dependencies
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 649, in solve_dependencies
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 678, in solve_dependencies
+    solved = await call(**solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\security\oauth2.py", line 541, in __call__
+    raise self.make_not_authenticated_error()
+fastapi.exceptions.HTTPException: 401: Not authenticated
+2026-08-09 09:04:48,978 ERROR app: Database session error: 401: Could not validate credentials
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 466, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 649, in solve_dependencies
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 680, in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\auth\dependencies.py", line 19, in get_current_user
+    raise credentials_exception
+fastapi.exceptions.HTTPException: 401: Could not validate credentials
+2026-08-09 09:04:48,987 ERROR app: Database session error: 400: Email address is already registered
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\auth.py", line 31, in register
+    result = service.register(req)
+  File "D:\n1\backend\services\auth_service.py", line 51, in register
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 400: Email address is already registered
+2026-08-09 09:04:49,152 ERROR app: Database session error: 404: Incident not found
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\incidents.py", line 97, in get_incident
+    inc = service.get_incident_by_id(incident_id)
+  File "D:\n1\backend\services\incident_service.py", line 23, in get_incident_by_id
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")
+fastapi.exceptions.HTTPException: 404: Incident not found
+2026-08-09 09:04:49,158 ERROR app: Database session error: 2 validation errors:
+  {'type': 'missing', 'loc': ('body', 'email'), 'msg': 'Field required', 'input': {'invalid_field': 'bad'}}
+  {'type': 'missing', 'loc': ('body', 'password'), 'msg': 'Field required', 'input': {'invalid_field': 'bad'}}
+
+  File "D:\n1\backend\routers\auth.py", line 13, in login
+    POST /api/v1/auth/login
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 732, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 2 validation errors:
+  {'type': 'missing', 'loc': ('body', 'email'), 'msg': 'Field required', 'input': {'invalid_field': 'bad'}}
+  {'type': 'missing', 'loc': ('body', 'password'), 'msg': 'Field required', 'input': {'invalid_field': 'bad'}}
+
+  File "D:\n1\backend\routers\auth.py", line 13, in login
+    POST /api/v1/auth/login
+2026-08-09 09:04:49,179 ERROR app: Database session error: 401: Not authenticated
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 466, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 649, in solve_dependencies
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 678, in solve_dependencies
+    solved = await call(**solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\security\oauth2.py", line 541, in __call__
+    raise self.make_not_authenticated_error()
+fastapi.exceptions.HTTPException: 401: Not authenticated
+2026-08-09 09:04:49,238 ERROR app: Database session error: 404: Incident not found
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\incidents.py", line 97, in get_incident
+    inc = service.get_incident_by_id(incident_id)
+  File "D:\n1\backend\services\incident_service.py", line 23, in get_incident_by_id
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")
+fastapi.exceptions.HTTPException: 404: Incident not found
+2026-08-09 09:04:49,425 INFO app: [RoutingService] Cache HIT for key: 19.0760,72.8777;19.0800,72.8800;driving;fastest
+2026-08-09 09:04:49,437 INFO app: [OSRMProvider] Incoming route request: origin=(19.076, 72.8777), destination=(19.08, 72.88), profile=driving
+2026-08-09 09:04:49,437 INFO app: [OSRMProvider] Querying OSRM Server URL: https://router.project-osrm.org/route/v1/driving/72.8777,19.076;72.88,19.08?overview=full&geometries=geojson&steps=true&annotations=true&alternatives=true
+2026-08-09 09:04:51,225 INFO app: [OSRMProvider] Received OSRM HTTP 200
+2026-08-09 09:04:51,225 INFO app: [OSRMProvider] OSRM primary route extracted. Total road coordinates: 33
+2026-08-09 09:04:51,274 ERROR app: Database session error: 404: Shelter not found
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\shelters.py", line 68, in get_shelter
+    s = service.get_shelter_by_id(shelter_id)
+  File "D:\n1\backend\services\shelter_service.py", line 20, in get_shelter_by_id
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Shelter not found")
+fastapi.exceptions.HTTPException: 404: Shelter not found
+2026-08-09 09:04:51,301 ERROR app: Database session error: 400: Current occupancy (150) cannot exceed total capacity (100)
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 337, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\n1\backend\routers\shelters.py", line 89, in update_shelter
+    s = await service.update_shelter(shelter_id, req)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\n1\backend\services\shelter_service.py", line 50, in update_shelter
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 400: Current occupancy (150) cannot exceed total capacity (100)
+2026-08-09 09:04:51,325 ERROR app: Database session error: 404: Resource not found
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\resources.py", line 75, in get_resource
+    r = service.get_resource_by_id(resource_id)
+  File "D:\n1\backend\services\resource_service.py", line 20, in get_resource_by_id
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Resource not found")
+fastapi.exceptions.HTTPException: 404: Resource not found
+2026-08-09 09:04:51,338 INFO app: Shutting down ResQAI.
+2026-08-09 09:05:20,202 INFO app: WebSocket disconnected: user_3
+2026-08-09 09:05:20,694 INFO app: WebSocket connected: user_3 (User #3, Role: Rescue Team)
+2026-08-09 09:07:50,456 INFO app: Starting ResQAI v1.0.0 ...
+2026-08-09 09:07:50,459 INFO app: Database tables created.
+2026-08-09 09:07:50,461 INFO app: Seed data already exists, skipping.
+2026-08-09 09:07:50,666 ERROR app: Database session error: 400: Email address is already registered
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\auth.py", line 31, in register
+    result = service.register(req)
+  File "D:\n1\backend\services\auth_service.py", line 51, in register
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 400: Email address is already registered
+2026-08-09 09:07:50,678 ERROR app: Database session error: 400: Email address is already registered
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\auth.py", line 31, in register
+    result = service.register(req)
+  File "D:\n1\backend\services\auth_service.py", line 51, in register
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 400: Email address is already registered
+2026-08-09 09:07:50,684 ERROR app: Database session error: 2 validation errors:
+  {'type': 'missing', 'loc': ('body', 'password'), 'msg': 'Field required', 'input': {'email': 'only@email.com'}}
+  {'type': 'missing', 'loc': ('body', 'full_name'), 'msg': 'Field required', 'input': {'email': 'only@email.com'}}
+
+  File "D:\n1\backend\routers\auth.py", line 28, in register
+    POST /api/v1/auth/register
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 732, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 2 validation errors:
+  {'type': 'missing', 'loc': ('body', 'password'), 'msg': 'Field required', 'input': {'email': 'only@email.com'}}
+  {'type': 'missing', 'loc': ('body', 'full_name'), 'msg': 'Field required', 'input': {'email': 'only@email.com'}}
+
+  File "D:\n1\backend\routers\auth.py", line 28, in register
+    POST /api/v1/auth/register
+2026-08-09 09:07:50,705 ERROR app: Database session error: 401: Invalid email or password
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\auth.py", line 16, in login
+    result = service.login(req)
+  File "D:\n1\backend\services\auth_service.py", line 15, in login
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 401: Invalid email or password
+2026-08-09 09:07:50,712 ERROR app: Database session error: 401: Invalid email or password
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\auth.py", line 16, in login
+    result = service.login(req)
+  File "D:\n1\backend\services\auth_service.py", line 15, in login
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 401: Invalid email or password
+2026-08-09 09:07:50,738 ERROR app: Database session error: 401: Not authenticated
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 466, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 649, in solve_dependencies
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 649, in solve_dependencies
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 678, in solve_dependencies
+    solved = await call(**solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\security\oauth2.py", line 541, in __call__
+    raise self.make_not_authenticated_error()
+fastapi.exceptions.HTTPException: 401: Not authenticated
+2026-08-09 09:07:50,745 ERROR app: Database session error: 401: Could not validate credentials
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 466, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 649, in solve_dependencies
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 680, in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\auth\dependencies.py", line 19, in get_current_user
+    raise credentials_exception
+fastapi.exceptions.HTTPException: 401: Could not validate credentials
+2026-08-09 09:07:50,755 ERROR app: Database session error: 400: Email address is already registered
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\auth.py", line 31, in register
+    result = service.register(req)
+  File "D:\n1\backend\services\auth_service.py", line 51, in register
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 400: Email address is already registered
+2026-08-09 09:07:50,919 ERROR app: Database session error: 404: Incident not found
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\incidents.py", line 97, in get_incident
+    inc = service.get_incident_by_id(incident_id)
+  File "D:\n1\backend\services\incident_service.py", line 23, in get_incident_by_id
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")
+fastapi.exceptions.HTTPException: 404: Incident not found
+2026-08-09 09:07:50,925 ERROR app: Database session error: 2 validation errors:
+  {'type': 'missing', 'loc': ('body', 'email'), 'msg': 'Field required', 'input': {'invalid_field': 'bad'}}
+  {'type': 'missing', 'loc': ('body', 'password'), 'msg': 'Field required', 'input': {'invalid_field': 'bad'}}
+
+  File "D:\n1\backend\routers\auth.py", line 13, in login
+    POST /api/v1/auth/login
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 732, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 2 validation errors:
+  {'type': 'missing', 'loc': ('body', 'email'), 'msg': 'Field required', 'input': {'invalid_field': 'bad'}}
+  {'type': 'missing', 'loc': ('body', 'password'), 'msg': 'Field required', 'input': {'invalid_field': 'bad'}}
+
+  File "D:\n1\backend\routers\auth.py", line 13, in login
+    POST /api/v1/auth/login
+2026-08-09 09:07:50,946 ERROR app: Database session error: 401: Not authenticated
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 466, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 649, in solve_dependencies
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\dependencies\utils.py", line 678, in solve_dependencies
+    solved = await call(**solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\security\oauth2.py", line 541, in __call__
+    raise self.make_not_authenticated_error()
+fastapi.exceptions.HTTPException: 401: Not authenticated
+2026-08-09 09:07:50,999 ERROR app: Database session error: 404: Incident not found
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\incidents.py", line 97, in get_incident
+    inc = service.get_incident_by_id(incident_id)
+  File "D:\n1\backend\services\incident_service.py", line 23, in get_incident_by_id
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")
+fastapi.exceptions.HTTPException: 404: Incident not found
+2026-08-09 09:07:51,185 INFO app: [RoutingService] Cache HIT for key: 19.0760,72.8777;19.0800,72.8800;driving;fastest
+2026-08-09 09:07:51,198 INFO app: [OSRMProvider] Incoming route request: origin=(19.076, 72.8777), destination=(19.08, 72.88), profile=driving
+2026-08-09 09:07:51,199 INFO app: [OSRMProvider] Querying OSRM Server URL: https://router.project-osrm.org/route/v1/driving/72.8777,19.076;72.88,19.08?overview=full&geometries=geojson&steps=true&annotations=true&alternatives=true
+2026-08-09 09:07:52,716 INFO app: [OSRMProvider] Received OSRM HTTP 200
+2026-08-09 09:07:52,716 INFO app: [OSRMProvider] OSRM primary route extracted. Total road coordinates: 33
+2026-08-09 09:07:52,761 ERROR app: Database session error: 404: Shelter not found
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\shelters.py", line 68, in get_shelter
+    s = service.get_shelter_by_id(shelter_id)
+  File "D:\n1\backend\services\shelter_service.py", line 20, in get_shelter_by_id
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Shelter not found")
+fastapi.exceptions.HTTPException: 404: Shelter not found
+2026-08-09 09:07:52,781 ERROR app: Database session error: 400: Current occupancy (150) cannot exceed total capacity (100)
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 337, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\n1\backend\routers\shelters.py", line 89, in update_shelter
+    s = await service.update_shelter(shelter_id, req)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\n1\backend\services\shelter_service.py", line 50, in update_shelter
+    raise HTTPException(
+    ...<2 lines>...
+    )
+fastapi.exceptions.HTTPException: 400: Current occupancy (150) cannot exceed total capacity (100)
+2026-08-09 09:07:52,805 ERROR app: Database session error: 404: Resource not found
+Traceback (most recent call last):
+  File "D:\n1\backend\database\session.py", line 47, in get_db
+    yield db
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 129, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 683, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py", line 339, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "D:\n1\backend\routers\resources.py", line 75, in get_resource
+    r = service.get_resource_by_id(resource_id)
+  File "D:\n1\backend\services\resource_service.py", line 20, in get_resource_by_id
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Resource not found")
+fastapi.exceptions.HTTPException: 404: Resource not found
+2026-08-09 09:07:52,816 INFO app: Shutting down ResQAI.
+2026-08-09 09:08:09,774 INFO app: WebSocket disconnected: user_3
+2026-08-09 09:08:10,268 INFO app: WebSocket connected: user_3 (User #3, Role: Rescue Team)

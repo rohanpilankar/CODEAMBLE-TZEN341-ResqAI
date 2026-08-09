@@ -173,5 +173,18 @@ def ai_health_check():
 
 
 @app.get("/")
-def root():
+def root(request: Request):
+    accept = request.headers.get("accept", "")
+    if "text/html" in accept:
+        index_path = os.path.join(frontend_dir, "index.html")
+        if os.path.exists(index_path):
+            from fastapi.responses import FileResponse
+            return FileResponse(index_path)
     return {"message": f"Welcome to {settings.APP_NAME} API. Visit /api/docs for documentation."}
+
+# ─── Serve Frontend Static Files ──────────────────────────────────────────────
+frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
+if os.path.exists(frontend_dir):
+    app.mount("/app", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+
+
